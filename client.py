@@ -1,5 +1,9 @@
 import sys
 import platform
+import ctypes
+import op_sdk_core_py
+from core import *
+from secrets_api import SecretsSource
 
 # consts
 SDKVersion = "0010001" # v0.1.0
@@ -28,6 +32,10 @@ class Client:
         self.integration_name = integration_name,
         self.integration_version = integration_version,
 
+        # one possible way of passing the client ID
+        self.config = NewDefaultConfig(),
+        self.secrets = SecretsSource(clientID=InitClient(self.config)),
+
 def NewDefaultConfig():
     defaultOSVersion = "0.0.0"
 
@@ -41,25 +49,12 @@ def NewDefaultConfig():
     newConfigDict["SystemOSVersion"] = defaultOSVersion
     
     return newConfigDict
-    
-# def NewClient():
-    # TODO
 
-# def createClient():
-    # TODO
+def main():
 
-def WithServiceAccountToken(token):
-    def assign(client):
-        client.config.SAToken = token
-    return assign
+    print(InitClient())
+    print(Invoke())
+    ReleaseClient()
 
-def WithIntegrationInfo(name, version):
-    def assign(client):
-        client.config.IntegrationName = name
-        client.config.IntegrationVersion = version
-    return assign
-
-# def main():
-
-# if __name__ == "__main__":
-#     main()
+if __name__ == "__main__":
+    main()
