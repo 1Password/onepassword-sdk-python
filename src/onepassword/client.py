@@ -13,8 +13,8 @@ DEFAULT_OS_VERSION = "0.0.0"
 
 class Client:
     def __init__(self, auth, integration_name, integration_version):
-        self.config = new_default_config(auth=auth, integration_name=integration_name, integration_version=integration_version),
-        self.secrets = Secrets(client_id=InitClient(self.config)),
+        self.config = new_default_config(auth=auth, integration_name=integration_name, integration_version=integration_version)
+        self.secrets = Secrets(client_id=InitClient(self.config))
 
 
 def new_default_config(auth, integration_name, integration_version):
