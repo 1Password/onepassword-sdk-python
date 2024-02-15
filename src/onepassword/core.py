@@ -17,6 +17,6 @@ def InitClient(client_config):
     #return client_id
 
 
-def ReleaseClient(clientID):
-    #op_sdk_core_py.release_client(clientID)
+def ReleaseClient(client_id):
+    #op_sdk_core_py.release_client(client_id)
     pass
