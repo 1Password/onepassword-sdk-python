@@ -37,7 +37,7 @@ def new_default_config(auth, integration_name, integration_version):
         "requestLibraryName": DEFAULT_REQUEST_LIBRARY,
         "requestLibraryVersion": str(sys.version_info[0]) + "." + str(sys.version_info[1]) + "." + str(sys.version_info[2]),
         "os": platform.system(),
-        "osVersion": platform.architecture()[0],
-        "architecture": DEFAULT_OS_VERSION,
+        "osVersion": DEFAULT_OS_VERSION,
+        "architecture": platform.architecture()[0],
     }
     return client_config_dict
