@@ -1,4 +1,4 @@
-from src.sdk import client as onepassword  # temporary example syntax, must be changed before release
+from onepassword import client as onepassword  # temporary example syntax, must be changed before release
 import os
 
 def main():
@@ -9,7 +9,7 @@ def main():
     client = onepassword.Client(token, onepassword.DEFAULT_INTEGRATION_NAME, onepassword.DEFAULT_INTEGRATION_VERSION)
 
     # resolve secret reference
-    result = client.secrets.resolve(reference="<your-secret-reference>")
+    result = client.secrets.resolve(reference="op://vault/item/field")
     print(result)
 
 if __name__ == '__main__':
