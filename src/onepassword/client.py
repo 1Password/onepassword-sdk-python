@@ -25,9 +25,16 @@ def new_default_config(auth, integration_name, integration_version):
         "IntegrationName": integration_name,
         "IntegrationVersion": integration_version,
         "RequestLibraryName": DEFAULT_REQUEST_LIBRARY,
-        "RequestLibraryVersion": sys.version_info[0] + "." + sys.version_info[1] + "." + sys.version_info[2],
+        "RequestLibraryVersion": str(sys.version_info[0]) + "." + str(sys.version_info[1]) + "." + str(sys.version_info[2]),
         "SystemOS": platform.system(),
         "SystemOSVersion": platform.architecture()[0],
         "SystemArch": DEFAULT_OS_VERSION,
     }
     return client_config_dict
+
+def main():
+    x = InitClient(new_default_config("1","2","3"))
+    print(x)
+
+if __name__ == '__main__':
+    main()

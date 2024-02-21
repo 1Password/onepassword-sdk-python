@@ -1,22 +1,44 @@
-# omitting op_sdk_core_py.so import and shared library calls for the time being
-# should be added back when we start work on the core
-
-#import op_sdk_core_py
+import ctypes
 import json
+import os
 
+lib = ctypes.CDLL(os.path.join(os.path.dirname(__file__), "../../python-sdk-core/libop_uniffi_core.dylib"))
 
 def Invoke(invoke_config):
-    serialized_config = json.dump(invoke_config)
-    #secret = op_sdk_core_py.invoke(serialized_config)
-    #return secret
+
+    invoke = lib.uniffi_op_uniffi_core_fn_func_invoke
+    invoke.restype = ctypes.c_int
+    invoke.argtypes = [ctypes.c_wchar_p]
+
+    return invoke(json.dumps(invoke_config))
 
 
 def InitClient(client_config):
-    serialized_config = json.dump(client_config)
-    #client_id = op_sdk_core_py.init_client(serialized_config)
-    #return client_id
+    init_client = lib.uniffi_op_uniffi_core_fn_func_init_client
+    init_client.restype = ctypes.c_int
+    init_client.argtypes = [ctypes.c_wchar_p]
+
+    return init_client(json.dumps(client_config))
 
 
 def ReleaseClient(client_id):
-    #op_sdk_core_py.release_client(client_id)
-    pass
+    release_client = lib.uniffi_op_uniffi_core_fn_func_release_client
+    release_client.restype = ctypes.c_int  # possibly void? return type is Rust Result ()
+    release_client.argtypes = [ctypes.c_wchar_p]
+    
+    return release_client(json.dumps(client_id))
+
+# sample code below for reference
+
+# lib = ctypes.CDLL(os.path.join(os.path.dirname(__file__), "../python-sdk-core/libop_uniffi_core.dylib"))
+# lib.invoke.restype = ctypes.c_char_p  # declare function invoke and declare function's return type
+# lib.invoke.argtypes = [ctypes.c_char_p, ctypes.c_char_p, ctypes.POINTER(ctypes.c_int)]  # declare function parameters
+
+# returned_err = ctypes.c_int(0)
+# id = ctypes.c_long(invoke_config.clientId)
+# arg_arr = json.dumps(invoke_config)
+# result = lib.invoke(id, method.encode("utf-8"), arg_arr, returned_err)
+# if returned_err.value == 1:
+#     raise Exception(result)
+# else:
+#     return result
