@@ -3,6 +3,7 @@ import platform
 from core import *
 from secrets_api import Secrets
 import asyncio
+import weakref
 
 SDK_LANGUAGE = "Python"
 SDK_VERSION = "0010001"  # v0.1.0
@@ -34,7 +35,7 @@ def new_default_config(auth, integration_name, integration_version):
     return client_config_dict
 
 async def main():
-    await InitClient(new_default_config("<your-token-here>",DEFAULT_INTEGRATION_NAME,DEFAULT_INTEGRATION_VERSION))
+    await InitClient(new_default_config("",DEFAULT_INTEGRATION_NAME,DEFAULT_INTEGRATION_VERSION))
 
 if __name__ == '__main__':
     asyncio.run(main())
