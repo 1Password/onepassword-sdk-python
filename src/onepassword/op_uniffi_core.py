@@ -481,7 +481,7 @@ def _uniffi_check_api_checksums(lib):
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_op_uniffi_core_checksum_func_invoke() != 29143:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    if lib.uniffi_op_uniffi_core_checksum_func_release_client() != 53121:
+    if lib.uniffi_op_uniffi_core_checksum_func_release_client() != 57155:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
 
 # A ctypes library to expose the extern-C FFI definitions.
@@ -498,8 +498,9 @@ _UniffiLib.uniffi_op_uniffi_core_fn_func_invoke.argtypes = (
 _UniffiLib.uniffi_op_uniffi_core_fn_func_invoke.restype = ctypes.c_void_p
 _UniffiLib.uniffi_op_uniffi_core_fn_func_release_client.argtypes = (
     _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
 )
-_UniffiLib.uniffi_op_uniffi_core_fn_func_release_client.restype = ctypes.c_void_p
+_UniffiLib.uniffi_op_uniffi_core_fn_func_release_client.restype = None
 _UniffiLib.ffi_op_uniffi_core_rustbuffer_alloc.argtypes = (
     ctypes.c_int32,
     ctypes.POINTER(_UniffiRustCallStatus),
@@ -951,18 +952,9 @@ def invoke(invocation: "str"):
 def release_client(client_id: "str"):
     _UniffiConverterString.check_lower(client_id)
     
-    return _uniffi_rust_call_async(
-        _UniffiLib.uniffi_op_uniffi_core_fn_func_release_client(
-        _UniffiConverterString.lower(client_id)),
-        _UniffiLib.ffi_op_uniffi_core_rust_future_poll_void,
-        _UniffiLib.ffi_op_uniffi_core_rust_future_complete_void,
-        _UniffiLib.ffi_op_uniffi_core_rust_future_free_void,
-        # lift function
-        lambda val: None,
-        
-        # Error FFI converter
-        _UniffiConverterTypeError,
-    )
+    _rust_call_with_error(_UniffiConverterTypeError,_UniffiLib.uniffi_op_uniffi_core_fn_func_release_client,
+        _UniffiConverterString.lower(client_id))
+
 
 __all__ = [
     "InternalError",

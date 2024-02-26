@@ -14,15 +14,16 @@ DEFAULT_OS_VERSION = "0.0.0"
 
 
 class Client:
+
     @classmethod
     async def authenticate(cls, auth, integration_name, integration_version):
         self = cls()
         self.config = new_default_config(auth=auth, integration_name=integration_name, integration_version=integration_version)
         self.client_id = int(await InitClient(self.config))
         self.secrets = Secrets(client_id=self.client_id)
+        self._finalizer = weakref.finalize(self, ReleaseClient, self.client_id)
 
         return self
-
 
 def new_default_config(auth, integration_name, integration_version):
     client_config_dict = {
