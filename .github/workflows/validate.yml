@@ -19,15 +19,19 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'
+          python-version: '3.x'
 
       - name: Test
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SA_TOKEN }}
-        - name: Test with pytest
-          run: |
-            pip install pytest pytest-cov
-            pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
+
+      - name: Install pytest
+        run: |
+          pip install pytest pytest-cov
+          
+      - name: Test with pytest
+        run: |
+          pytest tests.py --doctest-modules --junitxml=junit/test-results.xml --cov=com --cov-report=xml --cov-report=html
 
       - name: Lint with Ruff
         run: |
