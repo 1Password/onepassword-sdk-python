@@ -1,0 +1,34 @@
+# This workflow will build, test and check linting for the 1Password Python SDK.
+name: Validate
+
+on:
+  push:
+    paths-ignore:
+      - '**.md'
+  pull_request:
+    paths-ignore:
+      - '**.md'
+
+jobs:
+
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: Test with unittest
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+        run: |
+          python -m unittest discover -s ./src/tests  -p 'test_*.py'
+
+      - name: Lint with Ruff
+        run: |
+          pip install ruff
+          ruff --output-format=github .
+        continue-on-error: true

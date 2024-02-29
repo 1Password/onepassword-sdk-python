@@ -12,8 +12,8 @@ class TestPythonSDKClient(unittest.TestCase):
     # valid
     def test_valid_resolve(self):
         client = onepassword.Client(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
-        result = client.secrets.resolve(reference="test_username")  # "test_username" is a temporary placeholder, replace with actual secret reference
-        self.assertEqual(result, "test_password")  # "test_password" is a temporary placeholder, replace with actual secret value
+        result = client.secrets.resolve(reference="test_username")
+        self.assertEqual(result, "test_password_42")
     
     # invalid
     def test_invalid_resolve(self):
