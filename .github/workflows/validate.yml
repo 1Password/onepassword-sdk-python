@@ -25,6 +25,7 @@ jobs:
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         run: |
+          ls ./src/onepassword &&
           python -m unittest discover -s ./src/onepassword  -p 'test_*.py'
 
       - name: Lint with Ruff
