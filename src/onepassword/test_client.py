@@ -1,7 +1,7 @@
 import unittest
-from onepassword import client as onepassword
-import os
 import sys
+import client as onepassword
+import os
 import platform
 
 TOKEN = os.environ['OP_SERVICE_ACCOUNT_TOKEN']
