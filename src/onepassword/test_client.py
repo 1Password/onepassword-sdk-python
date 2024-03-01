@@ -1,11 +1,10 @@
 import unittest
 import sys
-import client# as onepassword
-onepassword = client
+import client as onepassword
 import os
 import platform
 
-TOKEN = ""#os.environ['OP_SERVICE_ACCOUNT_TOKEN']
+TOKEN = os.environ['OP_SERVICE_ACCOUNT_TOKEN']
 
 class TestPythonSDKClient(unittest.TestCase):
     ## test resolve function
