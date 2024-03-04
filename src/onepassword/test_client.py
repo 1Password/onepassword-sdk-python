@@ -11,13 +11,13 @@ class TestPythonSDKClient(unittest.TestCase):
 
     # valid
     def test_valid_resolve(self):
-        client = onepassword.Client(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
+        client = onepassword.Client.authenticate(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
         result = client.secrets.resolve(reference="test_username")
         self.assertEqual(result, "test_password_42")
     
     # invalid
     def test_invalid_resolve(self):
-        client = onepassword.Client(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
+        client = onepassword.Client.authenticate(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
         with self.assertRaises(Exception):
             client.secrets.resolve(reference="invalid_reference")
 
@@ -25,7 +25,7 @@ class TestPythonSDKClient(unittest.TestCase):
         
     # valid
     def test_good_client_construction(self):
-        client = onepassword.Client(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
+        client = onepassword.Client.authenticate(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
         self.assertAlmostEqual(client.config.auth, TOKEN)
         self.assertAlmostEqual(client.config.integration_name, onepassword.TOKDEFAULT_INTEGRATION_NAMEEN)
         self.assertAlmostEqual(client.config.integration_version, onepassword.DEFAULT_INTEGRATION_VERSION)
@@ -33,17 +33,17 @@ class TestPythonSDKClient(unittest.TestCase):
     # invalid
     def test_client_construction_no_auth(self):
         with self.assertRaises(Exception):
-            onepassword.Client(auth=TOKEN, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
+            onepassword.Client.authenticate(auth=TOKEN, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
     
     # invalid   
     def test_client_construction_no_name(self):
         with self.assertRaises(Exception):
-            onepassword.Client(integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
+            onepassword.Client.authenticate(integration_name=onepassword.DEFAULT_INTEGRATION_NAME, integration_version=onepassword.DEFAULT_INTEGRATION_VERSION)
     
     # invalid    
     def test_client_construction_no_version(self):
         with self.assertRaises(Exception):
-            onepassword.Client(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME)
+            onepassword.Client.authenticate(auth=TOKEN, integration_name=onepassword.DEFAULT_INTEGRATION_NAME)
 
     ## test config function
         
