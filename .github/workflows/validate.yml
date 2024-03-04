@@ -20,6 +20,9 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
+
+      - name: Print version
+        run: uname -a
           
       - name: Test with unittest
         env:
