@@ -1,4 +1,4 @@
-from core import Invoke
+from src.onepassword.core import Invoke
 
 """Secrets represents all operations the SDK client can perform on 1Password secrets."""
 class Secrets:

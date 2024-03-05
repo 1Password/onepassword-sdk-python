@@ -1,5 +1,5 @@
 import json
-import op_uniffi_core
+import src.onepassword.op_uniffi_core as op_uniffi_core
 
 # InitClient creates a client instance in the current core module and returns its unique ID.
 async def InitClient(client_config):

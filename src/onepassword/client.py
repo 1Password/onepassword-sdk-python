@@ -1,7 +1,7 @@
 import sys
 import platform
-from core import *
-from secrets_api import Secrets
+from src.onepassword.core import *
+from src.onepassword.secrets_api import Secrets
 import asyncio
 import weakref
 
