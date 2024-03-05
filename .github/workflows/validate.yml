@@ -20,16 +20,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-
-      - name: Print version
-        run: uname -a
           
-      - name: Test with unittest
+      - name: Test with pytest
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         run: |
-          ls ./src/onepassword &&
-          python -m unittest discover -s ./src/onepassword  -p 'test_*.py'
+          pip install pytest &&
+          python -m pytest discover -s ./src/onepassword  -p 'test_*.py'
 
       - name: Lint with Ruff
         run: |
