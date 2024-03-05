@@ -26,6 +26,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         run: |
           pip install pytest &&
+          pip install pytest-asyncio &&
           python -m pytest src/onepassword/*.py
 
       - name: Lint with Ruff
