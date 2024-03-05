@@ -26,7 +26,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         run: |
           pip install pytest &&
-          python -m pytest discover -s ./src/onepassword  -p 'test_*.py'
+          python -m pytest src/onepassword/*.py
 
       - name: Lint with Ruff
         run: |
