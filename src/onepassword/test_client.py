@@ -3,7 +3,6 @@ import src.onepassword.client as onepassword
 import os
 import platform
 import pytest
-import asyncio
 
 TOKEN = os.environ['OP_SERVICE_ACCOUNT_TOKEN']
 

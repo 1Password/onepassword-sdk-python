@@ -1,8 +1,7 @@
 import sys
 import platform
-from src.onepassword.core import *
+from src.onepassword.core import InitClient, ReleaseClient
 from src.onepassword.secrets_api import Secrets
-import asyncio
 import weakref
 
 SDK_LANGUAGE = "Go"
