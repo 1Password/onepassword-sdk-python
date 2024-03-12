@@ -1,0 +1,5 @@
+.pytest_cache
+.idea
+*__pycache__
+.dist
+.onepassword.egg-info
