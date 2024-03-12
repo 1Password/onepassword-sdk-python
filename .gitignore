@@ -1,0 +1,7 @@
+.pytest_cache
+.idea
+*__pycache__
+dist/
+onepassword.egg-info/
+.DS_Store
+build/

@@ -1,22 +1,14 @@
-# omitting op_sdk_core_py.so import and shared library calls for the time being
-# should be added back when we start work on the core
-
-#import op_sdk_core_py
 import json
+import onepassword.op_uniffi_core as core
 
+# InitClient creates a client instance in the current core module and returns its unique ID.
+async def _init_client(client_config):
+    return await core.init_client(json.dumps(client_config))
 
-def Invoke(invoke_config):
-    serialized_config = json.dump(invoke_config)
-    #secret = op_sdk_core_py.invoke(serialized_config)
-    #return secret
+# Invoke calls specified business logic from the SDK core.
+async def _invoke(invoke_config):
+    return await core.invoke(json.dumps(invoke_config))
 
-
-def InitClient(client_config):
-    serialized_config = json.dump(client_config)
-    #client_id = op_sdk_core_py.init_client(serialized_config)
-    #return client_id
-
-
-def ReleaseClient(client_id):
-    #op_sdk_core_py.release_client(client_id)
-    pass
+# ReleaseClient releases memory in the SDK core associated with the given client ID.
+def _release_client(client_id):
+    return core.release_client(json.dumps(client_id))
