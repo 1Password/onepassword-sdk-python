@@ -6,4 +6,7 @@ setup(
     packages=find_packages(),
     author='1Password',
     url='https://github.com/1Password/onepassword-sdk-python',
+    install_requires=[
+        "libop_uniffi_core;platform_system=='Darwin'",
+    ],
 )

@@ -1,0 +1,3 @@
+include onepassword/*
+recursive-include onepassword *.so
+recursive-include onepassword *.dylib

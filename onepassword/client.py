@@ -18,8 +18,8 @@ class Client:
     @classmethod
     async def authenticate(cls, auth, integration_name, integration_version):
         self = cls()
-        config = new_default_config(auth=auth, integration_name=integration_name, integration_version=integration_version)
-        client_id = int(await _init_client(config))
+        self.config = new_default_config(auth=auth, integration_name=integration_name, integration_version=integration_version)
+        client_id = int(await _init_client(self.config))
         self.secrets = Secrets(client_id)
         self._finalizer = weakref.finalize(self, _release_client, client_id)
 
