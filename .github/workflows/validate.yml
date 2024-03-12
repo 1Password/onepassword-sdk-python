@@ -27,7 +27,7 @@ jobs:
         run: |
           pip install pytest &&
           pip install pytest-asyncio &&
-          python -m pytest onepassword/*.py
+          python -m pytest sdk/onepassword/*.py
 
       - name: Lint with Ruff
         run: |
