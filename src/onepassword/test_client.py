@@ -1,10 +1,9 @@
-import sys
-import src.onepassword.client as onepassword
+import onepassword.client as onepassword
 import os
 import platform
 import pytest
 
-TOKEN = os.environ['OP_SERVICE_ACCOUNT_TOKEN']
+TOKEN = os.getenv('OP_SERVICE_ACCOUNT_TOKEN')
 
 ## test resolve function
 

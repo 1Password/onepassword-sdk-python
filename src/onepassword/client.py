@@ -1,7 +1,7 @@
 import platform
 import weakref
-from core import InitClient, ReleaseClient
-from secrets_api import Secrets
+from onepassword.core import _init_client, _release_client
+from onepassword.secrets_api import Secrets
 
 SDK_LANGUAGE = "Python"
 SDK_VERSION = "0010001"  # v0.1.0
@@ -18,9 +18,9 @@ class Client:
     async def authenticate(cls, auth, integration_name, integration_version):
         self = cls()
         self.config = new_default_config(auth=auth, integration_name=integration_name, integration_version=integration_version)
-        self.client_id = int(await InitClient(self.config))
-        self.secrets = Secrets(client_id=self.client_id)
-        self._finalizer = weakref.finalize(self, ReleaseClient, self.client_id)
+        client_id = int(await _init_client(self.config))
+        self.secrets = Secrets(client_id)
+        self._finalizer = weakref.finalize(self, _release_client, client_id)
 
         return self
 
