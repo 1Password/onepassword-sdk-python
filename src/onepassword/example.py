@@ -3,7 +3,7 @@ import os
 from onepassword.client import Client, DEFAULT_INTEGRATION_NAME, DEFAULT_INTEGRATION_VERSION
 
 async def main():
-    # Replace "OP_SERVICE_ACCOUNT_TOKEN" with the environment variable for your service account token.
+    # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
     
     # Connects to 1Password.
