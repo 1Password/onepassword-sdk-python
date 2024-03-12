@@ -1,4 +1,5 @@
-from src.onepassword.core import Invoke
+import core
+# from src.onepassword.core import Invoke
 
 """Secrets represents all operations the SDK client can perform on 1Password secrets."""
 class Secrets:
@@ -7,7 +8,7 @@ class Secrets:
 
     """resolve returns the secret the provided reference points to."""
     async def resolve(self, reference):
-        response = await Invoke({
+        response = await core.Invoke({
             "clientId": self.client_id,
             "invocation": {
                 "name": "Resolve",

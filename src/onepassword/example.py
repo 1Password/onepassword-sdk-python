@@ -10,7 +10,7 @@ async def main():
     client = await Client.authenticate(auth=token, integration_name=DEFAULT_INTEGRATION_NAME, integration_version=DEFAULT_INTEGRATION_VERSION)
    
    # Retrieve secret from 1Password
-    value = await client.secrets.resolve("op://Test Login/test_username")
+    value = await client.secrets.resolve("op://xw33qlvug6moegr3wkk5zkenoa/bckakdku7bgbnyxvqbkpehifki/foobar")
     print(value)
 
 if __name__ == '__main__':

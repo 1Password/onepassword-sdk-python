@@ -1,10 +1,11 @@
-import sys
 import platform
-from src.onepassword.core import InitClient, ReleaseClient
-from src.onepassword.secrets_api import Secrets
 import weakref
+import core
+import secrets_api
+# from core import InitClient, ReleaseClient
+# from secrets_api import Secrets
 
-SDK_LANGUAGE = "Go"
+SDK_LANGUAGE = "Python"
 SDK_VERSION = "0010001"  # v0.1.0
 DEFAULT_INTEGRATION_NAME = "Unknown"
 DEFAULT_INTEGRATION_VERSION = "Unknown"
@@ -19,9 +20,9 @@ class Client:
     async def authenticate(cls, auth, integration_name, integration_version):
         self = cls()
         self.config = new_default_config(auth=auth, integration_name=integration_name, integration_version=integration_version)
-        self.client_id = int(await InitClient(self.config))
-        self.secrets = Secrets(client_id=self.client_id)
-        self._finalizer = weakref.finalize(self, ReleaseClient, self.client_id)
+        self.client_id = int(await core.InitClient(self.config))
+        self.secrets = secrets_api.Secrets(client_id=self.client_id)
+        self._finalizer = weakref.finalize(self, core.ReleaseClient, self.client_id)
 
         return self
 
@@ -34,9 +35,9 @@ def new_default_config(auth, integration_name, integration_version):
         "integrationName": integration_name,
         "integrationVersion": integration_version,
         "requestLibraryName": DEFAULT_REQUEST_LIBRARY,
-        "requestLibraryVersion": str(sys.version_info[0]) + "." + str(sys.version_info[1]) + "." + str(sys.version_info[2]),
-        "os": platform.system(),
+        "requestLibraryVersion": platform.python_version(),
+        "os": platform.system().lower(),
         "osVersion": DEFAULT_OS_VERSION,
-        "architecture": platform.architecture()[0],
+        "architecture": platform.machine(),
     }
     return client_config_dict
