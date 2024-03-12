@@ -13,7 +13,7 @@ DEFAULT_OS_VERSION = "0.0.0"
 
 class Client:
 
-    """authenticate verifies the user's permissions and allows them to access their secrets."""
+    """authenticate returns an authenticated client or errors if any provided information, including the SA token, is incorrect"""
     @classmethod
     async def authenticate(cls, auth, integration_name, integration_version):
         self = cls()

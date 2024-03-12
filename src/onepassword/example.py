@@ -3,13 +3,13 @@ import os
 from onepassword.client import Client, DEFAULT_INTEGRATION_NAME, DEFAULT_INTEGRATION_VERSION
 
 async def main():
-    # Your service account token here
-    token = os.environ("OP_SERVICE_ACCOUNT_TOKEN")
+    # Replace "OP_SERVICE_ACCOUNT_TOKEN" with the environment variable for your service account token.
+    token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
     
-    # Connect to 1Password
+    # Connect to 1Password.
     client = await Client.authenticate(auth=token, integration_name=DEFAULT_INTEGRATION_NAME, integration_version=DEFAULT_INTEGRATION_VERSION)
    
-   # Retrieve secret from 1Password
+   # Retrieve a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     value = await client.secrets.resolve("op://xw33qlvug6moegr3wkk5zkenoa/bckakdku7bgbnyxvqbkpehifki/foobar")
     print(value)
 

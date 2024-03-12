@@ -1,4 +1,4 @@
-# This workflow will build, test and check linting for the 1Password Python SDK.
+# This workflow builds, tests, and checks linting for the 1Password Python SDK.
 name: Validate
 
 on:
