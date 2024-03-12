@@ -9,6 +9,6 @@ setup(
     url='https://github.com/1Password/onepassword-sdk-python',
     install_requires=[
         "sdk_core_mac_arm64; platform_system=='Darwin' and platform_machine=='arm64'",
-        "sdk_core_linux_x86_64; platform_system=='Linux' and platform_machine=='x86_64'",
+        "sdk_core_linux_amd64; platform_system=='Linux' and platform_machine=='x86_64'",
     ],
 )

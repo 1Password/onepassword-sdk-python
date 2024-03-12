@@ -1,8 +1,7 @@
 import json
 import importlib.util
 
-
-def try_import_core(platform_specific_package):
+def import_core(platform_specific_package):
     if (spec := importlib.util.find_spec(platform_specific_package)) is not None:
         module = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(module)
@@ -14,12 +13,16 @@ potential_dependencies = [
     "sdk_core_mac_arm64.op_uniffi_core"
 ]
 
-core = None    
+core = None
+
 for dep in potential_dependencies:
-    core = try_import_core(dep)
-    # Stop at the first succesful import
-    if core is not None:
-        break
+    try: 
+        core = import_core(dep)
+        if core is not None:
+            break
+    except ModuleNotFoundError:
+        continue
+
 
 
 # InitClient creates a client instance in the current core module and returns its unique ID.
