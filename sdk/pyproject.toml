@@ -1,0 +1,8 @@
+[build-system]
+requires = ["setuptools"]
+
+[project]
+dependencies = [
+        'sdk_core_darwin_arm64 @ git+ssh://github.com/1password/onepassword-sdk-python@andi/packaging&subdirectory=lib/op_uniffi_core_mac_arm64; platform_system=="Darwin" and platform_machine=="arm64"',
+        'sdk_core_linux_amd64 @ git+ssh://github.com/1password/onepassword-sdk-python@andi/packaging&subdirectory=lib/op_uniffi_core_linux_amd64; platform_system=="Linux" and platform_machine=="x86_64"',
+]

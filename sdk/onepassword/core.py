@@ -1,29 +1,15 @@
 import json
 import importlib.util
+import platform
 
-def import_core(platform_specific_package):
-    if (spec := importlib.util.find_spec(platform_specific_package)) is not None:
-        module = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(module)
-        return module
-    return None
+def import_core():
+    lib_name = "sdk_core_{}_{}".format(platform.system().lower(), platform.machine())
+    spec = importlib.util.find_spec(lib_name)
+    module = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(module)
+    return module
 
-potential_dependencies = [
-    "sdk_core_linux_amd64.op_uniffi_core",
-    "sdk_core_mac_arm64.op_uniffi_core"
-]
-
-core = None
-
-for dep in potential_dependencies:
-    try: 
-        core = import_core(dep)
-        if core is not None:
-            break
-    except ModuleNotFoundError:
-        continue
-
-
+core = import_core()
 
 # InitClient creates a client instance in the current core module and returns its unique ID.
 async def _init_client(client_config):

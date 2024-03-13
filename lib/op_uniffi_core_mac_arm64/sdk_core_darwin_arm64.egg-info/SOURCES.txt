@@ -1,0 +1,8 @@
+MANIFEST.in
+setup.py
+sdk_core_darwin_arm64/__init__.py
+sdk_core_darwin_arm64/op_uniffi_core.py
+sdk_core_darwin_arm64.egg-info/PKG-INFO
+sdk_core_darwin_arm64.egg-info/SOURCES.txt
+sdk_core_darwin_arm64.egg-info/dependency_links.txt
+sdk_core_darwin_arm64.egg-info/top_level.txt
