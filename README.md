@@ -8,7 +8,7 @@ The 1Password Python SDK offers programmatic read access to your secrets in 1Pas
 
 To use the 1Password Python SDK in your project:
 
-1. [Create a 1Password Service Account](https://developer.1password.com/docs/service-accounts/get-started/#create-a-service-account). Make sure to grant the service account access to the vaults where the secrets your project needs access to are stored.
+1. [Create a 1Password Service Account](https://developer.1password.com/docs/service-accounts/get-started/#create-a-service-account). You can create service accounts if you're an owner or administrator on your team. Otherwise, ask your administrator for a service account token.
 2. Export your service account token to the `OP_SERVICE_ACCOUNT_TOKEN` environment variable:
 
 ```bash
@@ -36,7 +36,7 @@ async def main():
     client = await Client.authenticate(auth=token, integration_name=DEFAULT_INTEGRATION_NAME, integration_version=DEFAULT_INTEGRATION_VERSION)
    
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
-    value = await client.secrets.resolve("op://xw33qlvug6moegr3wkk5zkenoa/bckakdku7bgbnyxvqbkpehifki/foobar")
+    value = await client.secrets.resolve("op://vault/item/field")
     print(value)
 
 if __name__ == '__main__':
@@ -45,3 +45,5 @@ if __name__ == '__main__':
 ```
 
 Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secret-references/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.
+
+Note: The SDK doesn't yet support using secret references with query parameters, so you can't use secret references to retrieve file attachments or SSH keys, or to get more information about field metadata.
