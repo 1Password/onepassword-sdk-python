@@ -32,5 +32,5 @@ jobs:
       - name: Lint with Ruff
         run: |
           pip install ruff
-          ruff --output-format=github .
+          ruff --output-format=github --exclude=src/onepassword/op_uniffi_core.py .
         continue-on-error: true
