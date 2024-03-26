@@ -1,5 +1,6 @@
 from setuptools import setup, find_packages
 from sysconfig import get_platform
+import platform
 
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
@@ -13,7 +14,10 @@ except ImportError:
 
 def get_shared_library_name():
     # Return the correct C extension for the given platform
-    return "libop_uniffi_core.dylib"
+    if platform.system() == "Darwin":
+        return "libop_uniffi_core.dylib"
+    elif platform.system() == "Linux":
+        return "libop_uniffi_core.so"
 
 setup(
     name='onepassword',
