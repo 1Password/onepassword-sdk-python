@@ -9,7 +9,7 @@ try:
     else:
         raise ImportError("your machine's architecture is not currently supported: {}", platform.machine())
 except:
-    raise ImportError("the OS of your machine is currently not supported: {}", platform.platform())
+    raise ImportError("the OS of your machine is not currently supported: {}", platform.platform())
     
 
 # InitClient creates a client instance in the current core module and returns its unique ID.
