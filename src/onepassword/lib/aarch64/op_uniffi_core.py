@@ -448,11 +448,8 @@ def _uniffi_load_indirect():
     This is how we find and load the dynamic library provided by the component.
     For now we just look it up by name.
     """
-    path_dir = os.path.join(os.path.dirname(__file__), "lib")
-
     if sys.platform == "darwin":
-        libname = "lib{}_{}.dylib"
-        path_dir = os.path.join(path_dir, "darwin")
+        libname = "lib{}.dylib"
     elif sys.platform.startswith("win"):
         # As of python3.8, ctypes does not seem to search $PATH when loading DLLs.
         # We could use `os.add_dll_directory` to configure the search path, but
@@ -460,16 +457,14 @@ def _uniffi_load_indirect():
         # assume that the `.dll` is next to the `.py` file and load by full path.
         libname = os.path.join(
             os.path.dirname(__file__),
-            "{}_{}.dll",
+            "{}.dll",
         )
-        path_dir = os.path.join(path_dir, "windows")
     else:
         # Anything else must be an ELF platform - Linux, *BSD, Solaris/illumos
-        libname = "lib{}_{}.so"
-        path_dir = os.path.join(path_dir, "linux")
+        libname = "lib{}.so"
 
-    libname = libname.format("op_uniffi_core", platform.machine())
-    path = os.path.join(path_dir, libname)
+    libname = libname.format("op_uniffi_core")
+    path = os.path.join(os.path.dirname(__file__), libname)
     lib = ctypes.cdll.LoadLibrary(path)
     return lib
 
