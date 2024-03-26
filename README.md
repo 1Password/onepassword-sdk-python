@@ -26,7 +26,7 @@ pip install git+ssh://git@github.com/1Password/onepassword-sdk-python.git
 ```python
 import asyncio
 import os
-from onepassword.client import Client, DEFAULT_INTEGRATION_NAME, DEFAULT_INTEGRATION_VERSION
+from onepassword.client import Client
 
 async def main():
     # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
