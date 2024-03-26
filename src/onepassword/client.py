@@ -1,7 +1,7 @@
 import platform
 import weakref
-from onepassword.core import _init_client, _release_client
-from onepassword.secrets_api import Secrets
+from .core import _init_client, _release_client
+from .secrets_api import Secrets
 
 SDK_LANGUAGE = "Python"
 SDK_VERSION = "0010001"  # v0.1.0

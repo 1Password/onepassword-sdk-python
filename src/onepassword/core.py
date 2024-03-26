@@ -8,8 +8,8 @@ try:
         import onepassword.lib.aarch64.op_uniffi_core as core
     else:
         raise ImportError("your machine's architecture is not currently supported: {}", platform.machine())
-except:
-    raise ImportError("the OS of your machine is not currently supported: {}", platform.platform())
+except OSError:
+    raise ImportError("the combination of OS and architecture of your machine is not currently supported: {}", platform.platform())
     
 
 # InitClient creates a client instance in the current core module and returns its unique ID.
