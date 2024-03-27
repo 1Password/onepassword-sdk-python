@@ -1,15 +1,14 @@
 import json
 import platform
 
-try: 
-    if platform.machine() == "x86_64":
-        import onepassword.lib.x86_64.op_uniffi_core as core
-    elif platform.machine() == "aarch64" or platform.machine() == "arm64":
-        import onepassword.lib.aarch64.op_uniffi_core as core
-    else:
-        raise ImportError("your machine's architecture is not currently supported: {}", platform.machine())
-except OSError:
-    raise ImportError("the combination of OS and architecture of your machine is not currently supported: {}", platform.platform())
+
+if platform.machine().lower() == "x86_64" or platform.machine().lower() == "amd64":
+    import onepassword.lib.x86_64.op_uniffi_core as core
+elif platform.machine().lower() == "aarch64" or platform.machine().lower() == "arm64":
+    import onepassword.lib.aarch64.op_uniffi_core as core
+else:
+    raise ImportError("your machine's architecture is not currently supported: {}".format(platform.machine()))
+
     
 
 # InitClient creates a client instance in the current core module and returns its unique ID.
