@@ -47,3 +47,5 @@ if __name__ == '__main__':
 Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secret-references/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.
 
 Note: The SDK doesn't yet support using secret references with query parameters, so you can't use secret references to retrieve file attachments or SSH keys, or to get more information about field metadata.
+
+Inside ```Client.authenticate(...)```, set ```integration_name``` to the name of your application and ```integration_version``` to the version of your application.

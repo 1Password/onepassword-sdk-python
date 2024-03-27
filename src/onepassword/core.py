@@ -1,5 +1,16 @@
 import json
-import onepassword.op_uniffi_core as core
+import platform
+
+try: 
+    if platform.machine() == "x86_64":
+        import onepassword.lib.x86_64.op_uniffi_core as core
+    elif platform.machine() == "aarch64" or platform.machine() == "arm64":
+        import onepassword.lib.aarch64.op_uniffi_core as core
+    else:
+        raise ImportError("your machine's architecture is not currently supported: {}", platform.machine())
+except OSError:
+    raise ImportError("the combination of OS and architecture of your machine is not currently supported: {}", platform.platform())
+    
 
 # InitClient creates a client instance in the current core module and returns its unique ID.
 async def _init_client(client_config):

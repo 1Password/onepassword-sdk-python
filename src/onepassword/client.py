@@ -1,7 +1,7 @@
 import platform
 import weakref
-from onepassword.core import _init_client, _release_client
-from onepassword.secrets_api import Secrets
+from .core import _init_client, _release_client
+from .secrets_api import Secrets
 
 SDK_LANGUAGE = "Python"
 SDK_VERSION = "0010001"  # v0.1.0
@@ -14,6 +14,7 @@ DEFAULT_OS_VERSION = "0.0.0"
 class Client:
 
     """authenticate returns an authenticated client or errors if any provided information, including the SA token, is incorrect"""
+    """`integration_name` represents the name of your application and `integration_version` represents the version of your application."""
     @classmethod
     async def authenticate(cls, auth, integration_name, integration_version):
         self = cls()
