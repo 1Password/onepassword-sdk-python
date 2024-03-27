@@ -18,9 +18,9 @@ except ImportError:
 def get_shared_library_data_to_include():
     # Return the correct uniffi C shared library extension for the given platform
     include_path = "lib"
-    if platform.machine() == "x86_64":
+    if platform.machine().lower() == "x86_64" or platform.machine().lower() == "amd64":
         include_path = os.path.join(include_path, "x86_64")
-    elif platform.machine() == "aarch64" or platform.machine() == "arm64":
+    elif platform.machine().lower() == "aarch64" or platform.machine().lower() == "arm64":
         include_path = os.path.join(include_path, "aarch64")
 
     c_shared_library_file_name = ""

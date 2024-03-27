@@ -2,9 +2,9 @@ import json
 import platform
 
 
-if platform.machine() == "x86_64":
+if platform.machine().lower() == "x86_64" or platform.machine().lower() == "amd64":
     import onepassword.lib.x86_64.op_uniffi_core as core
-elif platform.machine() == "aarch64" or platform.machine() == "arm64":
+elif platform.machine().lower() == "aarch64" or platform.machine().lower() == "arm64":
     import onepassword.lib.aarch64.op_uniffi_core as core
 else:
     raise ImportError("your machine's architecture is not currently supported: {}".format(platform.machine()))
