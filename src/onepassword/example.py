@@ -1,13 +1,13 @@
 import asyncio
 import os
-from onepassword.client import Client, DEFAULT_INTEGRATION_NAME, DEFAULT_INTEGRATION_VERSION
+from onepassword.client import Client
 
 async def main():
     # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
     
     # Connects to 1Password.
-    client = await Client.authenticate(auth=token, integration_name=DEFAULT_INTEGRATION_NAME, integration_version=DEFAULT_INTEGRATION_VERSION)
+    client = await Client.authenticate(auth=token, integration_name="My 1Password Integration", integration_version="v1.0.0")
    
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     value = await client.secrets.resolve("op://xw33qlvug6moegr3wkk5zkenoa/bckakdku7bgbnyxvqbkpehifki/foobar")
