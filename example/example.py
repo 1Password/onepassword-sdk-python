@@ -1,6 +1,6 @@
 import asyncio
 import os
-from onepassword.client import Client
+from onepassword import Client
 
 async def main():
     # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
