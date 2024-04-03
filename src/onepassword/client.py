@@ -12,11 +12,13 @@ DEFAULT_OS_VERSION = "0.0.0"
 
 
 class Client:
+    """A client"""
 
-    """authenticate returns an authenticated client or errors if any provided information, including the SA token, is incorrect"""
-    """`integration_name` represents the name of your application and `integration_version` represents the version of your application."""
     @classmethod
     async def authenticate(cls, auth, integration_name, integration_version):
+        """authenticate returns an authenticated client or errors if any provided information, including the SA token, is incorrect
+        `integration_name` represents the name of your application and `integration_version` represents the version of your application."""
+
         self = cls()
         self.config = new_default_config(auth=auth, integration_name=integration_name, integration_version=integration_version)
         client_id = int(await _init_client(self.config))
@@ -25,8 +27,9 @@ class Client:
 
         return self
 
-# Generates a configuration dictionary with the user's parameters
 def new_default_config(auth, integration_name, integration_version):
+    """Generates a configuration dictionary with the user's parameters"""
+
     client_config_dict = {
         "serviceAccountToken": auth,
         "programmingLanguage": SDK_LANGUAGE,
