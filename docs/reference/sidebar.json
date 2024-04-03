@@ -1,0 +1,34 @@
+{
+  "items": [
+    {
+      "items": [
+        {
+          "items": [
+            {
+              "items": [
+                "reference/onepassword/lib/aarch64/op_uniffi_core"
+              ],
+              "label": "onepassword.lib.aarch64",
+              "type": "category"
+            },
+            {
+              "items": [
+                "reference/onepassword/lib/x86_64/op_uniffi_core"
+              ],
+              "label": "onepassword.lib.x86_64",
+              "type": "category"
+            }
+          ],
+          "label": "onepassword.lib",
+          "type": "category"
+        },
+        "reference/onepassword/client",
+        "reference/onepassword/secrets_api"
+      ],
+      "label": "onepassword",
+      "type": "category"
+    }
+  ],
+  "label": "Reference",
+  "type": "category"
+}
