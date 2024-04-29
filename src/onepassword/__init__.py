@@ -1,5 +1,5 @@
 from .client import Client
-from .config import DEFAULT_INTEGRATION_NAME, DEFAULT_INTEGRATION_VERSION
+from .defaults import DEFAULT_INTEGRATION_NAME, DEFAULT_INTEGRATION_VERSION
 from .secrets_api import Secrets
 
 __all__ = [

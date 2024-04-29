@@ -1,7 +1,7 @@
 import weakref
 from .core import _init_client, _release_client
 from .secrets_api import Secrets
-from .config import new_default_config
+from .defaults import new_default_config
 
 class Client:
     """authenticate returns an authenticated client or errors if any provided information, including the SA token, is incorrect"""
