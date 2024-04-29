@@ -1,4 +1,3 @@
-
 import platform
 
 SDK_LANGUAGE = "Python"
