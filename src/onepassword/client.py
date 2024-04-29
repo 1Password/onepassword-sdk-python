@@ -1,6 +1,6 @@
 import weakref
 from .core import _init_client, _release_client
-from .secrets_api import Secrets
+from .secrets import Secrets
 from .defaults import new_default_config
 
 class Client:
