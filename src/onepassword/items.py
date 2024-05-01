@@ -1,6 +1,6 @@
 from .core import _invoke
 import json
-from onepassword import Item
+from .types import Item
 
 class Items:
   def __init__(self, client_id):
