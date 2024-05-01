@@ -12,7 +12,7 @@ TOKEN = os.getenv('OP_SERVICE_ACCOUNT_TOKEN')
 @pytest.mark.asyncio
 async def test_valid_resolve():
     client = await onepassword.Client.authenticate(auth=TOKEN, integration_name=onepassword_defaults.DEFAULT_INTEGRATION_NAME, integration_version=onepassword_defaults.DEFAULT_INTEGRATION_VERSION)
-    result = await client.secrets.resolve(reference="op://gowwbvgow7kxocrfmfvtwni6vi/6ydrn7ne6mwnqc2prsbqx4i4aq/password")
+    result = await client.secrets.resolve(secret_reference="op://gowwbvgow7kxocrfmfvtwni6vi/6ydrn7ne6mwnqc2prsbqx4i4aq/password")
     assert(result == "test_password_42")
 
 # invalid
@@ -20,7 +20,7 @@ async def test_valid_resolve():
 async def test_invalid_resolve():
     client = await onepassword.Client.authenticate(auth=TOKEN, integration_name=onepassword_defaults.DEFAULT_INTEGRATION_NAME, integration_version=onepassword_defaults.DEFAULT_INTEGRATION_VERSION)
     with pytest.raises(Exception, match="error resolving secret reference: secret reference is not prefixed with \"op://\""):
-        await client.secrets.resolve(reference="invalid_reference")
+        await client.secrets.resolve(secret_reference="invalid_reference")
 
 ## test client constructor
     
