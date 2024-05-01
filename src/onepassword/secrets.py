@@ -1,17 +1,22 @@
 from .core import _invoke
+import json
 
 """Secrets represents all operations the SDK client can perform on 1Password secrets."""
 class Secrets:
-    def __init__(self, client_id):
-        self.client_id = client_id
+  def __init__(self, client_id):
+    self.client_id = client_id
+    
+  """resolve returns the secret the provided reference points to."""
+  async def resolve(self, secret_reference): 
 
-    """resolve returns the secret the provided reference points to."""
-    async def resolve(self, reference):
-        response = await _invoke({
-            "clientId": self.client_id,
-            "invocation": {
-                "name": "Resolve",
-                "parameters": reference,
-                }
-            })
-        return response
+   response = await _invoke({
+		"clientId": self.client_id,
+	   "invocation": {
+			"name": "Resolve",
+			"parameters": {  
+			   "secret_reference": secret_reference, 
+			}
+			}
+		})
+   result = str(json.loads(response))
+   return result
