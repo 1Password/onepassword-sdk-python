@@ -27,6 +27,7 @@ jobs:
         run: |
           pip install pytest &&
           pip install pytest-asyncio &&
+          pip install pydantic &&
           python -m pytest src/onepassword/*.py
 
       - name: Lint with Ruff
