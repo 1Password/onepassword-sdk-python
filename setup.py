@@ -55,4 +55,7 @@ setup(
     package_dir={"": "src"},
     cmdclass={"bdist_wheel": bdist_wheel},
     package_data={"": get_shared_library_data_to_include()},
+    install_requires = [
+        'pydantic',
+    ]
 )
