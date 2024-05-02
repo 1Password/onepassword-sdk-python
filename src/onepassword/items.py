@@ -5,6 +5,7 @@ from .types import Item
 
 class Items:
     """Contains all operations the SDK client can perform on 1Password items."""
+
     def __init__(self, client_id):
         self.client_id = client_id
 
