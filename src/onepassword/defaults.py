@@ -7,6 +7,7 @@ DEFAULT_INTEGRATION_VERSION = "Unknown"
 DEFAULT_REQUEST_LIBRARY = "net/http"
 DEFAULT_OS_VERSION = "0.0.0"
 
+
 # Generates a configuration dictionary with the user's parameters
 def new_default_config(auth, integration_name, integration_version):
     client_config_dict = {
