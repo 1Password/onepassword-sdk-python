@@ -18,7 +18,7 @@ async def test_valid_resolve():
         integration_version=onepassword_defaults.DEFAULT_INTEGRATION_VERSION,
     )
     result = await client.secrets.resolve(
-        reference="op://gowwbvgow7kxocrfmfvtwni6vi/6ydrn7ne6mwnqc2prsbqx4i4aq/password"
+        secret_reference="op://gowwbvgow7kxocrfmfvtwni6vi/6ydrn7ne6mwnqc2prsbqx4i4aq/password"
     )
     assert result == "test_password_42"
 
@@ -35,7 +35,7 @@ async def test_invalid_resolve():
         Exception,
         match='error resolving secret reference: secret reference is not prefixed with "op://"',
     ):
-        await client.secrets.resolve(reference="invalid_reference")
+        await client.secrets.resolve(secret_reference="invalid_reference")
 
 
 ## test client constructor
@@ -65,7 +65,7 @@ async def test_good_client_construction():
 async def test_client_construction_no_auth():
     with pytest.raises(
         Exception,
-        match="invalid client configuration: encountered the following errors: service account token was not specified; service account token had invalid format",
+        match="invalid user input: encountered the following errors: service account token was not specified; service account token had invalid format",
     ):
         await onepassword.Client.authenticate(
             auth="",
@@ -79,7 +79,7 @@ async def test_client_construction_no_auth():
 async def test_client_construction_no_name():
     with pytest.raises(
         Exception,
-        match="invalid client configuration: encountered the following errors: integration name was not specified",
+        match="invalid user input: encountered the following errors: integration name was not specified",
     ):
         await onepassword.Client.authenticate(
             auth=TOKEN,
@@ -93,7 +93,7 @@ async def test_client_construction_no_name():
 async def test_client_construction_no_version():
     with pytest.raises(
         Exception,
-        match="invalid client configuration: encountered the following errors: integration version was not specified",
+        match="invalid user input: encountered the following errors: integration version was not specified",
     ):
         await onepassword.Client.authenticate(
             auth=TOKEN,
