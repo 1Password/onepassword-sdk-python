@@ -22,7 +22,6 @@ class Items:
         result = Item(**json.loads(response))
         return result
 
-
     async def get(self, vault_id, item_id):
         response = await _invoke(
             {
@@ -39,7 +38,6 @@ class Items:
         result = Item(**json.loads(response))
         return result
 
-
     async def update(self, item):
         response = await _invoke(
             {
@@ -54,7 +52,6 @@ class Items:
         )
         result = Item(**json.loads(response))
         return result
-
 
     async def delete(self, vault_id, item_id):
         await _invoke(
