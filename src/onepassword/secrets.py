@@ -1,4 +1,5 @@
 from .core import _invoke
+from json import loads
 
 """Secrets represents all operations the SDK client can perform on 1Password secrets."""
 
@@ -21,4 +22,4 @@ class Secrets:
                 },
             }
         )
-        return response
+        return loads(response)
