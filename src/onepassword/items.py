@@ -16,7 +16,7 @@ class Items:
                 "invocation": {
                     "name": "Create",
                     "parameters": {
-                        "item": item,
+                        "item": item.dict(),
                     },
                 },
             }
@@ -49,7 +49,7 @@ class Items:
                 "invocation": {
                     "name": "Update",
                     "parameters": {
-                        "item": item,
+                        "item": item.dict(),
                     },
                 },
             }
