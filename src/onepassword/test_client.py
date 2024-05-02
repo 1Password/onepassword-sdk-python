@@ -65,7 +65,7 @@ async def test_good_client_construction():
 async def test_client_construction_no_auth():
     with pytest.raises(
         Exception,
-        match="invalid user input: encountered the following errors: service account token was not specified; service account token had invalid format",
+        match="invalid client configuration: encountered the following errors: service account token was not specified; service account token had invalid format",
     ):
         await onepassword.Client.authenticate(
             auth="",
@@ -79,7 +79,7 @@ async def test_client_construction_no_auth():
 async def test_client_construction_no_name():
     with pytest.raises(
         Exception,
-        match="invalid user input: encountered the following errors: integration name was not specified",
+        match="invalid client configuration: encountered the following errors: integration name was not specified",
     ):
         await onepassword.Client.authenticate(
             auth=TOKEN,
@@ -93,7 +93,7 @@ async def test_client_construction_no_name():
 async def test_client_construction_no_version():
     with pytest.raises(
         Exception,
-        match="invalid user input: encountered the following errors: integration version was not specified",
+        match="invalid client configuration: encountered the following errors: integration version was not specified",
     ):
         await onepassword.Client.authenticate(
             auth=TOKEN,
