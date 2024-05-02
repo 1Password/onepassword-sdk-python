@@ -23,49 +23,49 @@ class Items:
         return result
 
 
-async def get(self, vault_id, item_id):
-    response = await _invoke(
-        {
-            "clientId": self.client_id,
-            "invocation": {
-                "name": "Get",
-                "parameters": {
-                    "vault_id": vault_id,
-                    "item_id": item_id,
+    async def get(self, vault_id, item_id):
+        response = await _invoke(
+            {
+                "clientId": self.client_id,
+                "invocation": {
+                    "name": "Get",
+                    "parameters": {
+                        "vault_id": vault_id,
+                        "item_id": item_id,
+                    },
                 },
-            },
-        }
-    )
-    result = Item(**json.loads(response))
-    return result
+            }
+        )
+        result = Item(**json.loads(response))
+        return result
 
 
-async def update(self, item):
-    response = await _invoke(
-        {
-            "clientId": self.client_id,
-            "invocation": {
-                "name": "Update",
-                "parameters": {
-                    "item": item,
+    async def update(self, item):
+        response = await _invoke(
+            {
+                "clientId": self.client_id,
+                "invocation": {
+                    "name": "Update",
+                    "parameters": {
+                        "item": item,
+                    },
                 },
-            },
-        }
-    )
-    result = Item(**json.loads(response))
-    return result
+            }
+        )
+        result = Item(**json.loads(response))
+        return result
 
 
-async def delete(self, vault_id, item_id):
-    await _invoke(
-        {
-            "clientId": self.client_id,
-            "invocation": {
-                "name": "Delete",
-                "parameters": {
-                    "vault_id": vault_id,
-                    "item_id": item_id,
+    async def delete(self, vault_id, item_id):
+        await _invoke(
+            {
+                "clientId": self.client_id,
+                "invocation": {
+                    "name": "Delete",
+                    "parameters": {
+                        "vault_id": vault_id,
+                        "item_id": item_id,
+                    },
                 },
-            },
-        }
-    )
+            }
+        )
