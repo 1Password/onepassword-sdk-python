@@ -9,14 +9,14 @@ class Secrets:
 
     """resolve returns the secret the provided reference points to."""
 
-    async def resolve(self, reference):
+    async def resolve(self, secret_reference):
         response = await _invoke(
             {
                 "clientId": self.client_id,
                 "invocation": {
                     "name": "Resolve",
                     "parameters": {
-                        "secret_reference": reference,
+                        "secret_reference": secret_reference,
                     },
                 },
             }
