@@ -45,18 +45,18 @@ async def main():
     )
     created_item = await client.items.create(to_create)
 
-    print(dict(created_item))
+    print(created_item.dict())
 
     # Retrieve an item from your vault.
     item = await client.items.get("vault_id", created_item.id)
 
-    print(dict(item))
+    print(item.dict())
 
     # Update a field in your item
     item.fields[0].value = "new_value"
     updated_item = await client.items.update(item)
 
-    print(dict(updated_item))
+    print(updated_item.dict())
 
     # Delete a item from your vault.
     await client.items.delete("vault_id", updated_item.id)
