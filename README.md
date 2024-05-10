@@ -28,7 +28,7 @@ Before you get started, [create a service account](https://developer.1password.c
 
 1Password SDKs don't yet support using secret references with query parameters, so you can't retrieve file attachments or SSH keys, or get more information about field metadata.
 
-When managing items with 1Password SDKs, you must use unique identifiers (IDs) in place of vault, item, and field names.
+When managing items with 1Password SDKs, you must use [unique identifiers (IDs)](https://developer.1password.com/docs/sdks/concepts#unique-identifiers-ids) in place of vault, item, and field names.
 
 ## 🚀 Get started
 
