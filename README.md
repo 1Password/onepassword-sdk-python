@@ -54,24 +54,7 @@ To use the 1Password Python SDK in your project:
     pip install git+ssh://git@github.com/1Password/onepassword-sdk-python.git
     ```
 
-3. Import the SDK in your project:
-
-    ```python
-    from onepassword.client import Client
-    ```
-
-5. Initialize the SDK. Provision your service account token and use `integration_name` and `integration_version` to specify a name and version for your application.
-
-    ```python
-    async def main():
-    # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
-    token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
-    
-    # Connects to 1Password.
-    client = await Client.authenticate(auth=token, integration_name="My 1Password Integration", integration_version="v1.0.0")
-    ```
-
-### Example
+3. Use the Python SDK in your project:
 
 ```python
 import asyncio
@@ -94,7 +77,9 @@ if __name__ == '__main__':
 
 ```
 
-Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secret-reference-syntax/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.
+Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secrets-reference-syntax/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.
+
+Inside ```Client.authenticate(...)```, set ```integration_name``` to the name of your application and ```integration_version``` to the version of your application.
 
 ## 📖 Learn more
 
