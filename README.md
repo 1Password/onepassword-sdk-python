@@ -36,7 +36,7 @@ To use the 1Password Python SDK in your project:
 
 1. Provision your [service account](#authentication) token. We recommend provisioning your token from the environment. For example, to export your token to the `OP_SERVICE_ACCOUNT_TOKEN` environment variable:
     
-    **Mac**
+    **macOS or Linux**
     
     ```bash
     export OP_SERVICE_ACCOUNT_TOKEN=<your-service-account-token>
