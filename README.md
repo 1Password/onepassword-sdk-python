@@ -51,7 +51,7 @@ To use the 1Password Python SDK in your project:
 2. Install the 1Password Python SDK in your project:
 
    ```bash
-   pip install git+ssh://git@github.com/1Password/onepassword-sdk-python.git
+   pip install git+ssh://git@github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.5
    ```
 
 3. Use the Python SDK in your project:
