@@ -24,9 +24,9 @@ Before you get started, [create a service account](https://developer.1password.c
 
 ## ❗ Limitations
 
-1Password SDKs currently only support operations on text and concealed fields. If you update or delete an item that has information saved in other field types, that information will be permanently lost.
-
 1Password SDKs don't yet support using secret references with query parameters, so you can't retrieve file attachments or SSH keys, or get more information about field metadata.
+
+1Password SDKs currently only support operations on text and concealed fields. As a result, you can't edit items that include information saved in other types of fields.
 
 When managing items with 1Password SDKs, you must use [unique identifiers (IDs)](https://developer.1password.com/docs/sdks/concepts#unique-identifiers) in place of vault, item, and field names.
 
