@@ -22,7 +22,6 @@ jobs:
           python-version: '3.x'
           
       - name: Integration Test
-        if: github.repository_owner == '1Password' # don't run integration tests on forked PRs because those don't have access to pipeline secrets
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         run: |
