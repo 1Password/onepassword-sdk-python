@@ -35,3 +35,63 @@ jobs:
           pip install ruff
           ruff --output-format=github --exclude=src/onepassword/lib/ .
         continue-on-error: true
+
+  # Repo owner has commented /ok-to-test on a (fork-based) pull request
+  integration-fork:
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: write
+      checks: write
+    if: |
+      github.event_name == 'repository_dispatch' &&
+      github.event.client_payload.slash_command.args.named.sha != '' &&
+      contains(
+        github.event.client_payload.pull_request.head.sha,
+        github.event.client_payload.slash_command.args.named.sha
+      )
+    steps:
+
+    # Check out merge commit
+    - name: Fork based /ok-to-test checkout
+      uses: actions/checkout@v3
+      with:
+        ref: 'refs/pull/${{ github.event.client_payload.pull_request.number }}/merge'
+
+    # <insert integration tests needing secrets>
+
+    - run: |
+        echo "Integration tests... success! ;-)"
+
+    # Update check run called "integration-fork"
+    - uses: actions/github-script@v6
+      id: update-check-run
+      if: ${{ always() }}
+      env:
+        number: ${{ github.event.client_payload.pull_request.number }}
+        job: ${{ github.job }}
+        # Conveniently, job.status maps to https://developer.github.com/v3/checks/runs/#update-a-check-run
+        conclusion: ${{ job.status }} 
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { data: pull } = await github.rest.pulls.get({
+            ...context.repo,
+            pull_number: process.env.number
+          });
+          const ref = pull.head.sha;
+
+          const { data: checks } = await github.rest.checks.listForRef({
+            ...context.repo,
+            ref
+          });
+
+          const check = checks.check_runs.filter(c => c.name === process.env.job);
+
+          const { data: result } = await github.rest.checks.update({
+            ...context.repo,
+            check_run_id: check[0].id,
+            status: 'completed',
+            conclusion: process.env.conclusion
+          });
+
+          return result;
