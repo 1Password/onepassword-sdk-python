@@ -53,9 +53,9 @@ jobs:
   # It will checkout the forked (and now trusted) code and it will run the integration tests on it.
   # If the tests are successful this action will proceed to update the status of the forked PR integration check.
   integration-test-fork:
-    # must have these permissions to
+    # required permissions for updating the status of the pull request checks
     permissions:
-      pull-requests: write
+      pull-request: write
       checks: write
     strategy:
       matrix:

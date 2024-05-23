@@ -8,6 +8,7 @@ on:
 jobs:
   ok-to-test:
     runs-on: ubuntu-latest
+    # required permissions for adding reactions to the pull request comments
     permissions:
       pull-requests: write
     # Only run for PRs, not issue comments
@@ -20,4 +21,5 @@ jobs:
         reaction-token: ${{ secrets.GITHUB_TOKEN }}
         issue-type: pull-request
         commands: ok-to-test
+        # The repository permission level required by the user to dispatch commands. Only allows 1Password collaborators to run this.
         permission: write
