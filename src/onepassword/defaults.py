@@ -1,7 +1,7 @@
 import platform
 
 SDK_LANGUAGE = "Python"
-SDK_VERSION = "0010001"  # v0.1.0
+SDK_VERSION = "0010008"  # v0.1.0-beta.8
 DEFAULT_INTEGRATION_NAME = "Unknown"
 DEFAULT_INTEGRATION_VERSION = "Unknown"
 DEFAULT_REQUEST_LIBRARY = "net/http"
