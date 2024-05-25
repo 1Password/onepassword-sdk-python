@@ -5,13 +5,33 @@ on:
   push:
     paths-ignore:
       - '**.md'
-  pull_request:
-    paths-ignore:
-      - '**.md'
 
 jobs:
 
   validate:
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
+          
+      - name: Integration Test
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+        run: |
+          pip install pytest &&
+          pip install pytest-asyncio &&
+          pip install pydantic &&
+          python -m pytest src/onepassword/test_client.py
+
+  lint:
+    name: Lint
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -20,15 +40,6 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.x'
-
-      - name: Test with pytest
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
-        run: |
-          pip install pytest &&
-          pip install pytest-asyncio &&
-          pip install pydantic &&
-          python -m pytest src/onepassword/*.py
 
       - name: Lint with Ruff
         run: |
