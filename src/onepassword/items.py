@@ -43,7 +43,7 @@ class Items:
         return result
 
     async def update(self, item):
-        """Update an existing item. Warning: Only text and concealed fields are currently supported. Other fields will be permanently lost when you update an item."""
+        """Update an existing item. You can currently only edit text and concealed fields."""
         response = await _invoke(
             {
                 "clientId": self.client_id,
@@ -59,7 +59,7 @@ class Items:
         return result
 
     async def delete(self, vault_id, item_id):
-        """Delete an item. Warning:  Information saved in fields other than text and concealed fields will be permanently lost."""
+        """Delete an item. """
         await _invoke(
             {
                 "clientId": self.client_id,
