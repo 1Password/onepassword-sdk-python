@@ -51,7 +51,7 @@ jobs:
       - name: Lint with Ruff
         run: |
           pip install ruff
-          ruff --output-format=github --exclude=src/onepassword/lib/ .
+          ruff check --output-format=github --exclude=src/onepassword/lib/ .
         continue-on-error: true
 
   # This action is called by the /ok-to-test command, once the forked PR's code has been security reviewed.

@@ -11,6 +11,7 @@ async def main():
     # Connects to 1Password.
     client = await Client.authenticate(
         auth=token,
+        # Set the following to your own integration name and version.
         integration_name="My 1Password Integration",
         integration_version="v1.0.0",
     )
