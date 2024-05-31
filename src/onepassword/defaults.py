@@ -5,6 +5,7 @@ SDK_VERSION = "0010010"  # v0.1.0-beta.10
 DEFAULT_INTEGRATION_NAME = "Unknown"
 DEFAULT_INTEGRATION_VERSION = "Unknown"
 DEFAULT_REQUEST_LIBRARY = "reqwest"
+DEFAULT_REQUEST_LIBRARY_VERSION = "0.11.24"
 DEFAULT_OS_VERSION = "0.0.0"
 
 
@@ -17,7 +18,7 @@ def new_default_config(auth, integration_name, integration_version):
         "integrationName": integration_name,
         "integrationVersion": integration_version,
         "requestLibraryName": DEFAULT_REQUEST_LIBRARY,
-        "requestLibraryVersion": platform.python_version(),
+        "requestLibraryVersion": DEFAULT_REQUEST_LIBRARY_VERSION,
         "os": platform.system().lower(),
         "osVersion": DEFAULT_OS_VERSION,
         "architecture": platform.machine(),
