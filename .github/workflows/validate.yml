@@ -60,7 +60,7 @@ jobs:
   integration-test-fork:
     # required permissions for updating the status of the pull request checks
     permissions:
-      pull-request: write
+      pull-requests: write
       checks: write
     strategy:
       matrix:
