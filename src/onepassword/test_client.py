@@ -49,13 +49,13 @@ async def test_good_client_construction():
         integration_name=onepassword_defaults.DEFAULT_INTEGRATION_NAME,
         integration_version=onepassword_defaults.DEFAULT_INTEGRATION_VERSION,
     )
-    assert client.config["serviceAccountToken"] == TOKEN
+    assert client._config["serviceAccountToken"] == TOKEN
     assert (
-        client.config["integrationName"]
+        client._config["integrationName"]
         == onepassword_defaults.DEFAULT_INTEGRATION_NAME
     )
     assert (
-        client.config["integrationVersion"]
+        client._config["integrationVersion"]
         == onepassword_defaults.DEFAULT_INTEGRATION_VERSION
     )
 

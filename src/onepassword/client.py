@@ -6,19 +6,20 @@ from .items import Items
 
 
 class Client:
+    def __init__(self, client_id):
+        self.secrets = Secrets(client_id)
+        self.items = Items(client_id)
+
     @classmethod
     async def authenticate(cls, auth, integration_name, integration_version):
-        self = cls()
-
-        self.config = new_default_config(
+        config = new_default_config(
             auth=auth,
             integration_name=integration_name,
             integration_version=integration_version,
         )
-        client_id = int(await _init_client(self.config))
-
-        self.secrets = Secrets(client_id)
-        self.items = Items(client_id)
+        client_id = int(await _init_client(config))
+        self = cls(client_id)
+        self._config = config
         self._finalizer = weakref.finalize(self, _release_client, client_id)
 
         return self
