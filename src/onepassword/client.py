@@ -1,3 +1,4 @@
+# AUTO-GENERATED
 import weakref
 from .core import _init_client, _release_client
 from .defaults import new_default_config
