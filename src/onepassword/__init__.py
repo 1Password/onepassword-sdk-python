@@ -13,3 +13,5 @@ __all__ = [
     "DEFAULT_INTEGRATION_NAME",
     "DEFAULT_INTEGRATION_VERSION",
 ]
+
+__all__ += types.__all__
