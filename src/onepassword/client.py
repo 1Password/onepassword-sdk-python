@@ -11,7 +11,7 @@ class Client:
     items: Items
 
     @classmethod
-    async def authenticate(self, auth, integration_name, integration_version):
+    async def authenticate(cls, auth, integration_name, integration_version):
         config = new_default_config(
             auth=auth,
             integration_name=integration_name,
@@ -19,10 +19,10 @@ class Client:
         )
         client_id = int(await _init_client(config))
 
-        authenticated_client = self()
+        authenticated_client = cls()
 
         authenticated_client.secrets = Secrets(client_id)
         authenticated_client.items = Items(client_id)
-        authenticated_client._finalizer = weakref.finalize(self, _release_client, client_id)
+        authenticated_client._finalizer = weakref.finalize(cls, _release_client, client_id)
 
         return authenticated_client
