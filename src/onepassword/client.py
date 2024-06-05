@@ -17,7 +17,7 @@ class Client:
 			auth=auth,
 			integration_name=integration_name,
 			integration_version=integration_version,
-        )
+		)
 		client_id = int(await _init_client(config))
 
 		authenticated_client = cls()
@@ -27,4 +27,3 @@ class Client:
 		authenticated_client._finalizer = weakref.finalize(cls, _release_client, client_id)
 
 		return authenticated_client
-	
