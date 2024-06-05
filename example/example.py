@@ -1,7 +1,6 @@
 import asyncio
 import os
-from onepassword.client import Client
-from onepassword.types import Item, ItemField, ItemSection
+from onepassword import *
 
 
 async def main():
