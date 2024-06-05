@@ -14,4 +14,5 @@ __all__ = [
     "DEFAULT_INTEGRATION_VERSION",
 ]
 
-__all__ += types.__all__
+if hasattr(types, "__all__"):
+    __all__ += types.__all__
