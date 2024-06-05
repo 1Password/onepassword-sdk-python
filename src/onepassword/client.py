@@ -22,7 +22,6 @@ class Client:
 
         authenticated_client.secrets = Secrets(client_id)
         authenticated_client.items = Items(client_id)
-        authenticated_client._config = config
         authenticated_client._finalizer = weakref.finalize(self, _release_client, client_id)
 
         return authenticated_client
