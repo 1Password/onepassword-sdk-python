@@ -33,7 +33,7 @@ if ! test -e "$SDK_BUILD_FILE"; then
   exit 1
 fi
 
-# Swap the version numbers with the updated ones
+# Swap the version/build numbers with the updated ones
 make version_swap
 
 # Stash changes
@@ -45,7 +45,7 @@ git checkout origin/main
 git status
 git checkout -b "${SDK_NAME}-rc/${SDK_VERSION}"
 
-# Restore version changes
+# Restore version/build changes
 git stash pop
 
 # Push changes

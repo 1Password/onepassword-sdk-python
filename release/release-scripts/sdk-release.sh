@@ -20,7 +20,7 @@ enforce_latest_code() {
 }
 
 # Enforce that the working directory is clean and run off the latest version of origin/main.
-# enforce_latest_code
+enforce_latest_code
 
 git pull origin "${RC_BRANCH}"
 
