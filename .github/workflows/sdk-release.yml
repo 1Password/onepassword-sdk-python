@@ -1,0 +1,31 @@
+name: SDK Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      changelog:
+        description: Changelog release notes
+        required: true
+        default: Enter your release notes here...
+
+jobs:
+  sdk_release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+    
+      - name: SDK Release Python
+        env:
+          RELEASE_NOTES: ${{ github.event.inputs.changelog }}
+          GH_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
+        run: |
+          # Replace \n with newlines
+          RELEASE_NOTES=$(printf "%b" "${RELEASE_NOTES//\\n/\\n}")
+  
+          # Correct the format of RELEASE_NOTES so gh release create won't be
+          echo "RELEASE_NOTES<<EOF" >> $GITHUB_ENV
+          echo "$RELEASE_NOTES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+          cd release
+          make sdk-release-python

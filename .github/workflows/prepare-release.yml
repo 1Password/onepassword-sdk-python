@@ -1,0 +1,17 @@
+name: Prepare Python Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  prepare_release:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+        
+      - name: Prepare Python Publish
+        run: |
+              cd release
+              make prep-python
