@@ -53,6 +53,9 @@ while IFS= read -r line; do
     changelog_content+="$line"$'\n' # Append each line to the variable with a newline character
 done
 
+git tag -a -s  "v${version_number}" -m "${version_number}"
+git status
+
 # Get Current Branch Name
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
