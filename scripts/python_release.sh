@@ -4,12 +4,18 @@
 
 set -e
 
+# Read the version number and build number from the respective files
+version_number=$(cat src/onepassword/version.txt)
+build_number=$(cat src/onepassword/version-build.txt)
+
 # Function to validate the version number format x.y.z(-beta.w)
 validate_version_number() {
     local version="$1"
     if [[ "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then
+        echo "Updated version number is: $version"
         return 0
     else
+        echo "Invalid version number format: $version"
         return 1
     fi
 }
@@ -18,31 +24,24 @@ validate_version_number() {
 validate_build_number() {
     local build="$1"
     if [[ "$build" =~ ^[0-9]{1}[0-9]{2}[0-9]{2}[0-9]{2}$ ]]; then
+        echo "Updated build number is: $build"
         return 0
     else
+        echo "Invalid build number format: $build"
         return 1
     fi
 }
 
-# Read and validate the version number
-while true; do
-    read -p "Please provide the version number (x.y.z(-beta.w)): " version_number
-    if validate_version_number "$version_number"; then
-      break
-   else
-      echo "Invalid version number format. Please try again."
-    fi
-done
+# validate the version number from the version.txt
+if ! validate_version_number "$version_number"; then
+    exit 1
+fi
 
-# Read and validate the build number
-while true; do
-    read -p "Please provide the build number (Mmmppbb): " build_number
-    if  validate_build_number "$build_number"; then
-      break    
-   else
-      echo "Invalid build number format. Please try again."
-   fi
-done
+
+# validate the build number from the version-build.txt
+if ! validate_build_number "$build_number"; then
+    exit 1
+fi
 
 # Prompt the user to input multiline text
 echo "Enter your multiline text (press Ctrl+D when finished):"
@@ -54,31 +53,26 @@ while IFS= read -r line; do
 done
 
 git tag -a -s  "v${version_number}" -m "${version_number}"
-git status
 
 # Get Current Branch Name
 BRANCH="$(git rev-parse --abbrev-ref HEAD)"
 
-# If on branch with other changes, than add all of the changes
-if [[ "$BRANCH" != "main" ]]; then
-    git add .
-else
-    git add src/onepassword/version.txt
-    git add src/onepassword/version-build.txt
+# if on main, then stash changes and create RC branch
+if [[ "$BRANCH" == "main" ]]; then
     git stash
     git fetch origin
     git checkout -b rc/"${version_number}"
     git stash pop
 fi
 
+# Add changes and commit/push to branch
+git add .
 git commit -m "Release for ${version_number}"
 git push origin $BRANCH
-
 
 # Login with Github CLI
 gh auth login --with-token <<< ${GITHUB_TOKEN} 
 
+
 gh release create "${version_number}" --title "Release ${version_number}" --notes "${changelog_content}" --repo github.com/1Password/onepassword-sdk-python
  
-
-
