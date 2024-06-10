@@ -1,7 +1,7 @@
 import platform
 
 SDK_LANGUAGE = "Python"
-SDK_VERSION = "0010010"  # v0.1.0-beta.10
+SDK_VERSION =  open("../src/onepassword/version-build.txt").read()
 DEFAULT_INTEGRATION_NAME = "Unknown"
 DEFAULT_INTEGRATION_VERSION = "Unknown"
 DEFAULT_REQUEST_LIBRARY = "net/http"

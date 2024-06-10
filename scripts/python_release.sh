@@ -44,23 +44,6 @@ while true; do
    fi
 done
 
-# Replace setup.py with new version number
-awk -v version="$version_number" '
-  /version/ && !done {
-    print "    version=\"" version "\"";
-    done = 1;
-    next;
-  } 
-  { print }' setup.py > tmpfile && mv tmpfile setup.py
-
-# Replace defaults.py with new version number
-awk -v version="$version_number" -v build="$build_number" '
-  /SDK_VERSION/ && !done {
-    print "SDK_VERSION = ", "\"" build "\" # v" version;
-    done = 1;
-    next;
-  } 
-  { print }' src/onepassword/defaults.py > tmpfile && mv tmpfile src/onepassword/defaults.py
 # Prompt the user to input multiline text
 echo "Enter your multiline text (press Ctrl+D when finished):"
 changelog_content=""
@@ -70,13 +53,27 @@ while IFS= read -r line; do
     changelog_content+="$line"$'\n' # Append each line to the variable with a newline character
 done
 
-git tag -a -s  "v${version_number}" -m "${version_number}"
-git status
-git commit -am "Release for ${version_number}"
-git push 
+# Get Current Branch Name
+BRANCH="$(git rev-parse --abbrev-ref HEAD)"
+
+# If on branch with other changes, than add all of the changes
+if [[ "$BRANCH" != "main" ]]; then
+    git add .
+else
+    git add src/onepassword/version.txt
+    git add src/onepassword/version-build.txt
+    git stash
+    git fetch origin
+    git checkout -b rc/"${version_number}"
+    git stash pop
+fi
+
+git commit -m "Release for ${version_number}"
+git push origin $BRANCH
+
 
 # Login with Github CLI
-gh auth login --with-token <<< ${GIT_TOKEN} 
+gh auth login --with-token <<< ${GITHUB_TOKEN} 
 
 gh release create "${version_number}" --title "Release ${version_number}" --notes "${changelog_content}" --repo github.com/1Password/onepassword-sdk-python
  
