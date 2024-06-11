@@ -43,7 +43,7 @@ def get_shared_library_data_to_include():
 
 setup(
     name="onepassword",
-    version=open("src/onepassword/version.txt").read(),
+    version=open("src/onepassword/version").read(),
     author="1Password",
     description="The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python.",
     url="https://github.com/1Password/onepassword-sdk-python",
