@@ -7,6 +7,7 @@ set -e
 # Read the version number and build number from the respective files
 version_number=$(< src/onepassword/version.txt)
 build_number=$(< src/onepassword/version-build.txt)
+
 # Function to validate the version number format x.y.z(-beta.w)
 validate_version_number() {
     local version="$1"
