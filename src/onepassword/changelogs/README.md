@@ -1,0 +1,1 @@
+This is the folder where all the changelogs for the release will be stored.

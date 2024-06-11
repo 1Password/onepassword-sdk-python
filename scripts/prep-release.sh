@@ -11,7 +11,6 @@ build_file="src/onepassword/version-build"
 
 # Function to validate the version number format x.y.z(-beta.w)
 validate_and_update_version_number() {
-
     while true; do
         # Prompt the user to input the version number
         read -p "Enter the version number (format: x.y.z(-beta.w)): " version
@@ -32,8 +31,6 @@ validate_and_update_version_number() {
 # Function to validate the build number format.
 # SEMVER Format: Mmmppbb - 7 Digits 
 update_and_validate_build_number() {
-    local build_file="internal/version-build"
-
     while true; do
         # Prompt the user to input the build number
         read -p "Enter the build number (format: Mmmppbb): " build
