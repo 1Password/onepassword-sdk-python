@@ -82,13 +82,10 @@ git add .
 git commit -m "Release for ${version_number}"
 git push origin ${branch}
 
-# Ensure GITHUB_CLI_TOKEN env var is set
-if [ -z "${GITHUB_CLI_TOKEN}" ]; then
-  echo "GITHUB_CLI_TOKEN environment variable is not set."
+# Ensure GITHUB_TOKEN env var is set
+if [ -z "${GITHUB_TOKEN}" ]; then
+  echo "GITHUB_TOKEN environment variable is not set."
   exit 1
 fi
-
-# Login with Github CLI
-gh auth login --with-token <<< ${GITHUB_CLI_TOKEN} 
 
 gh release create "${version_number}" --title "Release ${version_number}" --notes "${changelog_content}" --repo github.com/1Password/onepassword-sdk-python
