@@ -16,7 +16,7 @@ async def main():
     )
 
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
-    value = await client.secrets.resolve("op://bhld6zk6hkuntyqlsjy3bdawey/Login/username")
+    value = await client.secrets.resolve("op://vault/item/field")
     print(value)
 
     # Create an Item and add it to your vault.
@@ -24,7 +24,7 @@ async def main():
         id="",
         title="MyName",
         category="Login",
-        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
+        vault_id="vault_id",
         fields=[
             ItemField(
                 id="username",
@@ -48,7 +48,7 @@ async def main():
     print(dict(created_item))
 
     # Retrieve an item from your vault.
-    item = await client.items.get("bhld6zk6hkuntyqlsjy3bdawey", created_item.id)
+    item = await client.items.get("vault_id", created_item.id)
 
     print(dict(item))
 
@@ -59,7 +59,7 @@ async def main():
     print(dict(updated_item))
 
     # Delete a item from your vault.
-    await client.items.delete("bhld6zk6hkuntyqlsjy3bdawey", updated_item.id)
+    await client.items.delete("vault_id", updated_item.id)
 
 
 if __name__ == "__main__":
