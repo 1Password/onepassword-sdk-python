@@ -70,7 +70,7 @@ while IFS= read -r line; do
     changelog_content+="${line}"$'\n' # Append each line to the variable with a newline character
 done
 
-changelog_file="internal/changelogs/"${version}"-"${build}""
+changelog_file="src/onepassword/changelogs/"${version}"-"${build}""
 
 # Store the changelog input into a file
 {
