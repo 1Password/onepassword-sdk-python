@@ -39,4 +39,4 @@ if [ -z "${GITHUB_TOKEN}" ]; then
   exit 1
 fi
 
-gh release create "${version}" --title "Release ${version}" --notes "${changelog}" --repo github.com/1Password/onepassword-sdk-python
+gh release create "v${version}" --title "Release ${version}" --notes "${changelog}" --repo github.com/1Password/onepassword-sdk-python
