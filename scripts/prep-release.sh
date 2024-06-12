@@ -2,12 +2,19 @@
 
 # Helper script to prepare a release for the Python SDK.
 
-# Read the version number and build number from the respective files
-current_version_number=$(< src/onepassword/version)
-current_build_number=$(< src/onepassword/version-build)
+# Read the build number from version-build to ensure that the build number has been updated
+current_build_number=$(< version-build)
 
-version_file="src/onepassword/version"
-build_file="src/onepassword/version-build"
+version_file="version"
+build_file="version-build"
+
+enforce_latest_code() {
+    if [[ -n "$(git status --porcelain=v1)" ]]; then
+        echo "ERROR: working directory is not clean."
+        echo "Please stash your changes and try again."
+        exit 1
+    fi
+}
 
 # Function to validate the version number format x.y.z(-beta.w)
 validate_and_update_version_number() {
@@ -48,11 +55,14 @@ update_and_validate_build_number() {
     done
 }
 
-# Update and Validate the version number
-validate_and_update_version_number
+# Ensure working directory is clean
+enforce_latest_code
 
-# Update and Validate the build number
-update_and_validate_build_number 
+# Update and validate the version number
+validate_and_update_version
+
+# Update and validate the build number
+update_and_validate_build 
 
 if [[ "$current_build_number" == "$build" ]]; then
     echo "Build version hasn't changed. Stopping." >&2
@@ -70,15 +80,10 @@ done
 changelog_file="src/onepassword/changelogs/"${version}"-"${build}""
 
 # Store the changelog input into a file
-{
-   echo "Release Notes for: v"${version}""
-   echo ""
-   echo "${changelog_content}"
-   echo "[${build}]"
-   echo ""
-} >> "${changelog_file}"
+echo "${changelog_content}" >> "${changelog_file}"
 
 echo "Release has been prepared..
 Make sure to double check version/build numbers in their appropriate files and
 changelog is correctly filled out.
-Once confirmed, run make release to release the SDK!"
+Once confirmed, run `make release` to release the SDK!"
+
