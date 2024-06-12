@@ -16,5 +16,6 @@ __all__ = [
 ]
 
 for name, obj in inspect.getmembers(sys.modules["onepassword.types"]):
-    if inspect.isclass(obj) or type(eval(name)) == typing._LiteralGenericAlias:
+    # Add all classes and instances of typing.Literal defined in types.py.
+    if (inspect.isclass(obj) and inspect.getmodule(obj) == sys.modules["onepassword.types"]) or type(eval(name)) == typing._LiteralGenericAlias:
         __all__.append(name)

@@ -15,8 +15,8 @@ async def main():
     )
 
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
-    # value = await client.secrets.resolve("op://vault/item/field")
-    # print(value)
+    value = await client.secrets.resolve("op://vault/item/field")
+    print(value)
 
     # Create an Item and add it to your vault.
     to_create = Item(
