@@ -5,7 +5,9 @@ from .types import * # noqa F403
 from .secrets import Secrets
 from .items import Items
 
-import sys, inspect, typing
+import sys 
+import inspect
+import typing
 
 __all__ = [
     "Client",
