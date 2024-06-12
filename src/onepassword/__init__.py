@@ -5,6 +5,7 @@ from .types import * # noqa F403
 from .secrets import Secrets
 from .items import Items
 
+import sys, inspect, typing
 
 __all__ = [
     "Client",
@@ -14,5 +15,6 @@ __all__ = [
     "DEFAULT_INTEGRATION_VERSION",
 ]
 
-if hasattr(types, "__all__"):
-    __all__ += types.__all__
+for name, obj in inspect.getmembers(sys.modules["onepassword.types"]):
+    if inspect.isclass(obj) or type(eval(name)) == typing._LiteralGenericAlias:
+        __all__.append(name)
