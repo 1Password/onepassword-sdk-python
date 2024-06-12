@@ -17,7 +17,7 @@ enforce_latest_code() {
 }
 
 # Function to validate the version number format x.y.z(-beta.w)
-validate_and_update_version() {
+update_and_validate_version() {
     while true; do
         # Prompt the user to input the version number
         read -p "Enter the version number (format: x.y.z(-beta.w)): " version
@@ -59,7 +59,7 @@ update_and_validate_build() {
 enforce_latest_code
 
 # Update and validate the version number
-validate_and_update_version
+update_and_validate_version
 
 # Update and validate the build number
 update_and_validate_build 
