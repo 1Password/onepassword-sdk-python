@@ -4,8 +4,6 @@
 
 # Read the build number from version-build to ensure that the build number has been updated
 
-version_file="version"
-build_file="version-build"
 output_setup_file="setup.py"
 output_defaults_file="src/onepassword/defaults.py"
 setup_template_file="templates/setup.tpl.py"
