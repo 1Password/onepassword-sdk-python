@@ -3,10 +3,16 @@
 # Helper script to prepare a release for the Python SDK.
 
 # Read the build number from version-build to ensure that the build number has been updated
-current_build_number=$(< version-build)
 
 version_file="version"
 build_file="version-build"
+output_setup_file="setup.py"
+output_defaults_file="src/onepassword/defaults.py"
+setup_template_file="templates/setup.tpl.py"
+defaults_template_file="templates/defaults.tpl.py"
+
+# Extracts the current build number for comparison 
+current_build_number=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "$output_defaults_file")
 
 enforce_latest_code() {
     if [[ -n "$(git status --porcelain=v1)" ]]; then
@@ -25,7 +31,6 @@ update_and_validate_version() {
         # Validate the version number format
         if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then        
             # Write the valid version number to the file
-            echo "${version}" > "${version_file}"
             echo "New version number is: ${version}"
             return 0
         else
@@ -45,7 +50,6 @@ update_and_validate_build() {
         # Validate the build number format
         if [[ "${build}" =~ ^[0-9]{7}$ ]]; then
             # Write the valid build number to the file
-            echo "${build}" > "${build_file}"
             echo "New build number is: ${build}"
             return 0
         else
@@ -68,6 +72,12 @@ if [[ "$current_build_number" == "$build" ]]; then
     echo "Build version hasn't changed. Stopping." >&2
     exit 1
 fi
+
+# Update version number in setup.py
+sed -e "s/{{ VERSION }}/$version/" "$setup_template_file" > "$output_setup_file"
+
+# Update version number in defaults.py
+sed -e "s/{{ BUILD }}/$build/" -e "s/{{ VERSION }}/$version/" "$defaults_template_file" > "$output_defaults_file"
 
 echo "Enter your changelog for the release (press Ctrl+D when finished):"
 
