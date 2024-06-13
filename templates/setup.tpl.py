@@ -1,4 +1,4 @@
-# AUTO GENERATED DO NOT TOUCH THIS FILE
+# AUTO-GENERATED.. IF EDITING IS REQUIRED, EDIT THE ASSOCIATED TEMPLATE FILE
 
 from setuptools import setup, find_packages
 from sysconfig import get_platform
