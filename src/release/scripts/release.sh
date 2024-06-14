@@ -24,13 +24,8 @@ fi
 
 git tag -a -s  "v${version}" -m "${version}"
 
-branch="$(git rev-parse --abbrev-ref HEAD)"
-
-# Add changes and commit/push to branch
-git add .
-git commit -S -m "Release v${version}"
-
-git push --set-upstream origin "${branch}"
+# Push the tag to the branch
+git push origin tag "v${version}"
 
 gh release create "v${version}" --title "Release ${version}" --notes "${changelog}" --repo github.com/1Password/onepassword-sdk-python
 

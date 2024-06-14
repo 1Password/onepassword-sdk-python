@@ -86,8 +86,13 @@ if [[ "${branch}" = "main" ]]; then
     git stash
     git fetch origin
     git checkout -b rc/"${version}"
-    git stash pop
+    git stash apply
 fi
+
+# Add changes and commit/push to branch
+git add .
+git commit -S -m "Release v${version}"
+git push --set-upstream origin rc/"${version}"
 
 echo "Release has been prepared..
 Make sure to double check version/build numbers in their appropriate files and
