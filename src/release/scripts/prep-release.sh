@@ -83,16 +83,18 @@ branch="$(git rev-parse --abbrev-ref HEAD)"
 
 # if on main, then stash changes and create RC branch
 if [[ "${branch}" = "main" ]]; then
+    branch=rc/"${version}"
     git stash
     git fetch origin
-    git checkout -b rc/"${version}"
+    git checkout -b "${branch}"
     git stash apply
 fi
 
 # Add changes and commit/push to branch
 git add .
 git commit -S -m "Release v${version}"
-git push --set-upstream origin rc/"${version}"
+git push --set-upstream origin "${branch}"
+
 
 echo "Release has been prepared..
 Make sure to double check version/build numbers in their appropriate files and
