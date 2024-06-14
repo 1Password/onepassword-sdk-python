@@ -64,8 +64,8 @@ update_and_validate_version
 # Update and validate the build number
 update_and_validate_build 
 
-if [[ "$current_build_number" -ge "$build" ]]; then
-    echo "Build version hasn't changed or is lower than current build version. Stopping." >&2
+if [[ "$current_build_number" == "$build" || "$current_build_number" > "$build" ]]; then
+    echo "Build version hasn't changed or is less than current build version. Stopping." >&2
     exit 1
 fi
 
