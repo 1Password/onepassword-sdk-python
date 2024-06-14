@@ -4,13 +4,11 @@
 
 # Read the build number from version-build to ensure that the build number has been updated
 
-output_setup_file="setup.py"
-output_defaults_file="src/onepassword/defaults.py"
-setup_template_file="templates/setup.tpl.py"
-defaults_template_file="templates/defaults.tpl.py"
+output_version_file="src/release/version.py"
+version_template_file="src/release/templates/version.tpl.py"
 
 # Extracts the current build number for comparison 
-current_build_number=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "$output_defaults_file")
+current_build_number=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "$output_version_file")
 
 enforce_latest_code() {
     if [[ -n "$(git status --porcelain=v1)" ]]; then
@@ -66,29 +64,30 @@ update_and_validate_version
 # Update and validate the build number
 update_and_validate_build 
 
-if [[ "$current_build_number" == "$build" ]]; then
-    echo "Build version hasn't changed. Stopping." >&2
+if [[ "$current_build_number" -ge "$build" ]]; then
+    echo "Build version hasn't changed or is lower than current build version. Stopping." >&2
     exit 1
 fi
 
-# Update version number in setup.py
-sed -e "s/{{ VERSION }}/$version/" "$setup_template_file" > "$output_setup_file"
-
 # Update version number in defaults.py
-sed -e "s/{{ BUILD }}/$build/" -e "s/{{ VERSION }}/$version/" "$defaults_template_file" > "$output_defaults_file"
+sed -e "s/{{ build }}/$build/" -e "s/{{ version }}/$version/" "$version_template_file" > "$output_version_file"
 
-echo "Enter your changelog for the release (press Ctrl+D when finished):"
+changelog_file="src/release/changelogs/"${version}"-"${build}""
 
-# Read changelog input from the user until Ctrl+D is pressed
-changelog_content=""
-while IFS= read -r line; do
-    changelog_content+="${line}"$'\n' # Append each line to the variable with a newline character
-done
+printf "Press ENTER to edit the CHANGELOG in your default editor...\n"
+read -r _ignore
+${EDITOR:-nano} "$changelog_file"
 
-changelog_file="src/onepassword/changelogs/"${version}"-"${build}""
+# Get Current Branch Name
+branch="$(git rev-parse --abbrev-ref HEAD)"
 
-# Store the changelog input into a file
-echo "${changelog_content}" >> "${changelog_file}"
+# if on main, then stash changes and create RC branch
+if [[ "${branch}" = "main" ]]; then
+    git stash
+    git fetch origin
+    git checkout -b rc/"${version}"
+    git stash pop
+fi
 
 echo "Release has been prepared..
 Make sure to double check version/build numbers in their appropriate files and

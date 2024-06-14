@@ -1,6 +1,6 @@
 release:
-	scripts/release.sh
+	src/release/scripts/release.sh
 
 prep-release:
-	scripts/prep-release.sh
+	src/release/scripts/prep-release.sh
 	

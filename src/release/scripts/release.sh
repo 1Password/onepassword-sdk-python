@@ -5,9 +5,10 @@
 set -e
 
 # Read the contents of the files into variables
-version=$(<version)
-build=$(<version-build)
-changelog=$(<src/onepassword/changelogs/"${version}"-"${build}")
+version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "src/release/version.py")
+build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "src/release/version.py")
+changelog=$(<src/release/changelogs/"${version}"-"${build}")
+
 
 # Check if Github CLI is installed
 if ! command -v gh &> /dev/null; then
@@ -23,21 +24,13 @@ fi
 
 git tag -a -s  "v${version}" -m "${version}"
 
-# Get Current Branch Name
 branch="$(git rev-parse --abbrev-ref HEAD)"
-
-# if on main, then stash changes and create RC branch
-if [[ "${branch}" = "main" ]]; then
-    git stash
-    git fetch origin
-    git checkout -b rc/"${version}"
-    git stash pop
-fi
 
 # Add changes and commit/push to branch
 git add .
-git commit -m "Release v${version}"
-git push origin ${branch}
+git commit -S -m "Release v${version}"
+
+git push --set-upstream origin "${branch}"
 
 gh release create "v${version}" --title "Release ${version}" --notes "${changelog}" --repo github.com/1Password/onepassword-sdk-python
 
