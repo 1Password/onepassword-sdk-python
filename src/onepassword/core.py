@@ -9,7 +9,9 @@ if machine_arch in ["x86_64", "amd64"]:
 elif machine_arch in ["aarch64", "arm64"]:
     import onepassword.lib.aarch64.op_uniffi_core as core
 else:
-    raise ImportError(f"Your machine's architecture is not currently supported: {machine_arch}")
+    raise ImportError(
+        f"Your machine's architecture is not currently supported: {machine_arch}"
+    )
 
 
 # InitClient creates a client instance in the current core module and returns its unique ID.

@@ -30,7 +30,7 @@ def get_shared_library_data_to_include():
     platform_to_lib = {
         "Darwin": "libop_uniffi_core.dylib",
         "Linux": "libop_uniffi_core.so",
-        "Windows": "op_uniffi_core.dll"
+        "Windows": "op_uniffi_core.dll",
     }
     c_shared_library_file_name = platform_to_lib.get(platform.system(), "")
     c_shared_library_file_name = os.path.join(include_path, c_shared_library_file_name)
