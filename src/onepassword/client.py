@@ -1,4 +1,3 @@
-# AUTO-GENERATED
 import weakref
 from .core import _init_client, _release_client
 from .defaults import new_default_config
@@ -7,23 +6,19 @@ from .items import Items
 
 
 class Client:
-	secrets: Secrets
-	items: Items
-	
+    @classmethod
+    async def authenticate(cls, auth, integration_name, integration_version):
+        self = cls()
 
-	@classmethod
-	async def authenticate(cls, auth, integration_name, integration_version):
-		config = new_default_config(
-			auth=auth,
-			integration_name=integration_name,
-			integration_version=integration_version,
-		)
-		client_id = int(await _init_client(config))
+        self.config = new_default_config(
+            auth=auth,
+            integration_name=integration_name,
+            integration_version=integration_version,
+        )
+        client_id = int(await _init_client(self.config))
 
-		authenticated_client = cls()
+        self.secrets = Secrets(client_id)
+        self.items = Items(client_id)
+        self._finalizer = weakref.finalize(self, _release_client, client_id)
 
-		authenticated_client.secrets = Secrets(client_id)
-		authenticated_client.items = Items(client_id)
-		authenticated_client._finalizer = weakref.finalize(cls, _release_client, client_id)
-
-		return authenticated_client
+        return self
