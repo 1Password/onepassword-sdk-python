@@ -2,7 +2,6 @@ import asyncio
 import os
 from onepassword import *
 
-
 async def main():
     # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
@@ -24,7 +23,7 @@ async def main():
         id="",
         title="MyName",
         category="Login",
-        vault_id="vault_id",
+        vault_id="q73bqltug6xoegr3wkk2zkenoq",
         fields=[
             ItemField(
                 id="username",
@@ -48,7 +47,7 @@ async def main():
     print(dict(created_item))
 
     # Retrieve an item from your vault.
-    item = await client.items.get("vault_id", created_item.id)
+    item = await client.items.get(created_item.vault_id, created_item.id)
 
     print(dict(item))
 
@@ -59,7 +58,7 @@ async def main():
     print(dict(updated_item))
 
     # Delete a item from your vault.
-    await client.items.delete("vault_id", updated_item.id)
+    await client.items.delete(created_item.vault_id, updated_item.id)
 
 
 if __name__ == "__main__":
