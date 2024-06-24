@@ -20,7 +20,7 @@ cleanup() {
 }
 
 # Set the trap to call the cleanup function on exit
-trap cleanup ERR SIGINT
+trap cleanup SIGINT
 
 enforce_latest_code() {
     if [[ -n "$(git status --porcelain=v1)" ]]; then
@@ -38,9 +38,13 @@ update_and_validate_version() {
 
         # Validate the version number format
         if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then        
-            # Write the valid version number to the file
-            echo "New version number is: ${version}"
-            return 0
+          if [[ "${current_version}" != "${version}" ]]; then
+                # TODO: Check the less than case as well.
+                echo "New version number is: ${version}"
+                return 0
+            else
+                echo "Version hasn't changed."
+            fi        
         else
             echo "Invalid version number format: ${version}"
             echo "Please enter a version number in the 'x.y.z(-beta.w)' format."
@@ -62,8 +66,7 @@ update_and_validate_build() {
             echo "New build number is: ${build}"
             return 0
         else
-            echo "Build version hasn't changed or is less than current build version. Stopping." >&2
-            cleanup
+            echo "New build version should be higher than current build version."
         fi
         else
             echo "Invalid build number format: ${build}"
