@@ -62,12 +62,12 @@ update_and_validate_build() {
         # Validate the build number format
         if [[ "${build}" =~ ^[0-9]{7}$ ]]; then
             if (( 10#$current_build < 10#$build )); then
-            # Write the valid build number to the file
-            echo "New build number is: ${build}"
-            return 0
-        else
-            echo "New build version should be higher than current build version."
-        fi
+                # Write the valid build number to the file
+                echo "New build number is: ${build}"
+                return 0
+            else
+                echo "New build version should be higher than current build version."
+            fi
         else
             echo "Invalid build number format: ${build}"
             echo "Please enter a build number in the 'Mmmppbb' format."
