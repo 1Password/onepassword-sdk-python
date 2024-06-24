@@ -47,5 +47,5 @@ jobs:
       - name: Lint with Ruff
         run: |
           pip install ruff
-          ruff check --output-format=github --exclude=src/onepassword/lib/ .
+          ruff check --output-format=github --exclude=src/onepassword/lib/,example/ .
         continue-on-error: true
