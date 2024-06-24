@@ -16,6 +16,15 @@
 
 The 1Password Python SDK offers programmatic access to your secrets in 1Password with Python. During the beta, you can create, retrieve, update, and delete items and resolve secret references.
 
+## Requirements
+
+The 1Password Python SDK requires:
+
+- `libssl` 3
+- `glibc` 2.32 or later
+
+If you're running a Linux distribution that still uses `libssl` version 1.1.1, such as Debian 11 or Ubuntu 20.04, you'll need to update to a later version of Linux or install the required dependencies.
+
 ## 🔑 Authentication
 
 1Password SDKs support authentication with [1Password Service Accounts](https://developer.1password.com/docs/service-accounts/get-started/). 
