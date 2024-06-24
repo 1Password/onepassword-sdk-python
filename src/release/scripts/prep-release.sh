@@ -38,7 +38,7 @@ update_and_validate_version() {
 
         # Validate the version number format
         if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then        
-          if [[ "${current_version}" != "${version}" ]]; then
+            if [[ "${current_version}" != "${version}" ]]; then
                 # TODO: Check the less than case as well.
                 echo "New version number is: ${version}"
                 return 0
