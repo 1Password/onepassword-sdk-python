@@ -7,7 +7,7 @@ set -e
 # Read the contents of the files into variables
 version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "src/release/version.py")
 build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "src/release/version.py")
-release-notes=$(< src/release/RELEASE-NOTES)
+release_notes=$(< src/release/RELEASE-NOTES)
 
 
 # Check if Github CLI is installed
@@ -27,5 +27,5 @@ git tag -a -s  "v${version}" -m "${version}"
 # Push the tag to the branch
 git push origin tag "v${version}"
 
-gh release create "v${version}" --title "Release ${version}" --notes "${release-notes}" --repo github.com/1Password/onepassword-sdk-python
+gh release create "v${version}" --title "Release ${version}" --notes "${release_notes}" --repo github.com/1Password/onepassword-sdk-python
 
