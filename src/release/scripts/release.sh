@@ -7,7 +7,7 @@ set -e
 # Read the contents of the files into variables
 version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "src/release/version.py")
 build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "src/release/version.py")
-changelog=$(<src/release/changelogs/"${version}"-"${build}")
+changelog=$(< src/release/CHANGELOG)
 
 
 # Check if Github CLI is installed
