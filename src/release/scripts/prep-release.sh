@@ -12,8 +12,6 @@ current_version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "$output_version_fi
 # Function to execute upon exit
 cleanup() {
     echo "Performing cleanup tasks..."
-    # Remove changelog file if it exists
-    rm -f "${changelog_file}"
     # Revert changes to file if any
     sed -e "s/{{ build }}/$current_build/" -e "s/{{ version }}/$current_version/" "$version_template_file" > "$output_version_file"
     exit 1   
@@ -87,11 +85,9 @@ update_and_validate_build
 # Update version & build number in version.py
 sed -e "s/{{ build }}/$build/" -e "s/{{ version }}/$version/" "$version_template_file" > "$output_version_file"
 
-changelog_file="src/release/CHANGELOG"
-
-printf "Press ENTER to edit the CHANGELOG in your default editor...\n"
+printf "Press ENTER to edit the RELEASE-NOTES in your default editor...\n"
 read -r _ignore
-${EDITOR:-nano} "$changelog_file"
+${EDITOR:-nano} "src/release/RELEASE-NOTES"
 
 # Get Current Branch Name
 branch="$(git rev-parse --abbrev-ref HEAD)"
