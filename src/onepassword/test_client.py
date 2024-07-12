@@ -40,6 +40,7 @@ async def test_invalid_resolve():
 
 ## test client constructor
 
+
 # invalid
 @pytest.mark.asyncio
 async def test_client_construction_no_auth():

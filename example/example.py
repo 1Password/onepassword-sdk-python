@@ -2,6 +2,7 @@ import asyncio
 import os
 from onepassword import *
 
+
 async def main():
     # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
