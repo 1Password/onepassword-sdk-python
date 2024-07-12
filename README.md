@@ -70,7 +70,7 @@ async def main():
 
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     value = await client.secrets.resolve("op://vault/item/field")
-    # use value here
+    # use value
 
 if __name__ == '__main__':
     asyncio.run(main())
