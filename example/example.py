@@ -19,8 +19,7 @@ async def main():
     print(value)
 
     # Create an Item and add it to your vault.
-    to_create = Item(
-        id="",
+    to_create = ItemCreateParams(
         title="MyName",
         category="Login",
         vault_id="q73bqltug6xoegr3wkk2zkenoq",
