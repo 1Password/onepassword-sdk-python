@@ -59,5 +59,6 @@ async def main():
     # Delete a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
 
+
 if __name__ == "__main__":
     asyncio.run(main())
