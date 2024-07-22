@@ -29,7 +29,7 @@ If you're running a Linux distribution that still uses `libssl` version 1.1.1, s
 
 ## ❗ Limitations
 
-1Password SDKs don't yet support using secret references to retrieve file attachments or SSH keys, and don't support using query parameters with secret references to get more information about field and file attributes.
+1Password SDKs don't yet support using secret references to retrieve file attachments or SSH keys, or using query parameters with secret references to get more information about field and file attributes.
 
 1Password SDKs currently only support operations on text and concealed fields. As a result, you can't edit items that include information saved in other types of fields.
 
