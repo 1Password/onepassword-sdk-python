@@ -1,0 +1,36 @@
+name: "🐛 Bug Report"
+description: Something isn't working as expected.
+labels: ["bug"]
+body:
+  - type: textarea
+    id: scenario
+    attributes:
+      label: Scenario & Reproduction Steps
+      description: When do you encounter this problem?
+      placeholder: "Please share as much context as you can about when you encounter this problem. If possible, sharing the steps to reproduce is immensely helpful."
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual Behavior
+      description: What is happening?
+      placeholder: "Please tell us about the problem you're encountering. e.g. an error you're encountering or an unexpected return value"
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected Behavior
+      description: What would you have expected happened instead?
+      placeholder: "Please share what you had expected to happen. How should this have behaved?"
+  - type: input
+    id: version
+    attributes:
+      label: SDK version
+      description: "You can find the version you're using by running `npm list @1password/sdk`."
+  - type: textarea
+    id: info
+    attributes:
+      label: Additional information
+      description: Any additional information that's relevant to add?

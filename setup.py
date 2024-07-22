@@ -2,6 +2,7 @@ from setuptools import setup, find_packages
 from sysconfig import get_platform
 import platform
 import os
+from src.release.version import SDK_VERSION
 
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
@@ -20,21 +21,19 @@ except ImportError:
 def get_shared_library_data_to_include():
     # Return the correct uniffi C shared library extension for the given platform
     include_path = "lib"
-    if platform.machine().lower() == "x86_64" or platform.machine().lower() == "amd64":
+    machine_type = platform.machine().lower()
+    if machine_type in ["x86_64", "amd64"]:
         include_path = os.path.join(include_path, "x86_64")
-    elif (
-        platform.machine().lower() == "aarch64" or platform.machine().lower() == "arm64"
-    ):
+    elif machine_type in ["aarch64", "arm64"]:
         include_path = os.path.join(include_path, "aarch64")
 
-    c_shared_library_file_name = ""
-    if platform.system() == "Darwin":
-        c_shared_library_file_name = "libop_uniffi_core.dylib"
-    elif platform.system() == "Linux":
-        c_shared_library_file_name = "libop_uniffi_core.so"
-    elif platform.system() == "Windows":
-        c_shared_library_file_name = "op_uniffi_core.dll"
-
+    # Map current platform to the correct shared library file name
+    platform_to_lib = {
+        "Darwin": "libop_uniffi_core.dylib",
+        "Linux": "libop_uniffi_core.so",
+        "Windows": "op_uniffi_core.dll"
+    }
+    c_shared_library_file_name = platform_to_lib.get(platform.system(), "")
     c_shared_library_file_name = os.path.join(include_path, c_shared_library_file_name)
 
     uniffi_bindings_file_name = "op_uniffi_core.py"
@@ -45,7 +44,7 @@ def get_shared_library_data_to_include():
 
 setup(
     name="onepassword",
-    version="0.1.0-beta.1",
+    version=SDK_VERSION,
     author="1Password",
     description="The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python.",
     url="https://github.com/1Password/onepassword-sdk-python",
