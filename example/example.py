@@ -20,8 +20,7 @@ async def main():
     print(value)
 
     # Create an Item and add it to your vault.
-    to_create = Item(
-        id="",
+    to_create = ItemCreateParams(
         title="MyName",
         category="Login",
         vault_id="q73bqltug6xoegr3wkk2zkenoq",
@@ -54,7 +53,7 @@ async def main():
 
     # Update a field in your item
     item.fields[0].value = "new_value"
-    updated_item = await client.items.update(item)
+    updated_item = await client.items.put(item)
 
     print(dict(updated_item))
 
