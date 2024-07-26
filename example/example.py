@@ -39,13 +39,29 @@ async def main():
                 section_id=None,
                 value="jeff",
             ),
+            ItemField(
+                id="onetimepassword",
+                title="one-time-password",
+                field_type="Totp",
+                section_id="totpsection",
+                value="rfbhsnjchsecbhsedchb",
+            ),
         ],
-        sections=[ItemSection(id="", title="")],
+        sections=[ItemSection(id="", title=""), ItemSection(id="totpsection", title="")],
     )
     created_item = await client.items.create(to_create)
 
     print(dict(created_item))
 
+    # Fetch a totp code from the item
+    for f in created_item.fields:
+        if f.field_type == "Totp":
+            if f.details.content.error_message is not None:
+                print(f.details.content.error_message)
+            else:
+                print(f.details.content.code)
+
+    
     # Retrieve an item from your vault.
     item = await client.items.get(created_item.vault_id, created_item.id)
 
