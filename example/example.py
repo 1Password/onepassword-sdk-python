@@ -31,6 +31,7 @@ async def main():
                 field_type="Text",
                 section_id=None,
                 value="mynameisjeff",
+                details=None,
             ),
             ItemField(
                 id="password",
@@ -38,6 +39,7 @@ async def main():
                 field_type="Concealed",
                 section_id=None,
                 value="jeff",
+                details=None,
             ),
             ItemField(
                 id="onetimepassword",
@@ -45,6 +47,7 @@ async def main():
                 field_type="Totp",
                 section_id="totpsection",
                 value="rfbhsnjchsecbhsedchb",
+                details=None,
             ),
         ],
         sections=[ItemSection(id="", title=""), ItemSection(id="totpsection", title="")],
