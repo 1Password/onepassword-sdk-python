@@ -20,8 +20,9 @@ The 1Password Python SDK offers programmatic access to your secrets in 1Password
 
 ## Requirements
 
-The 1Password Python SDK requires:
+The 1Password Python SDK is compatible with:
 
+- `python` 3.8 or later
 - `libssl` 3
 - `glibc` 2.32 or later
 
