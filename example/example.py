@@ -46,7 +46,7 @@ async def main():
                 title="one-time-password",
                 field_type="Totp",
                 section_id="totpsection",
-                value="rfbhsnjchsecbhsedchb",
+                value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
                 details=None,
             ),
         ],
