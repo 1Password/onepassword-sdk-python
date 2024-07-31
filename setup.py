@@ -49,8 +49,8 @@ setup(
     description="The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python.",
     url="https://github.com/1Password/onepassword-sdk-python",
     packages=find_packages(
-        where="src",
-    ),
+        where='src',
+    )+find_packages(where='src/release'),
     package_dir={"": "src"},
     cmdclass={"bdist_wheel": bdist_wheel},
     package_data={"": get_shared_library_data_to_include()},
