@@ -50,7 +50,10 @@ async def main():
                 details=None,
             ),
         ],
-        sections=[ItemSection(id="", title=""), ItemSection(id="totpsection", title="")],
+        sections=[
+            ItemSection(id="", title=""),
+            ItemSection(id="totpsection", title=""),
+        ],
     )
     created_item = await client.items.create(to_create)
 
@@ -64,7 +67,6 @@ async def main():
             else:
                 print(f.details.content.code)
 
-    
     # Retrieve an item from your vault.
     item = await client.items.get(created_item.vault_id, created_item.id)
 

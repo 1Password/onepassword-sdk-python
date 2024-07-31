@@ -29,6 +29,10 @@ class Item(BaseModel):
     """
     The ID of the vault where the item is saved
     """
+    tags: List[str]
+    """
+    The item's tags
+    """
     fields: List[ItemField]
     """
     The item's fields
@@ -36,6 +40,10 @@ class Item(BaseModel):
     sections: List[ItemSection]
     """
     The item's sections
+    """
+    version: int
+    """
+    The item's version
     """
 
 
@@ -69,10 +77,29 @@ ItemCategory = Literal[
 
 class ItemCreateParams(BaseModel):
     category: ItemCategory
+    """
+    The item's category
+    """
     vault_id: str
+    """
+    The ID of the vault where the item is saved
+    """
     title: str
+    """
+    The item's title
+    """
     fields: List[ItemField]
+    """
+    The item's fields
+    """
     sections: List[ItemSection]
+    """
+    The item's sections
+    """
+    tags: List[str]
+    """
+    The item's tags
+    """
 
 
 class ItemField(BaseModel):

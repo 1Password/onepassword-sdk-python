@@ -75,8 +75,8 @@ class Items:
                 "invocation": {
                     "name": "Delete",
                     "parameters": {
-                        "vault_id": vault_id,
                         "item_id": item_id,
+                        "vault_id": vault_id,
                     },
                 },
             }
