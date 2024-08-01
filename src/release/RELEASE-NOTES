@@ -1,0 +1,6 @@
+This release includes:
+
+- Support for reading and writing OTP field information such as the TOTP code and seed, through the Item API.
+- The `Update` operation is renamed to `Put` to create more realistic expectation with regard to the effect of the operation.
+- The item creation operation now takes as input `ItemCreateParams`.
+- Support for a few more field types: Phone, Url, CreditCardType.
