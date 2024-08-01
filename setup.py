@@ -2,7 +2,6 @@ from setuptools import setup, find_packages
 from sysconfig import get_platform
 import platform
 import os
-from src.release.version import SDK_VERSION
 
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
@@ -44,7 +43,7 @@ def get_shared_library_data_to_include():
 
 setup(
     name="onepassword",
-    version=SDK_VERSION,
+    version="0.1.0-beta.12",
     author="1Password",
     description="The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python.",
     url="https://github.com/1Password/onepassword-sdk-python",
