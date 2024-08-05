@@ -40,9 +40,9 @@ Field types:
 - [ ] SSH public keys, fingerprint and key type
 - [x] One-time passwords 
 - [x] URLs
+- [x] Phone numbers
 - [x] Credit card types
 - [ ] Credit card numbers
-- [x] Phone numbers
 - [ ] Files attachments and Document items
 
 ### Vault management
