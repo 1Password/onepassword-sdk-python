@@ -40,7 +40,8 @@ Field types:
 - [ ] SSH public keys, fingerprint and key type
 - [x] One-time passwords 
 - [x] URLs
-- [x] Credit card number & type
+- [x] Credit card types
+- [ ] Credit card numbers
 - [x] Phone numbers
 - [ ] Files attachments and Document items
 
