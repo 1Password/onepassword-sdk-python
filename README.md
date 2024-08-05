@@ -71,6 +71,15 @@ Field types:
 - [ ] User authentication
 - [ ] 1Password Connect. For now, use [1Password/connect-sdk-go](https://github.com/1Password/connect-sdk-go).
 
+## Requirements
+
+The 1Password Python SDK requires:
+
+- `libssl` 3
+- `glibc` 2.32 or later
+
+If you're running a Linux distribution that still uses `libssl` version 1.1.1, such as Debian 11 or Ubuntu 20.04, you'll need to update to a later version of Linux or install the required dependencies.
+
 ## 🚀 Get started
 
 To use the 1Password Python SDK in your project:
