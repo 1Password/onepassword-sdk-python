@@ -12,6 +12,7 @@ class Item(BaseModel):
     """
     Represents a 1Password item.
     """
+    model_config = ConfigDict(populate_by_name=True)
 
     id: str
     """
