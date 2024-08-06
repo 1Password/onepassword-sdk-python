@@ -1,7 +1,8 @@
 # AUTO-GENERATED
 from .core import _invoke
 from json import loads
-from .types import Item
+from .iterator import SDKIterator
+from .types import Item, ItemOverview
 
 
 class Items:
@@ -20,9 +21,9 @@ class Items:
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Create",
+                    "name": "ItemsCreate",
                     "parameters": {
-                        "params": params.dict(),
+                        "params": params.model_dump(by_alias=True),
                     },
                 },
             }
@@ -37,10 +38,10 @@ class Items:
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Get",
+                    "name": "ItemsGet",
                     "parameters": {
-                        "vault_id": vault_id,
                         "item_id": item_id,
+                        "vault_id": vault_id,
                     },
                 },
             }
@@ -55,9 +56,9 @@ class Items:
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Put",
+                    "name": "ItemsPut",
                     "parameters": {
-                        "item": item.dict(),
+                        "item": item.model_dump(by_alias=True),
                     },
                 },
             }
@@ -73,11 +74,32 @@ class Items:
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Delete",
+                    "name": "ItemsDelete",
                     "parameters": {
-                        "vault_id": vault_id,
                         "item_id": item_id,
+                        "vault_id": vault_id,
                     },
                 },
             }
         )
+
+    async def list_all(self, vault_id):
+        """
+        List all items
+        """
+        response = await _invoke(
+            {
+                "clientId": self.client_id,
+                "invocation": {
+                    "name": "ItemsListAll",
+                    "parameters": {
+                        "vault_id": vault_id,
+                    },
+                },
+            }
+        )
+        response_data = loads(response)
+
+        objects = [ItemOverview(**data) for data in response_data]
+
+        return SDKIterator(objects)
