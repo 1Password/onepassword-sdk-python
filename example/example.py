@@ -15,6 +15,13 @@ async def main():
         integration_version="v1.0.0",
     )
 
+    vaults = await client.vaults.list_all()
+    async for vault in vaults:
+        print(vault.title)
+        items = await client.items.list_all(vault.id)
+        async for item in items:
+            print(item.title)
+
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     value = await client.secrets.resolve("op://vault/item/field")
     print(value)
@@ -50,7 +57,10 @@ async def main():
                 details=None,
             ),
         ],
-        sections=[ItemSection(id="", title=""), ItemSection(id="totpsection", title="")],
+        sections=[
+            ItemSection(id="", title=""),
+            ItemSection(id="totpsection", title=""),
+        ],
     )
     created_item = await client.items.create(to_create)
 
@@ -64,7 +74,6 @@ async def main():
             else:
                 print(f.details.content.code)
 
-    
     # Retrieve an item from your vault.
     item = await client.items.get(created_item.vault_id, created_item.id)
 

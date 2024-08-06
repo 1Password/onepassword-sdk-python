@@ -1,6 +1,7 @@
 # AUTO-GENERATED
 from .core import _invoke
 from json import loads
+from .iterator import SDKIterator
 
 
 class Secrets:
@@ -20,7 +21,7 @@ class Secrets:
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Resolve",
+                    "name": "SecretsResolve",
                     "parameters": {
                         "secret_reference": secret_reference,
                     },
