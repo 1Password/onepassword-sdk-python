@@ -25,6 +25,6 @@ class Vaults:
         )
         response_data = loads(response)
 
-        objects = [VaultOverview(**data) for data in response_data]
+        objects = [VaultOverview.model_validate(data) for data in response_data]
 
         return SDKIterator(objects)
