@@ -28,7 +28,7 @@ class Items:
                 },
             }
         )
-        return Item(**loads(response))
+        return Item.model_validate_json(response)
 
     async def get(self, vault_id, item_id):
         """
@@ -46,7 +46,7 @@ class Items:
                 },
             }
         )
-        return Item(**loads(response))
+        return Item.model_validate_json(response)
 
     async def put(self, item):
         """
@@ -63,7 +63,7 @@ class Items:
                 },
             }
         )
-        return Item(**loads(response))
+        return Item.model_validate_json(response)
 
     async def delete(self, vault_id, item_id):
         """
@@ -100,6 +100,6 @@ class Items:
         )
         response_data = loads(response)
 
-        objects = [ItemOverview(**data) for data in response_data]
+        objects = [ItemOverview.model_validate(data) for data in response_data]
 
         return SDKIterator(objects)
