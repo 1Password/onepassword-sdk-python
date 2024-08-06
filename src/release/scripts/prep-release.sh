@@ -2,7 +2,7 @@
 
 # Helper script to prepare a release for the Python SDK.
 
-output_version_file="src/release/version.py"
+output_version_file="version.py"
 version_template_file="src/release/templates/version.tpl.py"
 
 # Extracts the current build/version number for comparison and backup 
@@ -24,6 +24,12 @@ enforce_latest_code() {
     if [[ -n "$(git status --porcelain=v1)" ]]; then
         echo "ERROR: working directory is not clean."
         echo "Please stash your changes and try again."
+        exit 1
+    fi
+    git fetch --quiet origin main
+    if [[ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]]; then
+        echo "ERROR: This script was not run from the latest code from origin/main."
+        echo "Make sure to update your git branch with the latest from main and try again."
         exit 1
     fi
 }
@@ -73,7 +79,7 @@ update_and_validate_build() {
     done
 }
 
-# Ensure working directory is clean
+# Ensure that the current working directory is clean and release is made off of latest main
 enforce_latest_code
 
 # Update and validate the version number
