@@ -1,11 +1,11 @@
 <p align="center">
   <a href="https://1password.com">
-      <h1 align="center">1Password Python SDK (beta)</h1>
+      <h1 align="center">1Password Python SDK</h1>
   </a>
 </p>
 
 <p align="center">
- <h4 align="center"> ❗ The 1Password SDK project is in beta. Future iterations may bring backwards-incompatible changes.</h4>
+ <h4 align="center">Build integrations that programmatically access your secrets in 1Password.</h4>
 </p>
 
 <p align="center">
@@ -134,4 +134,5 @@ Field types:
 
 - [Load secrets with 1Password SDKs](https://developer.1password.com/docs/sdks/load-secrets)
 - [Manage items with 1Password SDKs](https://developer.1password.com/docs/sdks/manage-items)
+- [List vaults and items with 1Password SDKs](https://developer.1password.com/docs/sdks/list-vaults-items)
 - [1Password SDK concepts](https://developer.1password.com/docs/sdks/concepts)
