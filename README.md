@@ -101,7 +101,6 @@ Field types:
 - [x] URLs
 - [x] Phone numbers
 - [x] Credit card types
-- [ ] Credit card numbers
 - [ ] Files attachments and Document items
 
 ### Vault management
