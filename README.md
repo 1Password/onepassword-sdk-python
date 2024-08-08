@@ -1,11 +1,11 @@
 <p align="center">
   <a href="https://1password.com">
-      <h1 align="center">1Password Python SDK (beta)</h1>
+      <h1 align="center">1Password Python SDK</h1>
   </a>
 </p>
 
 <p align="center">
- <h4 align="center"> ❗ The 1Password SDK project is in beta. Future iterations may bring backwards-incompatible changes.</h4>
+ <h4 align="center">Build integrations that programmatically access your secrets in 1Password.</h4>
 </p>
 
 <p align="center">
@@ -45,7 +45,7 @@ To use the 1Password Python SDK in your project:
 3. Install the 1Password Python SDK in your project:
 
    ```bash
-   pip install git+ssh://git@github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.13
+   pip install git+ssh://git@github.com/1Password/onepassword-sdk-python.git@v0.1.0
    ```
 
 4. Use the Python SDK in your project:
@@ -87,7 +87,7 @@ Operations:
 - [x] [Update items](https://developer.1password.com/docs/sdks/manage-items#edit-an-item)
 - [x] [Delete items](https://developer.1password.com/docs/sdks/manage-items#delete-an-item)
 - [x] [List items](https://developer.1password.com/docs/sdks/list-vaults-items/)
-- [ ] Add & update tags on items 
+- [ ] Add & update tags on items
 
 Field types:
 - [x] API Keys
@@ -97,7 +97,7 @@ Field types:
 - [x] Notes
 - [x] SSH private keys (partially supported: supported in resolving secret references, not yet supported in item create/get/update)
 - [ ] SSH public keys, fingerprint and key type
-- [x] One-time passwords 
+- [x] One-time passwords
 - [x] URLs
 - [x] Phone numbers
 - [x] Credit card types
@@ -134,4 +134,5 @@ Field types:
 
 - [Load secrets with 1Password SDKs](https://developer.1password.com/docs/sdks/load-secrets)
 - [Manage items with 1Password SDKs](https://developer.1password.com/docs/sdks/manage-items)
+- [List vaults and items with 1Password SDKs](https://developer.1password.com/docs/sdks/list-vaults-items)
 - [1Password SDK concepts](https://developer.1password.com/docs/sdks/concepts)
