@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from sysconfig import get_platform
 import platform
 import os
-from src.version import SDK_VERSION
+from version import SDK_VERSION
 
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
@@ -39,7 +39,9 @@ def get_shared_library_data_to_include():
     uniffi_bindings_file_name = "op_uniffi_core.py"
     uniffi_bindings_file_name = os.path.join(include_path, uniffi_bindings_file_name)
 
-    return [c_shared_library_file_name, uniffi_bindings_file_name]
+    version_file_name = "version.py"
+
+    return [c_shared_library_file_name, uniffi_bindings_file_name, version_file_name]
 
 
 setup(

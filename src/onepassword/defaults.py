@@ -1,5 +1,5 @@
 import platform
-from src.version import SDK_BUILD_NUMBER
+from version import SDK_BUILD_NUMBER
 
 SDK_LANGUAGE = "Python"
 SDK_VERSION = SDK_BUILD_NUMBER
