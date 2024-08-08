@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from sysconfig import get_platform
 import platform
 import os
-from src.onepassword.version import SDK_VERSION
+from onepassword.version import SDK_VERSION
 
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
