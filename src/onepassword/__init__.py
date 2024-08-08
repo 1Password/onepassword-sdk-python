@@ -5,7 +5,7 @@ from .types import *  # noqa F403
 from .secrets import Secrets
 from .items import Items
 from .vaults import Vaults
-
+from version import SDK_BUILD_NUMBER
 
 import sys
 import inspect
