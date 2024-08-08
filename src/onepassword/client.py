@@ -4,11 +4,13 @@ from .core import _init_client, _release_client
 from .defaults import new_default_config
 from .secrets import Secrets
 from .items import Items
+from .vaults import Vaults
 
 
 class Client:
     secrets: Secrets
     items: Items
+    vaults: Vaults
 
     @classmethod
     async def authenticate(cls, auth, integration_name, integration_version):
@@ -23,6 +25,7 @@ class Client:
 
         authenticated_client.secrets = Secrets(client_id)
         authenticated_client.items = Items(client_id)
+        authenticated_client.vaults = Vaults(client_id)
         authenticated_client._finalizer = weakref.finalize(
             cls, _release_client, client_id
         )

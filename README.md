@@ -1,11 +1,11 @@
 <p align="center">
   <a href="https://1password.com">
-      <h1 align="center">1Password Python SDK (beta)</h1>
+      <h1 align="center">1Password Python SDK</h1>
   </a>
 </p>
 
 <p align="center">
- <h4 align="center"> ❗ The 1Password SDK project is in beta. Future iterations may bring backwards-incompatible changes.</h4>
+ <h4 align="center">Build integrations that programmatically access your secrets in 1Password.</h4>
 </p>
 
 <p align="center">
@@ -13,10 +13,6 @@
 <br/>
 
 ---
-
-The 1Password Python SDK offers programmatic access to your secrets in 1Password with Python. During the beta, you can create, retrieve, update, and delete items and resolve secret references.
-
-1Password SDKs support authentication with [1Password Service Accounts](https://developer.1password.com/docs/service-accounts/get-started/).
 
 ## Requirements
 
@@ -26,14 +22,6 @@ The 1Password Python SDK requires:
 - `glibc` 2.32 or later
 
 If you're running a Linux distribution that still uses `libssl` version 1.1.1, such as Debian 11 or Ubuntu 20.04, you'll need to update to a later version of Linux or install the required dependencies.
-
-## ❗ Limitations
-
-1Password SDKs don't yet support using secret references with query parameters, so you can't retrieve file attachments or SSH keys, or get more information about field metadata.
-
-1Password SDKs currently only support operations on text and concealed fields. As a result, you can't edit items that include information saved in other types of fields.
-
-When managing items with 1Password SDKs, you must use [unique identifiers (IDs)](https://developer.1password.com/docs/sdks/concepts#unique-identifiers) in place of vault, item, and field names.
 
 ## 🚀 Get started
 
@@ -57,7 +45,7 @@ To use the 1Password Python SDK in your project:
 3. Install the 1Password Python SDK in your project:
 
    ```bash
-   pip install git+ssh://git@github.com/1Password/onepassword-sdk-python.git@v0.1.0-beta.9
+   pip install git+ssh://git@github.com/1Password/onepassword-sdk-python.git@v0.1.1
    ```
 
 4. Use the Python SDK in your project:
@@ -85,8 +73,66 @@ if __name__ == '__main__':
 
 Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secrets-reference-syntax/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.
 
+## Supported functionality
+
+1Password SDKs are in active development. We're keen to hear what you'd like to see next. Let us know by [upvoting](https://github.com/1Password/onepassword-sdk-python/issues) or [filing](https://github.com/1Password/onepassword-sdk-python/issues/new/choose) an issue.
+
+### Item management
+
+Operations:
+
+- [x] [Retrieve secrets](https://developer.1password.com/docs/sdks/load-secrets)
+- [x] [Retrieve items](https://developer.1password.com/docs/sdks/manage-items#get-an-item)
+- [x] [Create items](https://developer.1password.com/docs/sdks/manage-items#create-an-item)
+- [x] [Update items](https://developer.1password.com/docs/sdks/manage-items#edit-an-item)
+- [x] [Delete items](https://developer.1password.com/docs/sdks/manage-items#delete-an-item)
+- [x] [List items](https://developer.1password.com/docs/sdks/list-vaults-items/)
+- [ ] Add & update tags on items
+
+Field types:
+- [x] API Keys
+- [x] Passwords
+- [x] Concealed fields
+- [x] Text fields
+- [x] Notes
+- [x] SSH private keys (partially supported: supported in resolving secret references, not yet supported in item create/get/update)
+- [ ] SSH public keys, fingerprint and key type
+- [x] One-time passwords
+- [x] URLs
+- [x] Phone numbers
+- [x] Credit card types
+- [ ] Files attachments and Document items
+
+### Vault management
+- [ ] Retrieve vaults
+- [ ] Create vaults ([#36](https://github.com/1Password/onepassword-sdk-python/issues/36))
+- [ ] Update vaults
+- [ ] Delete vaults
+- [x] [List vaults](https://developer.1password.com/docs/sdks/list-vaults-items/)
+
+### User & access management
+- [ ] Provision users
+- [ ] Retrieve users
+- [ ] List users
+- [ ] Suspend users
+- [ ] Create groups
+- [ ] Update group membership
+- [ ] Update vault access & permissions
+
+### Compliance & reporting
+- [ ] Watchtower insights
+- [ ] Travel mode
+- [ ] Events. For now, use [1Password Events Reporting API](https://developer.1password.com/docs/events-api/) directly.
+
+### Authentication
+
+- [x] [1Password Service Accounts](https://developer.1password.com/docs/service-accounts/get-started/)
+- [ ] User authentication
+- [ ] 1Password Connect. For now, use [1Password/connect-sdk-go](https://github.com/1Password/connect-sdk-go).
+
 ## 📖 Learn more
 
 - [Load secrets with 1Password SDKs](https://developer.1password.com/docs/sdks/load-secrets)
 - [Manage items with 1Password SDKs](https://developer.1password.com/docs/sdks/manage-items)
+- [List vaults and items with 1Password SDKs](https://developer.1password.com/docs/sdks/list-vaults-items)
 - [1Password SDK concepts](https://developer.1password.com/docs/sdks/concepts)

@@ -1,6 +1,7 @@
-This release includes:
+This is the v0 release of the 1Password Python SDK.
 
-- Support for reading and writing OTP field information such as the TOTP code and seed, through the Item API.
-- The `Update` operation is renamed to `Put` to create more realistic expectation with regard to the effect of the operation.
-- The item creation operation now takes as input `ItemCreateParams`.
-- Support for a few more field types: Phone, Url, CreditCardType.
+The 1Password Python SDK allows you to build secrets management integrations that can programmatically access secrets stored in 1Password. With this SDK, you can:
+
+- [Securely load secrets](https://developer.1password.com/docs/sdks/load-secrets/) from 1Password into your code with secret references.
+- [Read, write, and update secrets](https://developer.1password.com/docs/sdks/manage-items/) stored in 1Password, including passwords, API keys, and one-time passwords.
+- [List items and vaults](https://developer.1password.com/docs/sdks/list-vaults-items/) in a 1Password account.
