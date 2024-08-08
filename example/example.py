@@ -4,8 +4,8 @@ from onepassword import *
 
 
 async def main():
-    # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
-    token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
+    # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable and sets it to empty string if not set.
+    token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN") or ""
 
     # Connects to 1Password.
     client = await Client.authenticate(
