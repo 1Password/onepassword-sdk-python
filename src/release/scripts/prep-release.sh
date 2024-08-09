@@ -14,8 +14,16 @@ current_version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "$output_version_fi
 cleanup() {
     echo "Performing cleanup tasks..."
     # Revert changes to file if any
-    sed -e "s/{{ build }}/$current_build/" "$version_template_file" > "$output_build_file"
-    sed -e "s/{{ version }}/$current_version/" "$version_template_file" > "$output_version_file"
+    sed -e "/SDK_VERSION = \"{{ version }}\"/d" \
+    -e "s/{{ build }}/$current_build/" \
+    "$version_template_file" > "$output_build_file"
+
+    sed -e "/SDK_BUILD_NUMBER = \"{{ build }}\"/d" \
+    -e "s/{{ version }}/$current_version/" \
+    "$version_template_file" > "$output_version_file"
+    
+    # Remove the newline from the template file
+    tr -d '\n' < "$output_version_file"> temp_version.py && mv temp_version.py "$output_version_file"
     exit 1   
 }
 
@@ -91,8 +99,16 @@ update_and_validate_version
 update_and_validate_build 
 
 # Update version & build number in version.py
-sed -e "s/{{ build }}/$current_build/" "$version_template_file" > "$output_build_file"
-sed -e "s/{{ version }}/$current_version/" "$version_template_file" > "$output_version_file"
+sed -e "/SDK_VERSION = \"{{ version }}\"/d" \
+    -e "s/{{ build }}/$build/" \
+    "$version_template_file" > "$output_build_file"
+
+sed -e "/SDK_BUILD_NUMBER = \"{{ build }}\"/d" \
+    -e "s/{{ version }}/$version/" \
+    "$version_template_file" > "$output_version_file"
+
+# Remove the newline from the template file
+tr -d '\n' < "$output_version_file"> temp_version.py && mv temp_version.py "$output_version_file"
 
 printf "Press ENTER to edit the RELEASE-NOTES in your default editor...\n"
 read -r _ignore
