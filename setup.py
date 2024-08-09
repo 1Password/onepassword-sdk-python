@@ -25,7 +25,7 @@ def get_shared_library_data_to_include():
     if machine_type in ["x86_64", "amd64"]:
         include_path = os.path.join(include_path, "x86_64")
     elif machine_type in ["aarch64", "arm64"]:
-        include_path = os.path.join(include_path, "aarch64")
+        include_path = os.path.join(include_path, "aarch64")    
 
     # Map current platform to the correct shared library file name
     platform_to_lib = {
@@ -52,7 +52,7 @@ setup(
     ),
     package_dir={"": "src"},
     cmdclass={"bdist_wheel": bdist_wheel},
-    package_data={"onepassword": get_shared_library_data_to_include() +["../version.py"]},
+    package_data={"onepassword": get_shared_library_data_to_include() +["version.py"]},
     install_requires=[
         "pydantic",
     ],

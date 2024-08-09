@@ -3,17 +3,19 @@
 # Helper script to prepare a release for the Python SDK.
 
 output_version_file="version.py"
+output_build_file="src/onepassword/build_number.py"
 version_template_file="src/release/templates/version.tpl.py"
 
 # Extracts the current build/version number for comparison and backup 
-current_build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "$output_version_file")
+current_build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "$output_build_file")
 current_version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "$output_version_file")
 
 # Function to execute upon exit
 cleanup() {
     echo "Performing cleanup tasks..."
     # Revert changes to file if any
-    sed -e "s/{{ build }}/$current_build/" -e "s/{{ version }}/$current_version/" "$version_template_file" > "$output_version_file"
+    sed -e "s/{{ build }}/$current_build/" "$version_template_file" > "$output_build_file"
+    sed -e "s/{{ version }}/$current_version/" "$version_template_file" > "$output_version_file"
     exit 1   
 }
 
@@ -89,7 +91,8 @@ update_and_validate_version
 update_and_validate_build 
 
 # Update version & build number in version.py
-sed -e "s/{{ build }}/$build/" -e "s/{{ version }}/$version/" "$version_template_file" > "$output_version_file"
+sed -e "s/{{ build }}/$current_build/" "$version_template_file" > "$output_build_file"
+sed -e "s/{{ version }}/$current_version/" "$version_template_file" > "$output_version_file"
 
 printf "Press ENTER to edit the RELEASE-NOTES in your default editor...\n"
 read -r _ignore
