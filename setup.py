@@ -25,7 +25,7 @@ def get_shared_library_data_to_include():
     if machine_type in ["x86_64", "amd64"]:
         include_path = os.path.join(include_path, "x86_64")
     elif machine_type in ["aarch64", "arm64"]:
-        include_path = os.path.join(include_path, "aarch64")    
+        include_path = os.path.join(include_path, "aarch64")
 
     # Map current platform to the correct shared library file name
     platform_to_lib = {
@@ -40,6 +40,7 @@ def get_shared_library_data_to_include():
     uniffi_bindings_file_name = os.path.join(include_path, uniffi_bindings_file_name)
 
     return [c_shared_library_file_name, uniffi_bindings_file_name]
+
 
 setup(
     name="onepassword",

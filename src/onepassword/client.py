@@ -13,9 +13,7 @@ class Client:
     vaults: Vaults
 
     @classmethod
-    async def authenticate(cls, auth: str, integration_name, integration_version):
-        if auth is None:
-            auth = ""
+    async def authenticate(cls, auth, integration_name, integration_version):
         config = new_default_config(
             auth=auth,
             integration_name=integration_name,
