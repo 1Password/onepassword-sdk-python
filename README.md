@@ -71,7 +71,7 @@ if __name__ == '__main__':
 
 ```
 
-Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secrets-reference-syntax/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.
+Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secret-reference-syntax/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.
 
 ## Supported functionality
 
@@ -84,7 +84,7 @@ Operations:
 - [x] [Retrieve secrets](https://developer.1password.com/docs/sdks/load-secrets)
 - [x] [Retrieve items](https://developer.1password.com/docs/sdks/manage-items#get-an-item)
 - [x] [Create items](https://developer.1password.com/docs/sdks/manage-items#create-an-item)
-- [x] [Update items](https://developer.1password.com/docs/sdks/manage-items#edit-an-item)
+- [x] [Update items](https://developer.1password.com/docs/sdks/manage-items#update-an-item)
 - [x] [Delete items](https://developer.1password.com/docs/sdks/manage-items#delete-an-item)
 - [x] [List items](https://developer.1password.com/docs/sdks/list-vaults-items/)
 - [ ] Add & update tags on items
