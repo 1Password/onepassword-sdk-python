@@ -30,7 +30,7 @@ def get_shared_library_data_to_include():
     platform_to_lib = {
         "Darwin": "libop_uniffi_core.dylib",
         "Linux": "libop_uniffi_core.so",
-        "Windows": "op_uniffi_core.dll"
+        "Windows": "op_uniffi_core.dll",
     }
     c_shared_library_file_name = platform_to_lib.get(platform.system(), "")
     c_shared_library_file_name = os.path.join(include_path, c_shared_library_file_name)
@@ -43,7 +43,7 @@ def get_shared_library_data_to_include():
 
 setup(
     name="onepassword",
-    version="0.1.0-beta.10",
+    version="0.1.1",
     author="1Password",
     description="The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python.",
     url="https://github.com/1Password/onepassword-sdk-python",

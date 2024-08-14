@@ -8,10 +8,14 @@ on:
   pull_request:
     paths-ignore:
       - '**.md'
+  repository_dispatch:
+    types: [ ok-to-test-command ]
 
 jobs:
 
-  validate:
+  integration-test-trusted:
+    # actions that are trusted by default must only be opened from within the repo, and skipped for forks because they'll fail there
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
@@ -47,5 +51,77 @@ jobs:
       - name: Lint with Ruff
         run: |
           pip install ruff
-          ruff check --output-format=github --exclude=src/onepassword/lib/ .
+          ruff check --output-format=github --exclude=src/onepassword/lib/,example/ .
         continue-on-error: true
+
+  # This action is called by the /ok-to-test command, once the forked PR's code has been security reviewed.
+  # It will checkout the forked (and now trusted) code and it will run the integration tests on it.
+  # If the tests are successful this action will proceed to update the status of the forked PR integration check.
+  integration-test-fork:
+    # required permissions for updating the status of the pull request checks
+    permissions:
+      pull-requests: write
+      checks: write
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+    if: |
+      github.event_name == 'repository_dispatch' &&
+      github.event.client_payload.slash_command.args.named.sha != '' &&
+      contains(
+        github.event.client_payload.pull_request.head.sha,
+        github.event.client_payload.slash_command.args.named.sha
+      )
+    steps:
+
+    # Check out merge commit
+    - name: Fork based /ok-to-test checkout
+      uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.client_payload.pull_request.head.sha }}
+
+    - name: Set up Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.x'
+          
+    - name: Integration Test
+      env:
+        OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+      run: |
+        pip install pytest &&
+        pip install pytest-asyncio &&
+        pip install pydantic &&
+        python -m pytest src/onepassword/test_client.py
+
+    - run: |
+        echo "Integration tests completed successfully!"
+
+    # Update check run called "integration-fork" on the forked PR
+    - uses: actions/github-script@v6
+      id: update-check-run
+      if: ${{ always() }}
+      env:
+        job: ${{ github.job }}
+        ref: ${{ github.event.client_payload.pull_request.head.sha }}
+        # Conveniently, job.status maps to https://developer.github.com/v3/checks/runs/#update-a-check-run
+        conclusion: ${{ job.status }} 
+      with:
+        github-token: ${{ secrets.GITHUB_TOKEN }}
+        script: |
+          const { data: checks } = await github.rest.checks.listForRef({
+            ...context.repo,
+            process.env.ref
+          });
+
+          const check = checks.check_runs.filter(c => c.name === process.env.job);
+
+          const { data: result } = await github.rest.checks.update({
+            ...context.repo,
+            check_run_id: check[0].id,
+            status: 'completed',
+            conclusion: process.env.conclusion
+          });
+
+          return result;

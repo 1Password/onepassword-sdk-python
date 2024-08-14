@@ -1,0 +1,7 @@
+This is the v0 release of the 1Password Python SDK.
+
+The 1Password Python SDK allows you to build secrets management integrations that can programmatically access secrets stored in 1Password. With this SDK, you can:
+
+- [Securely load secrets](https://developer.1password.com/docs/sdks/load-secrets/) from 1Password into your code with secret references.
+- [Read, write, and update secrets](https://developer.1password.com/docs/sdks/manage-items/) stored in 1Password, including passwords, API keys, and one-time passwords.
+- [List items and vaults](https://developer.1password.com/docs/sdks/list-vaults-items/) in a 1Password account.

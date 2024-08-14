@@ -1,0 +1,23 @@
+name: "✨ Feature request"
+description: I'd like to request new functionality.
+labels: ["feature-request"]
+body:
+  - type: textarea
+    id: usecase
+    attributes:
+      label: Use Case
+      description: What are you trying to achieve?
+      placeholder: "Tell us about the problem you're trying to solve. The more context you add, the better we can align a solution with your problem."
+    validations:
+      required: true
+  - type: textarea
+    id: requirements
+    attributes:
+      label: Requirements and desired behavior
+      description: What should the SDK do?
+      placeholder: If you already have an idea for what you'd like to be available in the SDK to solve your problem, feel free to share that here. How would you expect this to behave?
+  - type: textarea
+    id: info
+    attributes:
+      label: Additional information
+      description: Any additional information that's relevant to add?

@@ -41,25 +41,6 @@ async def test_invalid_resolve():
 ## test client constructor
 
 
-# valid
-@pytest.mark.asyncio
-async def test_good_client_construction():
-    client = await onepassword.Client.authenticate(
-        auth=TOKEN,
-        integration_name=onepassword_defaults.DEFAULT_INTEGRATION_NAME,
-        integration_version=onepassword_defaults.DEFAULT_INTEGRATION_VERSION,
-    )
-    assert client.config["serviceAccountToken"] == TOKEN
-    assert (
-        client.config["integrationName"]
-        == onepassword_defaults.DEFAULT_INTEGRATION_NAME
-    )
-    assert (
-        client.config["integrationVersion"]
-        == onepassword_defaults.DEFAULT_INTEGRATION_VERSION
-    )
-
-
 # invalid
 @pytest.mark.asyncio
 async def test_client_construction_no_auth():

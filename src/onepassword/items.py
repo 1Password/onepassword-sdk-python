@@ -1,74 +1,105 @@
+# AUTO-GENERATED
 from .core import _invoke
-import json
-from .types import Item
+from json import loads
+from .iterator import SDKIterator
+from .types import Item, ItemOverview
 
 
 class Items:
-    """Contains all operations the SDK client can perform on 1Password items."""
+    """
+    The Items API holds all operations the SDK client can perform on 1Password items.
+    """
 
     def __init__(self, client_id):
         self.client_id = client_id
 
-    async def create(self, item):
-        """Create a new item"""
+    async def create(self, params):
+        """
+        Create a new item
+        """
         response = await _invoke(
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Create",
+                    "name": "ItemsCreate",
                     "parameters": {
-                        "item": item.dict(),
+                        "params": params.model_dump(by_alias=True),
                     },
                 },
             }
         )
-        result = Item(**json.loads(response))
-        return result
+        return Item.model_validate_json(response)
 
     async def get(self, vault_id, item_id):
-        """Get an item by vault and item ID"""
+        """
+        Get an item by vault and item ID
+        """
         response = await _invoke(
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Get",
+                    "name": "ItemsGet",
                     "parameters": {
-                        "vault_id": vault_id,
                         "item_id": item_id,
+                        "vault_id": vault_id,
                     },
                 },
             }
         )
-        result = Item(**json.loads(response))
-        return result
+        return Item.model_validate_json(response)
 
-    async def update(self, item):
-        """Update an existing item. You can currently only edit text and concealed fields."""
+    async def put(self, item):
+        """
+        Update an existing item.
+        """
         response = await _invoke(
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Update",
+                    "name": "ItemsPut",
                     "parameters": {
-                        "item": item.dict(),
+                        "item": item.model_dump(by_alias=True),
                     },
                 },
             }
         )
-        result = Item(**json.loads(response))
-        return result
+        return Item.model_validate_json(response)
 
     async def delete(self, vault_id, item_id):
-        """Delete an item. """
+        """
+        Delete an item.
+        """
+
         await _invoke(
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Delete",
+                    "name": "ItemsDelete",
                     "parameters": {
-                        "vault_id": vault_id,
                         "item_id": item_id,
+                        "vault_id": vault_id,
                     },
                 },
             }
         )
+
+    async def list_all(self, vault_id):
+        """
+        List all items
+        """
+        response = await _invoke(
+            {
+                "clientId": self.client_id,
+                "invocation": {
+                    "name": "ItemsListAll",
+                    "parameters": {
+                        "vault_id": vault_id,
+                    },
+                },
+            }
+        )
+        response_data = loads(response)
+
+        objects = [ItemOverview.model_validate(data) for data in response_data]
+
+        return SDKIterator(objects)

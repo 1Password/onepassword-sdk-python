@@ -1,0 +1,29 @@
+name: "↗️ Improvement"
+description: Something works but can be made better.
+labels: ["improvement"]
+body:
+  - type: textarea
+    id: current
+    attributes:
+      label: Current Behavior
+      description: How does this currently work?
+      placeholder: "Please tell us what you're currently doing and what hurdles you're running into with this."
+    validations:
+      required: true
+  - type: textarea
+    id: desired
+    attributes:
+      label: Desired Behavior
+      description: How would you prefer for this to work?
+      placeholder: "Please share how you'd prefer for this to work."
+  - type: textarea
+    id: value
+    attributes:
+      label: Benefits & Value
+      description: What is better about the new behavior? How will this help you?
+      placeholder: "Please share what benefits you'd like to get out of this improvement. What would you use this for? How does that improve with this change? Why should this change be made?"
+  - type: textarea
+    id: info
+    attributes:
+      label: Additional information
+      description: Any additional information that's relevant to add?

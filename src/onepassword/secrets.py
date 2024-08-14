@@ -1,24 +1,31 @@
+# AUTO-GENERATED
 from .core import _invoke
 from json import loads
+from .iterator import SDKIterator
 
 
 class Secrets:
-    """Contains all operations the SDK client can perform on 1Password secrets."""
+    """
+    The Secrets API includes all operations the SDK client can perform on secrets.
+    Use secret reference URIs to securely load secrets from 1Password: op://<vault-name>/<item-name>[/<section-name>]/<field-name>
+    """
 
     def __init__(self, client_id):
         self.client_id = client_id
 
     async def resolve(self, secret_reference):
-        """Resolve the secret reference to a secret."""
+        """
+        Resolve returns the secret the provided secret reference points to.
+        """
         response = await _invoke(
             {
                 "clientId": self.client_id,
                 "invocation": {
-                    "name": "Resolve",
+                    "name": "SecretsResolve",
                     "parameters": {
                         "secret_reference": secret_reference,
                     },
                 },
             }
         )
-        return loads(response)
+        return str(loads(response))
