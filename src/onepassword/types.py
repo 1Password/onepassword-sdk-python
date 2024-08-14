@@ -123,9 +123,9 @@ class ItemField(BaseModel):
     """
     The string representation of the field's value
     """
-    details: Optional[ItemFieldDetails]
+    details: [ItemFieldDetails]
     """
-    Field type-specific attributes.
+    Field type-specific attributes. Must be set to None.
     """
 
 
