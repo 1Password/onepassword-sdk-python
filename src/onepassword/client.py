@@ -15,7 +15,7 @@ class Client:
     @classmethod
     async def authenticate(cls, auth, integration_name, integration_version):
         config = new_default_config(
-            auth=auth or "", # Convert None to empty string from os.getenv  
+            auth=auth,
             integration_name=integration_name,
             integration_version=integration_version,
         )
