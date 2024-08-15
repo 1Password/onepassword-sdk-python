@@ -112,7 +112,7 @@ jobs:
         script: |
           const { data: checks } = await github.rest.checks.listForRef({
             ...context.repo,
-            process.env.ref
+            ref: process.env.ref
           });
 
           const check = checks.check_runs.filter(c => c.name === process.env.job);
