@@ -14,7 +14,7 @@ class Client:
     vaults: Vaults
 
     @classmethod
-    async def authenticate(cls, auth: Optional[str], integration_name, integration_version):
+    async def authenticate(cls, auth, integration_name, integration_version):
         # Convert None from os.getEnv to empty string
         config = new_default_config(
             auth=auth or "",
