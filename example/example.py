@@ -83,7 +83,6 @@ async def main():
     updated_item = Item(**dict(item))
     next(f for f in updated_item.fields if f.title == "password").value = "new_pass"
     updated_item = await client.items.put(updated_item)
-    updated_item = await client.items.put(item)
 
     print(dict(updated_item))
 
