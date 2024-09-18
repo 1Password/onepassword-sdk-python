@@ -20,7 +20,7 @@ except ImportError:
 def get_shared_library_data_to_include():
     # Return the correct uniffi C shared library extension for the given platform
     include_path = "lib"
-    machine_type = platform.machine().lower()
+    machine_type = os.getenv("PYTHON_MACHINE_PLATFORM") or platform.machine().lower() 
     if machine_type in ["x86_64", "amd64"]:
         include_path = os.path.join(include_path, "x86_64")
     elif machine_type in ["aarch64", "arm64"]:
@@ -32,7 +32,8 @@ def get_shared_library_data_to_include():
         "Linux": "libop_uniffi_core.so",
         "Windows": "op_uniffi_core.dll",
     }
-    c_shared_library_file_name = platform_to_lib.get(platform.system(), "")
+    platform_name = os.getenv("PYTHON_OS_PLATFORM") or platform.system()
+    c_shared_library_file_name = platform_to_lib.get(platform_name, "")
     c_shared_library_file_name = os.path.join(include_path, c_shared_library_file_name)
 
     uniffi_bindings_file_name = "op_uniffi_core.py"
@@ -42,7 +43,7 @@ def get_shared_library_data_to_include():
 
 
 setup(
-    name="onepassword",
+    name="onepassword_sdk",
     version="0.1.1",
     author="1Password",
     description="The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python.",
@@ -51,9 +52,12 @@ setup(
         where="src",
     ),
     package_dir={"": "src"},
+    python_requires=">=3.8",
     cmdclass={"bdist_wheel": bdist_wheel},
     package_data={"": get_shared_library_data_to_include()},
     install_requires=[
         "pydantic",
+        'pip>=20.3',
+        'auditwheel>=3.3'
     ],
 )
