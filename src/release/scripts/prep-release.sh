@@ -109,15 +109,12 @@ acquire_wheels_pypi() {
     rm -rf build
 
     # TEST
-    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* --verbose
+    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* 
 
 }
 
-# Acquire wheels for different distro for PyPi
-acquire_wheels_pypi
-
 # Ensure working directory is clean
-# enforce_latest_code
+enforce_latest_code
 
 # Update and validate the version number
 update_and_validate_version
@@ -125,8 +122,8 @@ update_and_validate_version
 # Update and validate the build number
 update_and_validate_build 
 
-# # Acquire wheels for different distro for PyPi
-# acquire_wheels_pypi
+# Acquire wheels for different distro for PyPi
+acquire_wheels_pypi
 
 # Update version & build number in version.py
 sed -e "s/{{ build }}/$build/" -e "s/{{ version }}/$version/" "$version_template_file" > "$output_version_file"
