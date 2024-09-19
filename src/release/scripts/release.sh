@@ -11,10 +11,13 @@ glibc_version=2-32
 macOS_version_x86_64=10.9
 macOS_version_arm64=11.0
 
-acquire_wheels() {
+build_wheels() {
     os_platform=$1
     machine_platform=$2
     version=
+
+    export PYTHON_OS_PLATFORM=$os_platform
+    export PYTHON_MACHINE_PLATFORM=$machine_platform
 
     case "$os_platform" in
         Darwin)
@@ -26,18 +29,12 @@ acquire_wheels() {
                 export MACOSX_DEPLOYMENT_TARGET=$macOS_version_arm64
 
             fi
-            export PYTHON_OS_PLATFORM=$os_platform
-            export PYTHON_MACHINE_PLATFORM=$machine_platform
             export _PYTHON_HOST_PLATFORM="macosx-${version}-${PYTHON_MACHINE_PLATFORM}"
             ;;
         Linux)
-            export PYTHON_OS_PLATFORM=$os_platform
-            export PYTHON_MACHINE_PLATFORM=$machine_platform
             export _PYTHON_HOST_PLATFORM="manylinux-${glibc_version}-${PYTHON_MACHINE_PLATFORM}"
             ;;
         Windows)
-            export PYTHON_OS_PLATFORM=$os_platform
-            export PYTHON_MACHINE_PLATFORM=$machine_platform
             export _PYTHON_HOST_PLATFORM="win-${PYTHON_MACHINE_PLATFORM}"
             ;;
         *)
@@ -77,11 +74,11 @@ gh release create "v${version}" --title "Release ${version}" --notes "${release_
 
 
 # Acquire the wheels for different OS
-acquire_wheels Darwin x86_64
-acquire_wheels Darwin arm64
-acquire_wheels Linux x86_64
-acquire_wheels Linux aarch64
-acquire_wheels Windows amd64
+build_wheels Darwin x86_64
+build_wheels Darwin arm64
+build_wheels Linux x86_64
+build_wheels Linux aarch64
+build_wheels Windows amd64
 
 # Release on PyPi
 python3 -m twine upload --repository testpypi dist/* --verbose

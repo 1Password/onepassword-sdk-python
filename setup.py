@@ -44,7 +44,7 @@ def get_shared_library_data_to_include():
 
 
 setup(
-    name="onepassword_sdk",
+    name="onepassword-sdk",
     version="0.1.1",
     author="1Password",
     long_description= (Path(__file__).parent / "README.md").read_text(),
