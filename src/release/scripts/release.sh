@@ -4,6 +4,9 @@
 
 set -e
 
+intel_amd_tag=x86_64
+arm_tag=arm64
+
 # Minimum glibc version we support
 glibc_version=2-32
 
@@ -19,16 +22,16 @@ build_wheels() {
     export PYTHON_OS_PLATFORM=$os_platform
     export PYTHON_MACHINE_PLATFORM=$machine_platform
 
-    case "$os_platform" in
+    case "$os_platform" in 
         Darwin)
-            if [[ "$machine_platform" == "x86_64" ]]; then
-                version=$min_macOS_version_x86_64
+            if [[ "$machine_platform" == "$intel_amd_tag" ]]; then
+                version=$macOS_version_x86_64
                 export MACOSX_DEPLOYMENT_TARGET=$macOS_version_x86_64
             else
-                version=$min_macOS_version_arm64
+                version=$macOS_version_arm64
                 export MACOSX_DEPLOYMENT_TARGET=$macOS_version_arm64
-
             fi
+
             export _PYTHON_HOST_PLATFORM="macosx-${version}-${PYTHON_MACHINE_PLATFORM}"
             ;;
         Linux)
@@ -48,10 +51,9 @@ build_wheels() {
 }
 
 # Read the contents of the files into variables
-version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "src/release/version.py")
+sdk_version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "src/release/version.py")
 build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "src/release/version.py")
 release_notes=$(< src/release/RELEASE-NOTES)
-
 
 # Check if Github CLI is installed
 if ! command -v gh &> /dev/null; then
@@ -74,11 +76,25 @@ gh release create "v${version}" --title "Release ${version}" --notes "${release_
 
 
 # Acquire the wheels for different OS
-build_wheels Darwin x86_64
-build_wheels Darwin arm64
-build_wheels Linux x86_64
+build_wheels Darwin $intel_amd_tag
+build_wheels Darwin $arm_tag
+build_wheels Linux $intel_amd_tag
 build_wheels Linux aarch64
 build_wheels Windows amd64
 
+# Build Source as well incase wheels fails, pypi can install this as backup (standard practice)
+python3 -m build --sdist
+
+# Retag these as MacOS 11.0 and 10.9 as they are built for it but the platform tag does not get renamed as grabs your computers version regardless of whats set
+python3 -m wheel tags --platform-tag macosx_11_0_$arm_tag dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$arm_tag.whl
+python3 -m wheel tags --platform-tag macosx_10_9_$intel_amd_tag dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$intel_amd_tag.whl
+
+# Remove the old wheels
+rm dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$intel_amd_tag.whl
+rm dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$arm_tag.whl
+
 # Release on PyPi
 python3 -m twine upload --repository testpypi dist/* --verbose
+
+# Delete the dist folder after published
+rm -r dist src/*.egg-info
