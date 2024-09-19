@@ -1,3 +1,4 @@
+from pathlib import Path
 from setuptools import setup, find_packages
 from sysconfig import get_platform
 import platform
@@ -46,6 +47,8 @@ setup(
     name="onepassword_sdk",
     version="0.1.1",
     author="1Password",
+    long_description= (Path(__file__).parent / "README.md").read_text(),
+    long_description_content_type='text/markdown',
     description="The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python.",
     url="https://github.com/1Password/onepassword-sdk-python",
     packages=find_packages(
@@ -53,11 +56,17 @@ setup(
     ),
     package_dir={"": "src"},
     python_requires=">=3.8",
+    classifiers = [
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "License :: OSI Approved :: MIT License"
+    ],
     cmdclass={"bdist_wheel": bdist_wheel},
     package_data={"": get_shared_library_data_to_include()},
     install_requires=[
         "pydantic",
-        'pip>=20.3',
-        'auditwheel>=3.3'
     ],
 )

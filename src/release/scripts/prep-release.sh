@@ -73,46 +73,6 @@ update_and_validate_build() {
     done
 }
 
-
-acquire_wheels_pypi() {
-    # Acquire wheels for MacOS for 64 Bit Intel/AMD (x86_64)
-    export PYTHON_OS_PLATFORM="Darwin"
-    export PYTHON_MACHINE_PLATFORM="x86_64"
-    export _PYTHON_HOST_PLATFORM="macosx-14.0-${PYTHON_MACHINE_PLATFORM}"
-    python3 -m build --wheel
-    rm -rf build 
-
-    # Acquire wheels for MacOS for 64 Bit ARM (arm64)
-    export PYTHON_MACHINE_PLATFORM="arm64"
-    export _PYTHON_HOST_PLATFORM="macosx-14.0-${PYTHON_MACHINE_PLATFORM}"
-    python3 -m build --wheel
-    rm -rf build 
-
-    # Acquire wheels for Linux for 64 Bit ARM
-    export PYTHON_OS_PLATFORM="Linux"
-    export PYTHON_MACHINE_PLATFORM="aarch64"
-    export _PYTHON_HOST_PLATFORM="manylinux-2-32-${PYTHON_MACHINE_PLATFORM}"
-    python3 -m build --wheel
-    rm -rf build
-
-    # Acquire wheels for Linux for 64 Bit Intel/AMD
-    export PYTHON_MACHINE_PLATFORM="x86_64"
-    export _PYTHON_HOST_PLATFORM="manylinux-2-32-${PYTHON_MACHINE_PLATFORM}"
-    python3 -m build --wheel
-    rm -rf build
-
-    # Acquire wheels for Windows for 64 Bit Intel/AMD (x86_64)
-    export PYTHON_OS_PLATFORM="Windows"
-    export PYTHON_MACHINE_PLATFORM="amd64"
-    export _PYTHON_HOST_PLATFORM="win-${PYTHON_MACHINE_PLATFORM}"
-    python3 -m build --wheel
-    rm -rf build
-
-    # TEST
-    python3 -m twine upload --repository-url https://test.pypi.org/legacy/ dist/* 
-
-}
-
 # Ensure working directory is clean
 enforce_latest_code
 
@@ -121,9 +81,6 @@ update_and_validate_version
 
 # Update and validate the build number
 update_and_validate_build 
-
-# Acquire wheels for different distro for PyPi
-acquire_wheels_pypi
 
 # Update version & build number in version.py
 sed -e "s/{{ build }}/$build/" -e "s/{{ version }}/$version/" "$version_template_file" > "$output_version_file"
