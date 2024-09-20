@@ -4,7 +4,7 @@
 
 set -e
 
-intel_amd_tag=x86_64
+intel_tag=x86_64
 arm_tag=arm64
 
 # Minimum glibc version we support
@@ -17,14 +17,14 @@ macOS_version_arm64=11.0
 build_wheels() {
     os_platform=$1
     machine_platform=$2
-    version=
 
     export PYTHON_OS_PLATFORM=$os_platform
     export PYTHON_MACHINE_PLATFORM=$machine_platform
 
     case "$os_platform" in 
         Darwin)
-            if [[ "$machine_platform" == "$intel_amd_tag" ]]; then
+            version=
+            if [[ "$machine_platform" == "$intel_tag" ]]; then
                 version=$macOS_version_x86_64
                 export MACOSX_DEPLOYMENT_TARGET=$macOS_version_x86_64
             else
@@ -67,18 +67,18 @@ if [ -z "${GITHUB_TOKEN}" ]; then
   exit 1
 fi
 
-git tag -a -s  "v${version}" -m "${version}"
+git tag -a -s  "v${sdk_version}" -m "${sdk_version}"
 
 # Push the tag to the branch
-git push origin tag "v${version}"
+git push origin tag "v${sdk_version}"
 
-gh release create "v${version}" --title "Release ${version}" --notes "${release_notes}" --repo github.com/1Password/onepassword-sdk-python
+gh release create "v${sdk_version}" --title "Release ${sdk_version}" --notes "${release_notes}" --repo github.com/1Password/onepassword-sdk-python
 
 
 # Acquire the wheels for different OS
-build_wheels Darwin $intel_amd_tag
+build_wheels Darwin $intel_tag
 build_wheels Darwin $arm_tag
-build_wheels Linux $intel_amd_tag
+build_wheels Linux $intel_tag
 build_wheels Linux aarch64
 build_wheels Windows amd64
 
@@ -87,10 +87,10 @@ python3 -m build --sdist
 
 # Retag these as MacOS 11.0 and 10.9 as they are built for it but the platform tag does not get renamed as grabs your computers version regardless of whats set
 python3 -m wheel tags --platform-tag macosx_11_0_$arm_tag dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$arm_tag.whl
-python3 -m wheel tags --platform-tag macosx_10_9_$intel_amd_tag dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$intel_amd_tag.whl
+python3 -m wheel tags --platform-tag macosx_10_9_$intel_tag dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$intel_tag.whl
 
 # Remove the old wheels
-rm dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$intel_amd_tag.whl
+rm dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$intel_tag.whl
 rm dist/onepassword_sdk-$sdk_version-cp312-cp312-macosx_14_0_$arm_tag.whl
 
 # Release on PyPi
