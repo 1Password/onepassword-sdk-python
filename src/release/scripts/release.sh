@@ -79,7 +79,7 @@ build_wheels Windows amd64
 python3 -m build --sdist
 
 # Release on PyPi
-python3 -m twine upload --repository testpypi dist/* --verbose
+python3 -m twine upload --repository testpypi dist/*
 
 # Delete the dist folder after published
 rm -r dist src/*.egg-info
