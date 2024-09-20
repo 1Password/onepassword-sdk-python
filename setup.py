@@ -14,6 +14,7 @@ try:
             # This platform naming is sufficient for distributing this package via source cloning (e.g. pip + GitHub) since the wheel will be built locally
             # for each user's platform: https://packaging.python.org/en/latest/specifications/platform-compatibility-tags/#basic-platform-tags
             self.plat_name = get_platform().translate({"-": "_", ".": "_"})
+            self.plat_name_supplied = True
 except ImportError:
     bdist_wheel = None
 
