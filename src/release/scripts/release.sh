@@ -68,7 +68,6 @@ git push origin tag "v${sdk_version}"
 
 gh release create "v${sdk_version}" --title "Release ${sdk_version}" --notes "${release_notes}" --repo github.com/1Password/onepassword-sdk-python
 
-
 # Acquire the wheels for different OS
 build_wheels Darwin x86_64
 build_wheels Darwin arm64
@@ -84,3 +83,4 @@ python3 -m twine upload --repository testpypi dist/* --verbose
 
 # Delete the dist folder after published
 rm -r dist src/*.egg-info
+
