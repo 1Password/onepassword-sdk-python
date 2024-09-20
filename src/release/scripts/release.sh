@@ -45,7 +45,7 @@ build_wheels() {
 }
 
 # Read the contents of the files into variables
-sdk_version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "src/release/version.py")
+version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "src/release/version.py")
 build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "src/release/version.py")
 release_notes=$(< src/release/RELEASE-NOTES)
 
@@ -61,12 +61,12 @@ if [ -z "${GITHUB_TOKEN}" ]; then
   exit 1
 fi
 
-git tag -a -s  "v${sdk_version}" -m "${sdk_version}"
+git tag -a -s  "v${version}" -m "${version}"
 
 # Push the tag to the branch
-git push origin tag "v${sdk_version}"
+git push origin tag "v${version}"
 
-gh release create "v${sdk_version}" --title "Release ${sdk_version}" --notes "${release_notes}" --repo github.com/1Password/onepassword-sdk-python
+gh release create "v${version}" --title "Release ${version}" --notes "${release_notes}" --repo github.com/1Password/onepassword-sdk-python
 
 # Acquire the wheels for different OS
 build_wheels Darwin x86_64
