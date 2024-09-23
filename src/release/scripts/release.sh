@@ -3,6 +3,10 @@
 # Helper script to release the Python SDK
 
 set -e
+
+# The list of python verisons the SDKs release for
+python_versions=("3.8" "3.9" "3.10" "3.11" "3.12")
+
 # Minimum glibc version we support
 glibc_version=2-32
 
@@ -40,7 +44,7 @@ build_wheels() {
             ;;
     esac
 
-    python3 -m build --wheel
+    pyenv exec python setup.py bdist_wheel
     rm -rf build
 }
 
@@ -68,12 +72,16 @@ git push origin tag "v${version}"
 
 gh release create "v${version}" --title "Release ${version}" --notes "${release_notes}" --repo github.com/1Password/onepassword-sdk-python
 
+
 # Acquire the wheels for different OS
+for version in "${python_versions[@]}"; do
+pyenv global $version
 build_wheels Darwin x86_64
 build_wheels Darwin arm64
 build_wheels Linux x86_64
 build_wheels Linux aarch64
 build_wheels Windows amd64
+done
 
 # Build Source as well incase wheels fails, pypi can install this as backup (standard practice)
 python3 -m build --sdist

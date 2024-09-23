@@ -1,6 +1,19 @@
 ## How to Prepare a Release for the Python SDK
 
-Before running this script, the user must make sure that they have the write permissions to the Python SDK repository.
+Before running this script, the user must make sure that they have the write permissions to the Python SDK repository and you have pyenv installed: You can do so by doing the following if your on macOS:
+
+```
+brew install pyenv
+```
+
+The following versions and packages must be installed for each Python Version to use pyenv:
+```
+Python 3.8 + wheels (pyenv install 3.8) + (pyenv exec pip install wheels)
+Python 3.9 + wheels (pyenv install 3.9) + (pyenv exec pip install wheels)
+Python 3.10 + wheels (pyenv install 3.10) + (pyenv exec pip install wheels)
+Python 3.11 + wheels (pyenv install 3.11) + (pyenv exec pip install wheels)
+Python 3.12 + wheels + setuptools (pyenv install 3.12) + (pyenv exec pip install wheels setuptools)
+```
 
 Step 1. Make any changes to the SDK as required on a feature branch or main branch.
 NOTE: If ran on a main branch, a release branch will be created.
@@ -15,8 +28,10 @@ Step 3. Ensure that the correct files have been updated - i.e. version/build fil
 
 Step 4. Ensure your GITHUB_TOKEN environment variable is set as this will allow you to create the tags/release and push it.
 
-Step 5. If everything looks good, at the root of the repo, run:
+Step 6. Ensure you have the PyPi credentials to login when uploading the source and wheels to PyPi.
+
+Step 7. If everything looks good, at the root of the repo, run:
 ```
 make release
 ```
-Step 6. Congratulations, you have released the newest Python SDK!
+Step 8. Congratulations, you have released the newest Python SDK!
