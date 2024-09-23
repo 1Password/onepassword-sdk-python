@@ -68,6 +68,6 @@ setup(
     cmdclass={"bdist_wheel": bdist_wheel},
     package_data={"": get_shared_library_data_to_include()},
     install_requires=[
-        "pydantic",
+        "pydantic>=2.5", # Minimum Pydantic version to run the Python SDK
     ],
 )
