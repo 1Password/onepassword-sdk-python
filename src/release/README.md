@@ -6,13 +6,9 @@ Before running this script, the user must make sure that they have the write per
 brew install pyenv
 ```
 
-The following versions and packages must be installed for each Python Version to use pyenv:
+Run this make command to install all dependencies required for pyenv:
 ```
-Python 3.8 + wheels (pyenv install 3.8) + (pyenv exec pip install wheels)
-Python 3.9 + wheels (pyenv install 3.9) + (pyenv exec pip install wheels)
-Python 3.10 + wheels (pyenv install 3.10) + (pyenv exec pip install wheels)
-Python 3.11 + wheels (pyenv install 3.11) + (pyenv exec pip install wheels)
-Python 3.12 + wheels + setuptools (pyenv install 3.12) + (pyenv exec pip install wheels setuptools)
+release/install-dependencies
 ```
 
 Step 1. Make any changes to the SDK as required on a feature branch or main branch.

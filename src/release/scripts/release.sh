@@ -5,12 +5,12 @@
 set -e
 
 # The list of python verisons the SDKs release for
-python_versions=("3.8" "3.9" "3.10" "3.11" "3.12")
+python_versions=("$@")
 
 # Minimum glibc version we support
 glibc_version=2-32
 
-# These versions are being supported due to the SDKs supporting Python 3.8+
+# These versions are being supported due to the SDKs supporting Python 3.9+
 macOS_version_x86_64=10.9
 macOS_version_arm64=11.0
 
@@ -75,7 +75,7 @@ gh release create "v${version}" --title "Release ${version}" --notes "${release_
 
 # Acquire the wheels for different OS
 for version in "${python_versions[@]}"; do
-pyenv global $version
+pyenv local $version
 build_wheels Darwin x86_64
 build_wheels Darwin arm64
 build_wheels Linux x86_64
@@ -87,7 +87,7 @@ done
 python3 -m build --sdist
 
 # Release on PyPi
-python3 -m twine upload --repository testpypi dist/*
+python3 -m twine upload dist/*
 
 # Delete the dist folder after published
 rm -r dist src/*.egg-info
