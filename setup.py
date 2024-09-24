@@ -55,9 +55,15 @@ setup(
     packages=find_packages(
         where="src",
     ),
+    license="MIT",
+    license_files="LICENSE",
     package_dir={"": "src"},
     python_requires=">=3.9",
     classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
     "Programming Language :: Python :: 3.9",
     "Programming Language :: Python :: 3.10",
     "Programming Language :: Python :: 3.11",
