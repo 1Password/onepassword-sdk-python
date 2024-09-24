@@ -7,6 +7,9 @@ prep-release:
 	src/release/scripts/prep-release.sh
 
 release/install-dependencies:
+# Install pyenv
+	brew install pyenv
+	
 # Install all the python versions we support in one line
 	pyenv install --skip-existing $(PYTHON_VERSIONS)
 

@@ -1,12 +1,8 @@
 ## How to Prepare a Release for the Python SDK
 
-Before running this script, the user must make sure that they have the write permissions to the Python SDK repository and you have pyenv installed: You can do so by doing the following if your on macOS:
+Before running this script, the user must make sure that they have the write permissions to the Python SDK repository.
 
-```
-brew install pyenv
-```
-
-Run this make command to install all dependencies required for pyenv:
+Run this make command to install all dependencies required for the Python SDK release process.
 ```
 release/install-dependencies
 ```
