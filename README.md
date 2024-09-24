@@ -18,7 +18,7 @@
 
 The 1Password Python SDK is compatible with:
 
-- `python` 3.8 or later
+- `python` 3.9 or later
 - `libssl` 3
 - `glibc` 2.32 or later
 
