@@ -9,6 +9,9 @@ prep-release:
 release/install-dependencies:
 # Install pyenv
 	brew install pyenv
+
+# Install build
+	pip3 install build
 	
 # Install all the python versions we support in one line
 	pyenv install --skip-existing $(PYTHON_VERSIONS)
