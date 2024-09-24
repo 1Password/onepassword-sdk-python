@@ -11,7 +11,7 @@ release/install-dependencies:
 	brew install pyenv
 
 # Install build
-	pip3 install build
+	pip install build --break-system-packages
 	
 # Install all the python versions we support in one line
 	pyenv install --skip-existing $(PYTHON_VERSIONS)
