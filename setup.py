@@ -1,6 +1,7 @@
 from pathlib import Path
 from setuptools import setup, find_packages
 from sysconfig import get_platform
+from version import SDK_VERSION
 import platform
 import os
 
@@ -46,7 +47,7 @@ def get_shared_library_data_to_include():
 
 setup(
     name="onepassword-sdk",
-    version="0.1.1",
+    version=SDK_VERSION,
     author="1Password",
     long_description= (Path(__file__).parent / "README.md").read_text(),
     long_description_content_type='text/markdown',

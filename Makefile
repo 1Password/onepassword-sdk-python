@@ -1,10 +1,10 @@
 PYTHON_VERSIONS := 3.9 3.10 3.11 3.12
 
 release:
-	src/release/scripts/release.sh $(PYTHON_VERSIONS)
+	src/release/scripts/release.sh
 
 prep-release:
-	src/release/scripts/prep-release.sh
+	src/release/scripts/prep-release.sh $(PYTHON_VERSIONS)
 
 release/install-dependencies:
 # Install pyenv

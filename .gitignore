@@ -2,7 +2,7 @@
 .idea
 *__pycache__
 dist/
-onepassword.egg-info/
 .DS_Store
 build/
 .python-version
+onepassword_sdk.egg-info/
