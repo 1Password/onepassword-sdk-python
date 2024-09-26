@@ -128,8 +128,8 @@ update_and_validate_version
 update_and_validate_build 
 
 # Acquire the wheels for different OS
-for version in "${python_versions[@]}"; do
-pyenv local $version
+for python_version in "${python_versions[@]}"; do
+pyenv local $python_version
 build_wheels Darwin x86_64
 build_wheels Darwin arm64
 build_wheels Linux x86_64
