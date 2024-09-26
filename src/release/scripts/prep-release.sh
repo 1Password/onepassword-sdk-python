@@ -100,7 +100,7 @@ build_wheels() {
                 macos_version=$macOS_version_arm64
             fi
 
-            export _PYTHON_HOST_PLATFORM="macosx-${version}-${PYTHON_MACHINE_PLATFORM}"
+            export _PYTHON_HOST_PLATFORM="macosx-${macos_version}-${PYTHON_MACHINE_PLATFORM}"
             ;;
         Linux)
             export _PYTHON_HOST_PLATFORM="manylinux-${glibc_version}-${PYTHON_MACHINE_PLATFORM}"
