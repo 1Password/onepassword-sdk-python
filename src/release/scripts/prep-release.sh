@@ -93,11 +93,11 @@ build_wheels() {
 
     case "$os_platform" in 
         Darwin)
-            version=
+            macos_version=
             if [[ "$machine_platform" == "x86_64" ]]; then
-                version=$macOS_version_x86_64
+                macos_version=$macOS_version_x86_64
             else
-                version=$macOS_version_arm64
+                macos_version=$macOS_version_arm64
             fi
 
             export _PYTHON_HOST_PLATFORM="macosx-${version}-${PYTHON_MACHINE_PLATFORM}"
