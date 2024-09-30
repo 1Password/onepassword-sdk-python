@@ -96,11 +96,11 @@ async def main():
 
     print(dict(item))
 
-    # [developer-docs.sdk.python.edit-item]-start
+    # [developer-docs.sdk.python.update-item]-start
     # Update a field in your item
     item.fields[0].value = "new_value"
     updated_item = await client.items.put(item)
-    # [developer-docs.sdk.python.edit-item]-end
+    # [developer-docs.sdk.python.update-item]-end
 
     print(dict(updated_item))
     # [developer-docs.sdk.python.delete-item]-start
