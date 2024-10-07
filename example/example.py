@@ -49,17 +49,13 @@ async def main():
                 id="username",
                 title="username",
                 field_type="Text",
-                section_id=None,
                 value="mynameisjeff",
-                details=None,
             ),
             ItemField(
                 id="password",
                 title="password",
                 field_type="Concealed",
-                section_id=None,
                 value="jeff",
-                details=None,
             ),
             ItemField(
                 id="onetimepassword",
@@ -67,7 +63,6 @@ async def main():
                 field_type="Totp",
                 section_id="totpsection",
                 value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
-                details=None,
             ),
         ],
         sections=[
