@@ -28,7 +28,7 @@ class Client:
         authenticated_client.secrets = Secrets(client_id)
         authenticated_client.items = Items(client_id)
         authenticated_client.vaults = Vaults(client_id)
-        authenticated_client.finalizer = weakref.finalize(
+        authenticated_client._finalizer = weakref.finalize(
             cls, _release_client, client_id
         )
 

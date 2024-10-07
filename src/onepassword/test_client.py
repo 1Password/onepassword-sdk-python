@@ -33,7 +33,7 @@ async def test_invalid_resolve():
     )
     with pytest.raises(
         Exception,
-        match='error resolving secret reference: secret reference is not prefixed with "op://"',
+        match='error resolving secret reference: the secret reference could not be parsed: secret reference is not prefixed with "op://"',
     ):
         await client.secrets.resolve(secret_reference="invalid_reference")
 
