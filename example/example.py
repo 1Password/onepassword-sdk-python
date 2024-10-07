@@ -74,6 +74,7 @@ async def main():
             ItemSection(id="", title=""),
             ItemSection(id="totpsection", title=""),
         ],
+        tags=["test tag 1", "test tag 2"]
     )
     created_item = await client.items.create(to_create)
     # [developer-docs.sdk.python.create-item]-end
