@@ -102,7 +102,10 @@ def test_good_new_onepassword_default_config():
         config["integrationVersion"] == onepassword_defaults.DEFAULT_INTEGRATION_VERSION
     )
     assert config["requestLibraryName"] == onepassword_defaults.DEFAULT_REQUEST_LIBRARY
-    assert config["requestLibraryVersion"] == onepassword_defaults.DEFAULT_REQUEST_LIBRARY_VERSION
+    assert (
+        config["requestLibraryVersion"]
+        == onepassword_defaults.DEFAULT_REQUEST_LIBRARY_VERSION
+    )
     assert config["os"] == platform.system().lower()
     assert config["osVersion"] == onepassword_defaults.DEFAULT_OS_VERSION
     assert config["architecture"] == platform.machine()
