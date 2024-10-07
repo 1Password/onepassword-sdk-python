@@ -1,8 +1,10 @@
 import asyncio
 import os
+
 # [developer-docs.sdk.python.sdk-import]-start
 from onepassword import *
 # [developer-docs.sdk.python.sdk-import]-end
+
 
 async def main():
     # [developer-docs.sdk.python.client-initialization]-start
@@ -23,13 +25,12 @@ async def main():
     async for vault in vaults:
         print(vault.title)
     # [developer-docs.sdk.python.list-vaults]-end
-    
+
     # [developer-docs.sdk.python.list-items]-start
     items = await client.items.list_all(vault.id)
     async for item in items:
         print(item.title)
     # [developer-docs.sdk.python.list-items]-end
-
 
     # [developer-docs.sdk.python.resolve-secret]-start
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
@@ -107,6 +108,7 @@ async def main():
     # Delete a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
+
 
 if __name__ == "__main__":
     asyncio.run(main())
