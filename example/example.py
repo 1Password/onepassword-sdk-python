@@ -32,6 +32,14 @@ async def main():
         print(item.title)
     # [developer-docs.sdk.python.list-items]-end
 
+    # [developer-docs.sdk.python.validate-secret-reference]-start
+    # Validate secret reference to ensure no syntax errors
+    try:
+        await Secrets.validate_secret_reference("op//vault/item/field")
+    except Exception as error:
+        print(error)
+    # [developer-docs.sdk.python.validate-secret-reference]-end
+
     # [developer-docs.sdk.python.resolve-secret]-start
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     value = await client.secrets.resolve("op://vault/item/field")
