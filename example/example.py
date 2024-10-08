@@ -35,7 +35,7 @@ async def main():
     # [developer-docs.sdk.python.validate-secret-reference]-start
     # Validate secret reference to ensure no syntax errors
     try:
-        await Secrets.validate_secret_reference("op//vault/item/field")
+        await Secrets.validate_secret_reference("op://vault/item/field")
     except Exception as error:
         print(error)
     # [developer-docs.sdk.python.validate-secret-reference]-end
@@ -51,7 +51,7 @@ async def main():
     to_create = ItemCreateParams(
         title="MyName",
         category="Login",
-        vault_id="q73bqltug6xoegr3wkk2zkenoq",
+        vault_id="7turaasywpymt3jecxoxk5roli",
         fields=[
             ItemField(
                 id="username",
@@ -83,6 +83,12 @@ async def main():
     # [developer-docs.sdk.python.create-item]-end
 
     print(dict(created_item))
+
+    # [developer-docs.sdk.python.resolve-totp-code]-start
+    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
+    code = await client.secrets.resolve(f"op://{created_item.vault_id}/{created_item.id}/TOTP_onetimepassword?attribute=totp")
+    print(code)
+    # [developer-docs.sdk.python.resolve-totp-code]-end
 
     # [developer-docs.sdk.python.get-totp-item-crud]-start
     # Fetch a totp code from the item
