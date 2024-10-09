@@ -1,6 +1,6 @@
 The v0.1.2 release of the Python SDK brings:
 * Support for item tags. You can now create, get, and edit tags within your 1Password items using item CRUD functions.
 * Support for fetching one-time password codes using secret references. You can now fetch your TOTP code with the `secrets.resolve` function, using a secret reference for the TOTP field in your item. For example: "op://vault/item/field?=attribute=totp"
-* PyPI wheels for the Python SDK. You can now install the Python SDK via `pip3 install onepassword-sdk`
+* PyPI wheels for the Python SDK. You can now install the Python SDK via `pip install onepassword-sdk`
 * Full support for optional values. You no longer have to manually set `details: None` or `section: None` when instantiating `ItemCreateParams`.
 * Item creation now only requires specifying the vault ID, item category, and item title.

@@ -46,7 +46,7 @@ To use the 1Password Python SDK in your project:
 3. Install the 1Password Python SDK in your project:
 
    ```bash
-   pip install git+https://git@github.com/1Password/onepassword-sdk-python.git@v0.1.1
+   pip install onepassword-sdk
    ```
 
 4. Use the Python SDK in your project:
@@ -88,7 +88,7 @@ Operations:
 - [x] [Update items](https://developer.1password.com/docs/sdks/manage-items#update-an-item)
 - [x] [Delete items](https://developer.1password.com/docs/sdks/manage-items#delete-an-item)
 - [x] [List items](https://developer.1password.com/docs/sdks/list-vaults-items/)
-- [ ] Add & update tags on items
+- [x] Add & update tags on items
 
 Field types:
 - [x] API Keys
