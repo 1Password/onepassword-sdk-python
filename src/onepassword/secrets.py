@@ -30,19 +30,3 @@ class Secrets:
             }
         )
         return str(loads(response))
-
-    @staticmethod
-    async def validate_secret_reference(secret_reference):
-        """
-        Validate the secret reference to ensure there are no syntax errors.
-        """
-        await _invoke(
-            {
-                "invocation": {
-                    "parameters": {
-                        "name": "ValidateSecretReference",
-                        "parameters": {"secret_reference": secret_reference},
-                    }
-                }
-            }
-        )
