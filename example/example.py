@@ -1,8 +1,10 @@
 import asyncio
 import os
+
 # [developer-docs.sdk.python.sdk-import]-start
 from onepassword import *
 # [developer-docs.sdk.python.sdk-import]-end
+
 
 async def main():
     # [developer-docs.sdk.python.client-initialization]-start
@@ -23,13 +25,12 @@ async def main():
     async for vault in vaults:
         print(vault.title)
     # [developer-docs.sdk.python.list-vaults]-end
-    
+
     # [developer-docs.sdk.python.list-items]-start
     items = await client.items.list_all(vault.id)
     async for item in items:
         print(item.title)
     # [developer-docs.sdk.python.list-items]-end
-
 
     # [developer-docs.sdk.python.resolve-secret]-start
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
@@ -42,23 +43,19 @@ async def main():
     to_create = ItemCreateParams(
         title="MyName",
         category="Login",
-        vault_id="q73bqltug6xoegr3wkk2zkenoq",
+        vault_id="7turaasywpymt3jecxoxk5roli",
         fields=[
             ItemField(
                 id="username",
                 title="username",
                 field_type="Text",
-                section_id=None,
                 value="mynameisjeff",
-                details=None,
             ),
             ItemField(
                 id="password",
                 title="password",
                 field_type="Concealed",
-                section_id=None,
                 value="jeff",
-                details=None,
             ),
             ItemField(
                 id="onetimepassword",
@@ -66,18 +63,24 @@ async def main():
                 field_type="Totp",
                 section_id="totpsection",
                 value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
-                details=None,
             ),
         ],
         sections=[
             ItemSection(id="", title=""),
             ItemSection(id="totpsection", title=""),
         ],
+        tags=["test tag 1", "test tag 2"]
     )
     created_item = await client.items.create(to_create)
     # [developer-docs.sdk.python.create-item]-end
 
     print(dict(created_item))
+
+    # [developer-docs.sdk.python.resolve-totp-code]-start
+    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
+    code = await client.secrets.resolve(f"op://{created_item.vault_id}/{created_item.id}/TOTP_onetimepassword?attribute=totp")
+    print(code)
+    # [developer-docs.sdk.python.resolve-totp-code]-end
 
     # [developer-docs.sdk.python.get-totp-item-crud]-start
     # Fetch a totp code from the item
@@ -107,6 +110,7 @@ async def main():
     # Delete a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
+
 
 if __name__ == "__main__":
     asyncio.run(main())

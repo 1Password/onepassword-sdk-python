@@ -1,7 +1,6 @@
-This is the v0 release of the 1Password Python SDK.
-
-The 1Password Python SDK allows you to build secrets management integrations that can programmatically access secrets stored in 1Password. With this SDK, you can:
-
-- [Securely load secrets](https://developer.1password.com/docs/sdks/load-secrets/) from 1Password into your code with secret references.
-- [Read, write, and update secrets](https://developer.1password.com/docs/sdks/manage-items/) stored in 1Password, including passwords, API keys, and one-time passwords.
-- [List items and vaults](https://developer.1password.com/docs/sdks/list-vaults-items/) in a 1Password account.
+The v0.1.2 release of the Python SDK brings:
+* Support for item tags. You can now create, get, and edit tags within your 1Password items using item CRUD functions.
+* Support for fetching one-time password codes using secret references. You can now fetch your TOTP code with the `secrets.resolve` function, using a secret reference for the TOTP field in your item. For example: "op://vault/item/field?=attribute=totp"
+* PyPI wheels for the Python SDK. You can now install the Python SDK via `pip install onepassword-sdk`
+* Full support for optional values. You no longer have to manually set `details: None` or `section: None` when instantiating `ItemCreateParams`.
+* Item creation now only requires specifying the vault ID, item category, and item title.

@@ -33,7 +33,7 @@ async def test_invalid_resolve():
     )
     with pytest.raises(
         Exception,
-        match='error resolving secret reference: secret reference is not prefixed with "op://"',
+        match='error resolving secret reference: the secret reference could not be parsed: secret reference is not prefixed with "op://"',
     ):
         await client.secrets.resolve(secret_reference="invalid_reference")
 
@@ -102,7 +102,10 @@ def test_good_new_onepassword_default_config():
         config["integrationVersion"] == onepassword_defaults.DEFAULT_INTEGRATION_VERSION
     )
     assert config["requestLibraryName"] == onepassword_defaults.DEFAULT_REQUEST_LIBRARY
-    assert config["requestLibraryVersion"] == onepassword_defaults.DEFAULT_REQUEST_LIBRARY_VERSION
+    assert (
+        config["requestLibraryVersion"]
+        == onepassword_defaults.DEFAULT_REQUEST_LIBRARY_VERSION
+    )
     assert config["os"] == platform.system().lower()
     assert config["osVersion"] == onepassword_defaults.DEFAULT_OS_VERSION
     assert config["architecture"] == platform.machine()
