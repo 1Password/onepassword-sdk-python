@@ -70,6 +70,13 @@ async def main():
             ItemSection(id="totpsection", title=""),
         ],
         tags=["test tag 1", "test tag 2"],
+        websites=[
+            Website(
+                label="my custom website",
+                url="https://example.com",
+                autofill_behavior="AnywhereOnWebsite"
+            )
+        ],
     )
     created_item = await client.items.create(to_create)
     # [developer-docs.sdk.python.create-item]-end
@@ -104,6 +111,13 @@ async def main():
     # [developer-docs.sdk.python.update-item]-start
     # Update a field in your item
     item.fields[0].value = "new_value"
+    item.websites.append(
+        Website(
+            label="my custom website 2",
+            url="https://example2.com",
+            autofill_behavior="Never"
+        ),
+    )
     updated_item = await client.items.put(item)
     # [developer-docs.sdk.python.update-item]-end
 
