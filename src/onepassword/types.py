@@ -99,6 +99,26 @@ class ItemSection(BaseModel):
     """
 
 
+AutofillBehavior = Literal["AnywhereOnWebsite", "ExactDomain", "Never"]
+
+
+class Website(BaseModel):
+    url: str
+    """
+    The website URL
+    """
+    label: str
+    """
+    The label of the website, e.g. 'website', 'sign-in address'
+    """
+    autofill_behavior: AutofillBehavior
+    """
+    The auto-fill behavior of the website
+    
+    For more information, visit https://support.1password.com/autofill-behavior/
+    """
+
+
 class Item(BaseModel):
     """
     Represents a 1Password item.
@@ -134,6 +154,10 @@ class Item(BaseModel):
     """
     The item's tags
     """
+    websites: List[Website]
+    """
+    The websites used for autofilling for items of the Login and Password categories.
+    """
     version: int
     """
     The item's version
@@ -167,6 +191,10 @@ class ItemCreateParams(BaseModel):
     """
     The item's tags
     """
+    websites: Optional[List[Website]] = None
+    """
+    The websites used for autofilling for items of the Login and Password categories.
+    """
 
 
 class ItemOverview(BaseModel):
@@ -191,6 +219,10 @@ class ItemOverview(BaseModel):
     vault_id: Annotated[str, Field(alias="vaultId")]
     """
     The ID of the vault where the item is saved
+    """
+    websites: List[Website]
+    """
+    The websites used for autofilling for items of the Login and Password categories.
     """
 
 

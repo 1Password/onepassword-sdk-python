@@ -69,7 +69,7 @@ async def main():
             ItemSection(id="", title=""),
             ItemSection(id="totpsection", title=""),
         ],
-        tags=["test tag 1", "test tag 2"]
+        tags=["test tag 1", "test tag 2"],
     )
     created_item = await client.items.create(to_create)
     # [developer-docs.sdk.python.create-item]-end
@@ -78,7 +78,9 @@ async def main():
 
     # [developer-docs.sdk.python.resolve-totp-code]-start
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
-    code = await client.secrets.resolve(f"op://{created_item.vault_id}/{created_item.id}/TOTP_onetimepassword?attribute=totp")
+    code = await client.secrets.resolve(
+        f"op://{created_item.vault_id}/{created_item.id}/TOTP_onetimepassword?attribute=totp"
+    )
     print(code)
     # [developer-docs.sdk.python.resolve-totp-code]-end
 
