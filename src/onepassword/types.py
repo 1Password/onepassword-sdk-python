@@ -103,6 +103,8 @@ AutofillBehavior = Literal["AnywhereOnWebsite", "ExactDomain", "Never"]
 
 
 class Website(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
     url: str
     """
     The website URL
@@ -111,7 +113,7 @@ class Website(BaseModel):
     """
     The label of the website, e.g. 'website', 'sign-in address'
     """
-    autofill_behavior: AutofillBehavior
+    autofill_behavior: Annotated[AutofillBehavior, Field(alias="autofillBehavior")]
     """
     The auto-fill behavior of the website
     

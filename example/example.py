@@ -74,7 +74,7 @@ async def main():
             Website(
                 label="my custom website",
                 url="https://example.com",
-                autofill_behavior="AnywhereOnWebsite"
+                autofill_behavior="AnywhereOnWebsite",
             )
         ],
     )
@@ -115,7 +115,7 @@ async def main():
         Website(
             label="my custom website 2",
             url="https://example2.com",
-            autofill_behavior="Never"
+            autofill_behavior="Never",
         ),
     )
     updated_item = await client.items.put(item)
