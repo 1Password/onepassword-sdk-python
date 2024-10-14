@@ -93,8 +93,8 @@ build_wheels() {
     rm -rf build
 }
 
-# Ensure working directory is clean
-enforce_latest_code
+# # Ensure working directory is clean
+# enforce_latest_code
 
 # Update and validate the version number
 update_and_validate_version
@@ -102,18 +102,18 @@ update_and_validate_version
 # Update version in version.py
 sed  -e "s/{{ version }}/$version/" "$version_template_file" > "$output_version_file"
 
-# Acquire the wheels for different OS
-for python_version in "${python_versions[@]}"; do
-pyenv local $python_version
-build_wheels Darwin x86_64
-build_wheels Darwin arm64
-build_wheels Linux x86_64
-build_wheels Linux aarch64
-build_wheels Windows amd64
-done
+# # Acquire the wheels for different OS
+# for python_version in "${python_versions[@]}"; do
+# pyenv local $python_version
+# build_wheels Darwin x86_64
+# build_wheels Darwin arm64
+# build_wheels Linux x86_64
+# build_wheels Linux aarch64
+# build_wheels Windows amd64
+# done
 
-# Build Source as well incase wheels fails, pypi can install this as backup (standard practice)
-python3 -m build --sdist
+# # Build Source as well incase wheels fails, pypi can install this as backup (standard practice)
+# python3 -m build --sdist
 
 printf "Press ENTER to edit the RELEASE-NOTES in your default editor...\n"
 read -r _ignore
