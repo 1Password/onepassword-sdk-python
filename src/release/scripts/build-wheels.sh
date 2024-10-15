@@ -35,13 +35,6 @@ enforce_latest_code() {
         echo "Please stash your changes and try again."
         exit 1
     fi
-
-    git fetch --quiet origin main
-    if [[ "$(git rev-parse HEAD)" != "$(git rev-parse origin/main)" ]]; then
-        echo "ERROR: This script was not run from the latest code from origin/main."
-        echo "Make sure to update your git branch with the latest from main and try again."
-        exit 1
-    fi
 }
 
 build_wheels() {
