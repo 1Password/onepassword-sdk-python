@@ -1,4 +1,4 @@
-PYTHON_VERSIONS := 3.9 3.10 3.11 3.12
+PYTHON_VERSIONS := 3.9 3.10 3.11 3.12 3.13
 
 release:
 	src/release/scripts/release.sh
@@ -10,11 +10,8 @@ build-wheels:
 	src/release/scripts/build-wheels.sh $(PYTHON_VERSIONS)
 
 release/install-dependencies:
-# Install pyenv
-	brew install pyenv
-
-# Install build
-	pip install build --break-system-packages
+# Check if pyenv is installed
+	$(MAKE) check-pyenv-is-present
 	
 # Install all the python versions we support in one line
 	pyenv install --skip-existing $(PYTHON_VERSIONS)
@@ -22,5 +19,8 @@ release/install-dependencies:
 # Set pyenv local and install dependencies for each version
 	for version in $(PYTHON_VERSIONS); do \
 		pyenv local $$version; \
-		pyenv exec pip install wheel setuptools; \
+		pyenv exec pip install wheel setuptools build; \
 	done
+
+check-pyenv-is-present:
+	@command -v pyenv > /dev/null 2>&1 || { echo "pyenv is not installed.\nInstall it first (brew install pyenv) and rerun the command.\n\n"; exit 1; }

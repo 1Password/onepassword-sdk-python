@@ -67,7 +67,7 @@ build_wheels() {
             ;;
     esac
 
-    pyenv exec python setup.py bdist_wheel
+    pyenv exec python3 -m build --wheel
     rm -rf build
 }
 
@@ -85,4 +85,4 @@ for python_version in "${python_versions[@]}"; do
 done
 
 # Build Source as well incase wheels fails, pypi can install this as backup (standard practice)
-python3 setup.py sdist
+pyenv exec python3 -m build --sdist
