@@ -4,7 +4,10 @@ release:
 	src/release/scripts/release.sh
 
 prep-release:
-	src/release/scripts/prep-release.sh $(PYTHON_VERSIONS)
+	src/release/scripts/prep-release.sh
+
+build-wheels:
+	src/release/scripts/build-wheels.sh $(PYTHON_VERSIONS)
 
 release/install-dependencies:
 # Install pyenv

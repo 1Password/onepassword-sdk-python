@@ -56,6 +56,7 @@ setup(
     packages=find_packages(
         where="src",
     ),
+    data_files=[('', ['version.py'])],
     license="MIT",
     license_files="LICENSE",
     package_dir={"": "src"},
