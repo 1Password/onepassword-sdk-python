@@ -41,7 +41,7 @@ async def main():
     # [developer-docs.sdk.python.resolve-secret]-end
 
     # [developer-docs.sdk.python.create-item]-start
-    # Createsan item with a username, password, one-time password, autofill website, and tags.
+    # Creates an item with a username, password, one-time password, autofill website, and tags.
     to_create = ItemCreateParams(
         title="MyName",
         category="Login",
