@@ -11,35 +11,37 @@ async def main():
     # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
 
-    # Connects to 1Password.
+    # Creates an authenticated client.
     client = await Client.authenticate(
         auth=token,
-        # Set the following to your own integration name and version.
+        # To do: Set the following to your own integration name and version.
         integration_name="My 1Password Integration",
         integration_version="v1.0.0",
     )
     # [developer-docs.sdk.python.client-initialization]-end
 
     # [developer-docs.sdk.python.list-vaults]-start
+    # Lists all vaults in an account.
     vaults = await client.vaults.list_all()
     async for vault in vaults:
         print(vault.title)
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
+    # Lists all items in a vault.
     items = await client.items.list_all(vault.id)
     async for item in items:
         print(item.title)
     # [developer-docs.sdk.python.list-items]-end
 
     # [developer-docs.sdk.python.resolve-secret]-start
-    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
+    # Fetches the value of a field in 1Password using a secret reference.
     value = await client.secrets.resolve("op://vault/item/field")
     print(value)
     # [developer-docs.sdk.python.resolve-secret]-end
 
     # [developer-docs.sdk.python.create-item]-start
-    # Create an Item and add it to your vault.
+    # Createsan item with a username, password, one-time password, autofill website, and tags.
     to_create = ItemCreateParams(
         title="MyName",
         category="Login",
@@ -84,7 +86,7 @@ async def main():
     print(dict(created_item))
 
     # [developer-docs.sdk.python.resolve-totp-code]-start
-    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
+    # Gets a one-time password code using a secret reference with the totp query parameter.
     code = await client.secrets.resolve(
         f"op://{created_item.vault_id}/{created_item.id}/TOTP_onetimepassword?attribute=totp"
     )
@@ -92,7 +94,7 @@ async def main():
     # [developer-docs.sdk.python.resolve-totp-code]-end
 
     # [developer-docs.sdk.python.get-totp-item-crud]-start
-    # Fetch a totp code from the item
+    # Fetches a one-time password code from the newly-created item.
     for f in created_item.fields:
         if f.field_type == "Totp":
             if f.details.content.error_message is not None:
@@ -102,14 +104,14 @@ async def main():
     # [developer-docs.sdk.python.get-totp-item-crud]-end
 
     # [developer-docs.sdk.python.get-item]-start
-    # Retrieve an item from your vault.
+    # Gets an item.
     item = await client.items.get(created_item.vault_id, created_item.id)
     # [developer-docs.sdk.python.get-item]-end
 
     print(dict(item))
 
     # [developer-docs.sdk.python.update-item]-start
-    # Update a field in your item
+    # Updates an item to change the value of a field and add a new autofill website.
     item.fields[0].value = "new_value"
     item.websites.append(
         Website(
@@ -123,7 +125,7 @@ async def main():
 
     print(dict(updated_item))
     # [developer-docs.sdk.python.delete-item]-start
-    # Delete a item from your vault.
+    # Deletes an item.
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
 
