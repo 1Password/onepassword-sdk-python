@@ -18,7 +18,12 @@ Follow the scripts instructions and the release has now been prepped.
 
 Step 3. Ensure that the correct files have been updated - i.e. version/build files, release-notes has been updated. Suggest doing a `git diff` to see the changes.
 
-Step 4. Ensure your GITHUB_TOKEN environment variable is set as this will allow you to create the tags/release and push it.
+Step 4. To build the wheels and source distrubition for PyPi, run in the root of the repo:
+```
+make build-wheels
+```
+
+Step 5. Ensure your GITHUB_TOKEN environment variable is set as this will allow you to create the tags/release and push it.
 
 Step 6. Ensure you have the PyPi credentials to login when uploading the source and wheels to PyPi.
 

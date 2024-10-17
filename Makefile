@@ -19,7 +19,7 @@ release/install-dependencies:
 # Set pyenv local and install dependencies for each version
 	for version in $(PYTHON_VERSIONS); do \
 		pyenv local $$version; \
-		pyenv exec pip install wheel setuptools build; \
+		pyenv exec pip3 install wheel setuptools build --break-system-packages; \
 	done
 
 check-pyenv-is-present:
