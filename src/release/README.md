@@ -16,9 +16,9 @@ make prep-release
 ```
 Follow the scripts instructions and the release has now been prepped.
 
-Step 3. Ensure that the correct files have been updated - i.e. version/build files, release-notes has been updated. Suggest doing a `git diff` to see the changes.
+Step 3. Ensure that the correct files have been updated - i.e. version/build files, release-notes has been updated. Check the latest commit on the branch to see your changes.
 
-Step 4. To build the wheels and source distrubition for PyPi, run in the root of the repo:
+Step 4. To build the wheels and source distribution for PyPi, run in the root of the repo:
 ```
 make build-wheels
 ```

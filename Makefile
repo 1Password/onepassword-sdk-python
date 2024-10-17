@@ -10,8 +10,8 @@ build-wheels:
 	src/release/scripts/build-wheels.sh $(PYTHON_VERSIONS)
 
 release/install-dependencies:
-# Check if pyenv is installed
-	$(MAKE) check-pyenv-is-present
+# Install latest version of pyenv if not already installed
+	brew install pyenv
 	
 # Install all the python versions we support in one line
 	pyenv install --skip-existing $(PYTHON_VERSIONS)
@@ -22,5 +22,3 @@ release/install-dependencies:
 		pyenv exec pip3 install wheel setuptools build --break-system-packages; \
 	done
 
-check-pyenv-is-present:
-	@command -v pyenv > /dev/null 2>&1 || { echo "pyenv is not installed.\nInstall it first (brew install pyenv) and rerun the command.\n\n"; exit 1; }
