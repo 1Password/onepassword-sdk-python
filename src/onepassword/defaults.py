@@ -1,7 +1,8 @@
 import platform
+from onepassword.build_number import SDK_BUILD_NUMBER
 
 SDK_LANGUAGE = "Python"
-SDK_VERSION = "0010301"
+SDK_VERSION = SDK_BUILD_NUMBER
 DEFAULT_INTEGRATION_NAME = "Unknown"
 DEFAULT_INTEGRATION_VERSION = "Unknown"
 DEFAULT_REQUEST_LIBRARY = "reqwest"
