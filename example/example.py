@@ -104,7 +104,7 @@ async def main():
     # [developer-docs.sdk.python.get-totp-item-crud]-end
 
     # [developer-docs.sdk.python.get-item]-start
-    # Retrieves an item from a vault.
+    # Retrieves the newly-created item.
     item = await client.items.get(created_item.vault_id, created_item.id)
     # [developer-docs.sdk.python.get-item]-end
 
