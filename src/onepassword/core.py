@@ -23,6 +23,7 @@ async def _init_client(client_config):
 async def _invoke(invoke_config):
     return await core.invoke(json.dumps(invoke_config))
 
+
 # Invoke calls specified business logic from the SDK core.
 def _invoke_sync(invoke_config):
     return core.invoke_sync(json.dumps(invoke_config))
