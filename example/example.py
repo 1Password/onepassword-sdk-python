@@ -50,19 +50,19 @@ async def main():
     # Create an Item and add it to your vault.
     to_create = ItemCreateParams(
         title="MyName",
-        category="Login",
+        category=ItemCategory.LOGIN,
         vault_id="7turaasywpymt3jecxoxk5roli",
         fields=[
             ItemField(
                 id="username",
                 title="username",
-                field_type="Text",
+                field_type=ItemFieldType.TEXT,
                 value="mynameisjeff",
             ),
             ItemField(
                 id="password",
                 title="password",
-                field_type="Concealed",
+                field_type=ItemFieldType.CONCEALED,
                 value="jeff",
             ),
             ItemField(
