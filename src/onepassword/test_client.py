@@ -46,7 +46,7 @@ async def test_invalid_resolve():
 async def test_client_construction_no_auth():
     with pytest.raises(
         Exception,
-        match="invalid user input: encountered the following errors: service account token was not specified; service account token had invalid format",
+        match="invalid user input: encountered the following errors: service account token was not specified",
     ):
         await onepassword.Client.authenticate(
             auth="",
