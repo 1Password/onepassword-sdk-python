@@ -123,7 +123,7 @@ async def main():
         Website(
             label="my custom website 2",
             url="https://example2.com",
-            autofill_behavior="Never",
+            autofill_behavior=AutofillBehavior.NEVER,
         ),
     )
     updated_item = await client.items.put(item)
