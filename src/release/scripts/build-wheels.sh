@@ -79,7 +79,7 @@ build_wheels() {
 }
 
 # Ensure that the current working directory is clean and building of wheels is made off of latest main
-# enforce_latest_code
+enforce_latest_code
 
 # Acquire the wheels for different OS
 for python_version in "${python_versions[@]}"; do
