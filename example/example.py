@@ -32,6 +32,14 @@ async def main():
         print(item.title)
     # [developer-docs.sdk.python.list-items]-end
 
+    # [developer-docs.sdk.python.validate-secret-reference]-start
+    # Validate secret reference to ensure no syntax errors
+    try:
+        Secrets.validate_secret_reference("op://vault/item/field")
+    except Exception as error:
+        print(error)
+    # [developer-docs.sdk.python.validate-secret-reference]-end
+
     # [developer-docs.sdk.python.resolve-secret]-start
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     value = await client.secrets.resolve("op://vault/item/field")
@@ -42,25 +50,25 @@ async def main():
     # Create an Item and add it to your vault.
     to_create = ItemCreateParams(
         title="MyName",
-        category="Login",
+        category=ItemCategory.LOGIN,
         vault_id="7turaasywpymt3jecxoxk5roli",
         fields=[
             ItemField(
                 id="username",
                 title="username",
-                field_type="Text",
+                field_type=ItemFieldType.TEXT,
                 value="mynameisjeff",
             ),
             ItemField(
                 id="password",
                 title="password",
-                field_type="Concealed",
+                field_type=ItemFieldType.CONCEALED,
                 value="jeff",
             ),
             ItemField(
                 id="onetimepassword",
                 title="one-time-password",
-                field_type="Totp",
+                field_type=ItemFieldType.TOTP,
                 section_id="totpsection",
                 value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
             ),
@@ -74,7 +82,7 @@ async def main():
             Website(
                 label="my custom website",
                 url="https://example.com",
-                autofill_behavior="AnywhereOnWebsite",
+                autofill_behavior=AutofillBehavior.NEVER,
             )
         ],
     )
@@ -115,7 +123,7 @@ async def main():
         Website(
             label="my custom website 2",
             url="https://example2.com",
-            autofill_behavior="Never",
+            autofill_behavior=AutofillBehavior.NEVER,
         ),
     )
     updated_item = await client.items.put(item)
