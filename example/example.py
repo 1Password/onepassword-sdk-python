@@ -35,7 +35,7 @@ async def main():
     # [developer-docs.sdk.python.validate-secret-reference]-start
     # Validate secret reference to ensure no syntax errors
     try:
-        await Secrets.validate_secret_reference("op://vault/item/field")
+        Secrets.validate_secret_reference("op://vault/item/field")
     except Exception as error:
         print(error)
     # [developer-docs.sdk.python.validate-secret-reference]-end
