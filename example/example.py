@@ -68,7 +68,7 @@ async def main():
             ItemField(
                 id="onetimepassword",
                 title="one-time-password",
-                field_type="Totp",
+                field_type=ItemFieldType.TOTP,
                 section_id="totpsection",
                 value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
             ),
@@ -82,7 +82,7 @@ async def main():
             Website(
                 label="my custom website",
                 url="https://example.com",
-                autofill_behavior="AnywhereOnWebsite",
+                autofill_behavior=AutofillBehavior.NEVER,
             )
         ],
     )
