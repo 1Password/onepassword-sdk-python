@@ -1,2 +1,2 @@
-The v0.1.3 release of the Python SDK brings:
-* Support for item websites. You can now create, get, and edit websites within your 1Password items using item CRUD functions.
+The v0.1.4 release of the Python SDK brings:
+* Support for validating secret references. You can now check that a secret reference is formatted correctly without having to resolve it or even authenticate, using the 'ValidateSecretReference' function.
