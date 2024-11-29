@@ -1,71 +1,45 @@
 import asyncio
 import os
 
-# [developer-docs.sdk.python.sdk-import]-start
-from onepassword import *
-# [developer-docs.sdk.python.sdk-import]-end
+from onepassword.client import Client
+from onepassword.types import AutofillBehavior, ItemCategory, ItemCreateParams, ItemField, ItemFieldType, ItemSection, Website
 
-
-async def main():
-    # [developer-docs.sdk.python.client-initialization]-start
-    # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
+# Perform CRUD operations on an item
+async def item_crud_operation():
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
-    test_vault_id = os.getenv("CORE_SDK_TEST_VAULT_ID")
-    test_secret_ref = os.getenv("CORE_SDK_TEST_SECRET_REF")
-
-    if not token or not test_vault_id or not test_secret_ref:
-        raise ValueError("OP_SERVICE_ACCOUNT_TOKEN, CORE_SDK_TEST_VAULT_ID, and CORE_SDK_TEST_SECRET_REF must be set.")
-
-    # Connects to 1Password.
+    if not token:
+        raise ValueError("OP_SERVICE_ACCOUNT_TOKEN must be set.")
     client = await Client.authenticate(
         auth=token,
         # Set the following to your own integration name and version.
         integration_name="My 1Password Integration",
         integration_version="v1.0.0",
     )
-    # [developer-docs.sdk.python.client-initialization]-end
-
-    # [developer-docs.sdk.python.list-vaults]-start
-    vaults = await client.vaults.list_all()
-    async for vault in vaults:
-        print(vault.title)
-    # [developer-docs.sdk.python.list-vaults]-end
-
-    # [developer-docs.sdk.python.list-items]-start
-    items = await client.items.list_all(vault.id)
-    async for item in items:
-        print(item.title)
-    # [developer-docs.sdk.python.list-items]-end
-
-    # [developer-docs.sdk.python.resolve-secret]-start
-    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
-    value = await client.secrets.resolve(test_secret_ref)
-    print(value)
-    # [developer-docs.sdk.python.resolve-secret]-end
-
-    # [developer-docs.sdk.python.create-item]-start
-    # Create an Item and add it to your vault.
+    # Fill in a real vault ID below
+    # You can find this by using the list_vaults.py example
+    # Or using `op vault list`
+    vault_id = "xxxxxxxxxxxxxxxxxxxxxxxxxx"
     to_create = ItemCreateParams(
         title="MyName",
-        category="Login",
-        vaultId = test_vault_id,
+        category=ItemCategory.LOGIN,
+        vault_id=vault_id,
         fields=[
             ItemField(
                 id="username",
                 title="username",
-                field_type="Text",
+                field_type=ItemFieldType.TEXT,
                 value="mynameisjeff",
             ),
             ItemField(
                 id="password",
                 title="password",
-                field_type="Concealed",
+                field_type=ItemFieldType.CONCEALED,
                 value="jeff",
             ),
             ItemField(
                 id="onetimepassword",
                 title="one-time-password",
-                field_type="Totp",
+                field_type=ItemFieldType.TOTP,
                 section_id="totpsection",
                 value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
             ),
@@ -79,7 +53,7 @@ async def main():
             Website(
                 label="my custom website",
                 url="https://example.com",
-                autofill_behavior="AnywhereOnWebsite",
+                autofill_behavior=AutofillBehavior.NEVER,
             )
         ],
     )
@@ -120,7 +94,7 @@ async def main():
         Website(
             label="my custom website 2",
             url="https://example2.com",
-            autofill_behavior="Never",
+            autofill_behavior=AutofillBehavior.NEVER,
         ),
     )
     updated_item = await client.items.put(item)
@@ -134,4 +108,4 @@ async def main():
 
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    asyncio.run(item_crud_operation())
