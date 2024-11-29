@@ -481,6 +481,8 @@ def _uniffi_check_api_checksums(lib):
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_op_uniffi_core_checksum_func_invoke() != 29143:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
+    if lib.uniffi_op_uniffi_core_checksum_func_invoke_sync() != 49373:
+        raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_op_uniffi_core_checksum_func_release_client() != 57155:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
 
@@ -496,6 +498,11 @@ _UniffiLib.uniffi_op_uniffi_core_fn_func_invoke.argtypes = (
     _UniffiRustBuffer,
 )
 _UniffiLib.uniffi_op_uniffi_core_fn_func_invoke.restype = ctypes.c_void_p
+_UniffiLib.uniffi_op_uniffi_core_fn_func_invoke_sync.argtypes = (
+    _UniffiRustBuffer,
+    ctypes.POINTER(_UniffiRustCallStatus),
+)
+_UniffiLib.uniffi_op_uniffi_core_fn_func_invoke_sync.restype = _UniffiRustBuffer
 _UniffiLib.uniffi_op_uniffi_core_fn_func_release_client.argtypes = (
     _UniffiRustBuffer,
     ctypes.POINTER(_UniffiRustCallStatus),
@@ -775,6 +782,9 @@ _UniffiLib.uniffi_op_uniffi_core_checksum_func_init_client.restype = ctypes.c_ui
 _UniffiLib.uniffi_op_uniffi_core_checksum_func_invoke.argtypes = (
 )
 _UniffiLib.uniffi_op_uniffi_core_checksum_func_invoke.restype = ctypes.c_uint16
+_UniffiLib.uniffi_op_uniffi_core_checksum_func_invoke_sync.argtypes = (
+)
+_UniffiLib.uniffi_op_uniffi_core_checksum_func_invoke_sync.restype = ctypes.c_uint16
 _UniffiLib.uniffi_op_uniffi_core_checksum_func_release_client.argtypes = (
 )
 _UniffiLib.uniffi_op_uniffi_core_checksum_func_release_client.restype = ctypes.c_uint16
@@ -949,6 +959,13 @@ def invoke(invocation: "str"):
         _UniffiConverterTypeError,
     )
 
+def invoke_sync(invocation: "str") -> "str":
+    _UniffiConverterString.check_lower(invocation)
+    
+    return _UniffiConverterString.lift(_rust_call_with_error(_UniffiConverterTypeError,_UniffiLib.uniffi_op_uniffi_core_fn_func_invoke_sync,
+        _UniffiConverterString.lower(invocation)))
+
+
 def release_client(client_id: "str"):
     _UniffiConverterString.check_lower(client_id)
     
@@ -961,6 +978,7 @@ __all__ = [
     "Error",
     "init_client",
     "invoke",
+    "invoke_sync",
     "release_client",
 ]
 
