@@ -1,2 +1,3 @@
-The v0.1.4 release of the Python SDK brings:
-* Support for validating secret references. You can now check that a secret reference is formatted correctly without having to resolve it or even authenticate, using the 'ValidateSecretReference' function.
+The v0.1.5 release of the Python SDK brings:
+* Support for Password Generation. You can now generate different type of passwords with `Secrets.GeneratePassword`.
+* Support for the credit card number field type.
