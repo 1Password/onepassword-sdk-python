@@ -6,7 +6,19 @@ from __future__ import annotations
 
 from enum import Enum
 from pydantic import BaseModel, ConfigDict, Field
-from typing import List, Literal, Optional
+from typing import List, Literal, Optional, Union
+
+
+class GeneratePasswordResponse(BaseModel):
+    """
+    For future use, if we want to return more information about the generated password.
+    Currently, it only returns the password itself.
+    """
+
+    password: str
+    """
+    The generated password.
+    """
 
 
 class ItemCategory(str, Enum):
@@ -40,6 +52,7 @@ class ItemFieldType(str, Enum):
     TEXT = "Text"
     CONCEALED = "Concealed"
     CREDITCARDTYPE = "CreditCardType"
+    CREDITCARDNUMBER = "CreditCardNumber"
     PHONE = "Phone"
     URL = "Url"
     TOTP = "Totp"
@@ -273,3 +286,100 @@ class VaultOverview(BaseModel):
     """
     The vault's title
     """
+
+
+class PasswordRecipeMemorableInner(BaseModel):
+    """
+    Generated type representing the anonymous struct variant `Memorable` of the `PasswordRecipe` Rust enum
+    """
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    separator_type: SeparatorType = Field(alias="separatorType")
+    """
+    The type of separator between chunks.
+    """
+    capitalize: bool
+    """
+    Uppercase one randomly selected chunk.
+    """
+    word_list_type: WordListType = Field(alias="wordListType")
+    """
+    The type of word list used.
+    """
+    word_count: int = Field(alias="wordCount")
+    """
+    The number of "words" (words or syllables).
+    """
+
+
+class PasswordRecipePinInner(BaseModel):
+    """
+    Generated type representing the anonymous struct variant `Pin` of the `PasswordRecipe` Rust enum
+    """
+
+    length: int
+    """
+    Number of digits in the PIN.
+    """
+
+
+class PasswordRecipeRandomInner(BaseModel):
+    """
+    Generated type representing the anonymous struct variant `Random` of the `PasswordRecipe` Rust enum
+    """
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    include_digits: bool = Field(alias="includeDigits")
+    """
+    Include at least one digit in the password.
+    """
+    include_symbols: bool = Field(alias="includeSymbols")
+    """
+    Include at least one symbol in the password.
+    """
+    length: int
+    """
+    The length of the password.
+    """
+
+
+class PasswordRecipeTypes(str, Enum):
+    MEMORABLE = "Memorable"
+    PIN = "Pin"
+    RANDOM = "Random"
+
+
+class PasswordRecipeMemorable(BaseModel):
+    type: Literal[PasswordRecipeTypes.MEMORABLE] = PasswordRecipeTypes.MEMORABLE
+    parameters: PasswordRecipeMemorableInner
+
+
+class PasswordRecipePin(BaseModel):
+    type: Literal[PasswordRecipeTypes.PIN] = PasswordRecipeTypes.PIN
+    parameters: PasswordRecipePinInner
+
+
+class PasswordRecipeRandom(BaseModel):
+    type: Literal[PasswordRecipeTypes.RANDOM] = PasswordRecipeTypes.RANDOM
+    parameters: PasswordRecipeRandomInner
+
+
+PasswordRecipe = Union[PasswordRecipeMemorable, PasswordRecipePin, PasswordRecipeRandom]
+
+
+class SeparatorType(str, Enum):
+    DIGITS = "digits"
+    DIGITSANDSYMBOLS = "digitsAndSymbols"
+    SPACES = "spaces"
+    HYPHENS = "hyphens"
+    UNDERSCORES = "underscores"
+    PERIODS = "periods"
+    COMMAS = "commas"
+
+
+class WordListType(str, Enum):
+    FULLWORDS = "fullWords"
+    SYLLABLES = "syllables"
+    THREELETTERS = "threeLetters"
