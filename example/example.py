@@ -130,6 +130,31 @@ async def main():
     # [developer-docs.sdk.python.update-item]-end
 
     print(dict(updated_item))
+    
+    pin_password = Secrets.generate_password(PasswordRecipePin(parameters=PasswordRecipePinInner(length=8)))
+    print(pin_password)
+
+    memorable_password = Secrets.generate_password(
+            PasswordRecipeMemorable(parameters=PasswordRecipeMemorableInner(
+				separatorType=SeparatorType.UNDERSCORES,
+                wordListType=WordListType.SYLLABLES,
+                capitalize=False,
+                wordCount=3,
+			)
+			),
+        )
+    print(memorable_password)
+
+    random_password = Secrets.generate_password(
+            PasswordRecipeRandom(parameters=PasswordRecipeRandomInner(
+                length=10,
+                includeDigits=False,
+                includeSymbols=False,
+			)
+			),
+        )
+    print(random_password)
+
     # [developer-docs.sdk.python.delete-item]-start
     # Delete a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
