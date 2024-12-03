@@ -3,6 +3,7 @@
 from .core import _invoke, _invoke_sync
 from json import loads
 from .iterator import SDKIterator
+from .types import GeneratePasswordResponse
 
 
 class Secrets:
@@ -46,3 +47,17 @@ class Secrets:
                 }
             }
         )
+
+    @staticmethod
+    def generate_password(recipe):
+        response = _invoke_sync(
+            {
+                "invocation": {
+                    "parameters": {
+                        "name": "GeneratePassword",
+                        "parameters": {"recipe": recipe.model_dump(by_alias=True)},
+                    }
+                }
+            }
+        )
+        return GeneratePasswordResponse.model_validate_json(response)
