@@ -96,7 +96,7 @@ Field types:
 - [x] Passwords
 - [x] Concealed fields
 - [x] Text fields
-- [x] Notes
+- [ ] Notes
 - [x] SSH private keys (partially supported: supported in resolving secret references, not yet supported in item create/get/update)
 - [ ] SSH public keys, fingerprint and key type
 - [x] One-time passwords
