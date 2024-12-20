@@ -3,7 +3,7 @@
 from .core import _invoke, _invoke_sync
 from json import loads
 from .iterator import SDKIterator
-from .types import GeneratePasswordResponse
+from .types import GeneratePasswordResponse, PasswordRecipe
 
 
 class Secrets:
@@ -15,7 +15,7 @@ class Secrets:
     def __init__(self, client_id):
         self.client_id = client_id
 
-    async def resolve(self, secret_reference):
+    async def resolve(self, secret_reference: str) -> str:
         """
         Resolve returns the secret the provided secret reference points to.
         """
@@ -33,7 +33,7 @@ class Secrets:
         return str(loads(response))
 
     @staticmethod
-    def validate_secret_reference(secret_reference):
+    def validate_secret_reference(secret_reference: str):
         """
         Validate the secret reference to ensure there are no syntax errors.
         """
@@ -49,7 +49,7 @@ class Secrets:
         )
 
     @staticmethod
-    def generate_password(recipe):
+    def generate_password(recipe: PasswordRecipe) -> GeneratePasswordResponse:
         response = _invoke_sync(
             {
                 "invocation": {

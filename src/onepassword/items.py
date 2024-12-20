@@ -3,7 +3,8 @@
 from .core import _invoke, _invoke_sync
 from json import loads
 from .iterator import SDKIterator
-from .types import Item, ItemOverview
+from .items_share import ItemsShare
+from .types import Item, ItemCreateParams, ItemOverview, Option
 
 
 class Items:
@@ -13,8 +14,9 @@ class Items:
 
     def __init__(self, client_id):
         self.client_id = client_id
+        self.share = ItemsShare(client_id)
 
-    async def create(self, params):
+    async def create(self, params: ItemCreateParams) -> Item:
         """
         Create a new item
         """
@@ -31,7 +33,7 @@ class Items:
         )
         return Item.model_validate_json(response)
 
-    async def get(self, vault_id, item_id):
+    async def get(self, vault_id: str, item_id: str) -> Item:
         """
         Get an item by vault and item ID
         """
@@ -48,7 +50,27 @@ class Items:
         )
         return Item.model_validate_json(response)
 
-    async def put(self, item):
+    async def get_all(self, vault_id: str, item_ids: list[str]) -> list[Option]:
+        """
+        Get items by vault and their item IDs.
+        """
+        response = await _invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "ItemsGetAll",
+                        "parameters": {"vault_id": vault_id, "item_ids": item_ids},
+                    },
+                }
+            }
+        )
+
+        response = loads(response)
+        response = [Option.model_validate(data) for data in response]
+        return response
+
+    async def put(self, item: Item) -> Item:
         """
         Update an existing item.
         """
@@ -65,7 +87,7 @@ class Items:
         )
         return Item.model_validate_json(response)
 
-    async def delete(self, vault_id, item_id):
+    async def delete(self, vault_id: str, item_id: str):
         """
         Delete an item.
         """
@@ -81,7 +103,23 @@ class Items:
             }
         )
 
-    async def list_all(self, vault_id):
+    async def archive(self, vault_id: str, item_id: str):
+        """
+        Archive an item.
+        """
+        await _invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "ItemsArchive",
+                        "parameters": {"vault_id": vault_id, "item_id": item_id},
+                    },
+                }
+            }
+        )
+
+    async def list_all(self, vault_id: str) -> SDKIterator[ItemOverview]:
         """
         List all items
         """
@@ -97,8 +135,6 @@ class Items:
             }
         )
 
-        response_data = loads(response)
-
-        objects = [ItemOverview.model_validate(data) for data in response_data]
-
-        return SDKIterator(objects)
+        response = loads(response)
+        response = [ItemOverview.model_validate(data) for data in response]
+        return SDKIterator(response)

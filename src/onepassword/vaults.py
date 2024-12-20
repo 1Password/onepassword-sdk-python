@@ -14,7 +14,7 @@ class Vaults:
     def __init__(self, client_id):
         self.client_id = client_id
 
-    async def list_all(self):
+    async def list_all(self) -> SDKIterator[VaultOverview]:
         """
         List all vaults
         """
@@ -27,8 +27,6 @@ class Vaults:
             }
         )
 
-        response_data = loads(response)
-
-        objects = [VaultOverview.model_validate(data) for data in response_data]
-
-        return SDKIterator(objects)
+        response = loads(response)
+        response = [VaultOverview.model_validate(data) for data in response]
+        return SDKIterator(response)
