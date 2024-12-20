@@ -4,7 +4,7 @@ from .core import _invoke, _invoke_sync
 from json import loads
 from .iterator import SDKIterator
 from .items_share import ItemsShare
-from .types import Item, ItemCreateParams, ItemOverview, Option
+from .types import Item, ItemCreateParams, ItemOverview
 
 
 class Items:
@@ -50,7 +50,7 @@ class Items:
         )
         return Item.model_validate_json(response)
 
-    async def get_all(self, vault_id: str, item_ids: list[str]) -> list[Option]:
+    async def get_all(self, vault_id: str, item_ids: list[str]) -> list[Item]:
         """
         Get items by vault and their item IDs.
         """
@@ -67,7 +67,7 @@ class Items:
         )
 
         response = loads(response)
-        response = [Option.model_validate(data) for data in response]
+        response = [Item.model_validate(data) for data in response]
         return response
 
     async def put(self, item: Item) -> Item:
