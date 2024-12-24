@@ -56,6 +56,8 @@ class ItemFieldType(str, Enum):
     PHONE = "Phone"
     URL = "Url"
     TOTP = "Totp"
+    EMAIL = "Email"
+    REFERENCE = "Reference"
     UNSUPPORTED = "Unsupported"
 
 

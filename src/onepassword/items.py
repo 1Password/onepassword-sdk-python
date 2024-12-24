@@ -81,6 +81,22 @@ class Items:
             }
         )
 
+    async def archive(self, vault_id, item_id):
+        """
+        Archive an item.
+        """
+        await _invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "ItemsArchive",
+                        "parameters": {"vault_id": vault_id, "item_id": item_id},
+                    },
+                }
+            }
+        )
+
     async def list_all(self, vault_id):
         """
         List all items
