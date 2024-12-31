@@ -88,6 +88,7 @@ Operations:
 - [x] [Update items](https://developer.1password.com/docs/sdks/manage-items#update-an-item)
 - [x] [Delete items](https://developer.1password.com/docs/sdks/manage-items#delete-an-item)
 - [x] [List items](https://developer.1password.com/docs/sdks/list-vaults-items/)
+- [x] [Share items](https://developer.1password.com/docs/sdks/share-items/)
 - [x] Add & update tags on items
 - [x] Generate PIN, random and memorable passwords
 
