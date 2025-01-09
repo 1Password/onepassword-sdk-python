@@ -176,14 +176,14 @@ async def main():
 ## NOTE: just for the sake of archiving it. This is because the SDK
 ## NOTE: only works with active items, so archiving and then deleting
 ## NOTE: is not yet possible.
-async def archive_item(vault_id: str, item_id: str, client: Client):
+async def archive_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.archive-item]-start
-    # Delete a item from your vault.
+    # Archive a item from your vault.
     await client.items.archive(vault_id, item_id)
     # [developer-docs.sdk.python.archive-item]-end
 
 
-async def share_item(vault_id: str, item_id: str, client: Client):
+async def share_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.item-share-get-item]-start
     item = await client.items.get(vault_id, item_id)
     print(item)
