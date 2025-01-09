@@ -165,7 +165,7 @@ async def main():
     print(random_password)
     # [developer-docs.sdk.python.generate-random-password]-end
 
-    await share_item(created_item.vault_id, updated_item.id, client)
+    await share_item(client, created_item.vault_id, updated_item.id)
 
     # [developer-docs.sdk.python.delete-item]-start
     # Delete a item from your vault.
