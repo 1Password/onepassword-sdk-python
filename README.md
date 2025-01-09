@@ -87,8 +87,9 @@ Operations:
 - [x] [Create items](https://developer.1password.com/docs/sdks/manage-items#create-an-item)
 - [x] [Update items](https://developer.1password.com/docs/sdks/manage-items#update-an-item)
 - [x] [Delete items](https://developer.1password.com/docs/sdks/manage-items#delete-an-item)
+- [x] Archive items
 - [x] [List items](https://developer.1password.com/docs/sdks/list-vaults-items/)
-- [x] Add & update tags on items
+- [x] Share items
 - [x] Generate PIN, random and memorable passwords
 
 Field types:
@@ -96,15 +97,18 @@ Field types:
 - [x] Passwords
 - [x] Concealed fields
 - [x] Text fields
-- [ ] Notes
-- [x] SSH private keys (partially supported: supported in resolving secret references, not yet supported in item create/get/update)
-- [ ] SSH public keys, fingerprint and key type
+- [x] Notes
+- [x] SSH private keys, public keys, fingerprint and key type (partially supported: supported in resolving secret references, not yet supported in item create/get/update)
 - [x] One-time passwords
 - [x] URLs
 - [x] Websites (used to suggest and autofill logins)
 - [x] Phone numbers
 - [x] Credit card types
 - [x] Credit card numbers
+- [x] Emails
+- [x] References to other items
+- [ ] Address
+- [ ] Date / MM/YY
 - [ ] Files attachments and Document items
 
 ### Vault management

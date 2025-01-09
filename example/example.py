@@ -165,11 +165,56 @@ async def main():
     print(random_password)
     # [developer-docs.sdk.python.generate-random-password]-end
 
+    await share_item(client, created_item.vault_id, updated_item.id)
+
     # [developer-docs.sdk.python.delete-item]-start
     # Delete a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
 
+## NOTE: this is in a separate function to avoid creating a new item
+## NOTE: just for the sake of archiving it. This is because the SDK
+## NOTE: only works with active items, so archiving and then deleting
+## NOTE: is not yet possible.
+async def archive_item(client: Client, vault_id: str, item_id: str):
+    # [developer-docs.sdk.python.archive-item]-start
+    # Archive a item from your vault.
+    await client.items.archive(vault_id, item_id)
+    # [developer-docs.sdk.python.archive-item]-end
+
+
+async def share_item(client: Client, vault_id: str, item_id: str):
+    # [developer-docs.sdk.python.item-share-get-item]-start
+    item = await client.items.get(vault_id, item_id)
+    print(item)
+    # [developer-docs.sdk.python.item-share-get-item]-end
+
+    # [developer-docs.sdk.python.item-share-get-account-policy]-start
+    policy = await client.items.shares.get_account_policy(item.vault_id, item.id)
+    print(policy)
+    # [developer-docs.sdk.python.item-share-get-account-policy]-end
+
+    # [developer-docs.sdk.python.item-share-validate-recipients]-start
+    valid_recipients = await client.items.shares.validate_recipients(
+        policy, ["agilebits.com"]
+    )
+
+    print(valid_recipients)
+    # [developer-docs.sdk.python.item-share-validate-recipients]-end
+
+    # [developer-docs.sdk.python.item-share-create-share]-start
+    share_link = await client.items.shares.create(
+        item,
+        policy,
+        ItemShareParams(
+            recipients = valid_recipients,
+            expireAfter= ItemShareDuration.ONEHOUR,
+            oneTimeOnly= False,
+        ),
+    )
+
+    print(share_link)
+    # [developer-docs.sdk.python.item-share-create-share]-end
 
 if __name__ == "__main__":
     asyncio.run(main())
