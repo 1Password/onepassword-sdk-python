@@ -1,12 +1,12 @@
 # 1Password Python SDK v0.1.6
 
 ## NEW
-* Support for item sharing: You can now create an item sharing link via the 1Password SDKs using the new client.items.shares API.
-* Support for item archiving: You can now move items to the archive with the SDKs, using the new client.items.archive(vault_uuid, item_uuid) function.
+* Support for item sharing: You can now create an item sharing link via the 1Password SDKs using the new `client.items.shares` API.
+* Support for item archiving: You can now move items to the archive with the SDKs, using the new `client.items.archive(vault_uuid, item_uuid)` function.
 
 ## IMPROVED
-* Support for item notes: You can now read, create and edit items with a notes field, accessing it via item.notes.
-* Support for SSH key attributes in secret references: You can now retrieve an SSH key's public key, key type and fingerprint with client.secrets.resolve.
+* Support for item notes: You can now read, create and edit items with a notes field, accessing it via `item.notes`.
+* Support for SSH key attributes in secret references: You can now retrieve an SSH key's public key, key type and fingerprint with `client.secrets.resolve`.
 * Support for additional field types: You can now read, create and edit items with Email (email addresses) and Reference (ID references to other 1Password items) type fields.
 * Type hinting: When developing with the Python SDK, the functions now show type hints on their parameters and return types.
 
