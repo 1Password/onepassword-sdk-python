@@ -165,11 +165,46 @@ async def main():
     print(random_password)
     # [developer-docs.sdk.python.generate-random-password]-end
 
+    await share_item(created_item.vault_id, updated_item.id, client)
+
     # [developer-docs.sdk.python.delete-item]-start
-    # Delete a item from your vault.
+    # Delete / archive a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
+    # or to archive: await client.items.archive(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
 
+async def share_item(vault_id: str, item_id: str, client: Client):
+    # [developer-docs.sdk.python.item-share-get-item]-start
+    item = await client.items.get(vault_id, item_id)
+    print(item)
+    # [developer-docs.sdk.python.item-share-get-item]-end
+
+    # [developer-docs.sdk.python.item-share-get-account-policy]-start
+    policy = await client.items.shares.get_account_policy(item.vault_id, item.id)
+    print(policy)
+    # [developer-docs.sdk.python.item-share-get-account-policy]-end
+
+    # [developer-docs.sdk.python.item-share-validate-recipients]-start
+    valid_recipients = await client.items.shares.validate_recipients(
+        policy, ["agilebits.com"]
+    )
+
+    print(valid_recipients)
+    # [developer-docs.sdk.python.item-share-validate-recipients]-end
+
+    # [developer-docs.sdk.python.item-share-create-share]-start
+    share_link = await client.items.shares.create(
+        item,
+        policy,
+        ItemShareParams(
+            recipients = valid_recipients,
+            expireAfter= ItemShareDuration.ONEHOUR,
+            oneTimeOnly= False,
+        ),
+    )
+
+    print(share_link)
+    # [developer-docs.sdk.python.item-share-create-share]-end
 
 if __name__ == "__main__":
     asyncio.run(main())
