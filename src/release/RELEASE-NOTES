@@ -1,4 +1,15 @@
-Version 0.1.5 of the 1Password Python SDK brings:
-* Support for generating passwords. You can now generate random, PIN, and memorable passwords using the `onepassword.Secrets.generate_password` function.
-* Support for item subtitles. Creating and editing an item now sets the subtitle correctly, which is visible in the item preview in all client apps.
-* Support for the Credit Card Number field type. You can now retrieve, create, and edit items containing credit card numbers.
+1Password Python SDK v0.1.6
+
+NEW:
+* 		Support for item sharing: You can now create an item sharing link via the 1Password SDKs using the new client.items.shares API.
+* 		Support for item archiving: You can now move items to the archive with the SDKs, using the new client.items.archive(vault_uuid, item_uuid) function.
+
+IMPROVED:
+* 		Support for item notes: You can now read, create and edit items with a notes field, accessing it via item.notes.
+* 		Support for SSH key attributes in secret references: You can now retrieve an SSH key's public key, key type and fingerprint with client.secrets.resolve.
+* 		Support for additional field types: You can now read, create and edit items with Email (email addresses) and Reference (ID references to other 1Password items) type fields.
+*               Support for type hinting: When developing on the Python SDK, we now have support for type hinting which will improve your developer experience.
+
+BUGS:
+* 		Improved field matching logic for secret references: Retrieving a field from the item's default field section is now possible even if there is an identically named field in one of the item's named sections.
+
