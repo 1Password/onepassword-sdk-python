@@ -172,6 +172,7 @@ async def main():
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
 
+
 ## NOTE: this is in a separate function to avoid creating a new item
 ## NOTE: just for the sake of archiving it. This is because the SDK
 ## NOTE: only works with active items, so archiving and then deleting
@@ -207,14 +208,15 @@ async def share_item(client: Client, vault_id: str, item_id: str):
         item,
         policy,
         ItemShareParams(
-            recipients = valid_recipients,
-            expireAfter= ItemShareDuration.ONEHOUR,
-            oneTimeOnly= False,
+            recipients=valid_recipients,
+            expireAfter=ItemShareDuration.ONEHOUR,
+            oneTimeOnly=False,
         ),
     )
 
     print(share_link)
     # [developer-docs.sdk.python.item-share-create-share]-end
+
 
 if __name__ == "__main__":
     asyncio.run(main())
