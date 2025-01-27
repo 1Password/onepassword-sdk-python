@@ -1,6 +1,8 @@
 import json
 import platform
 
+from onepassword.errors import raise_typed_exception
+
 
 machine_arch = platform.machine().lower()
 
@@ -16,17 +18,26 @@ else:
 
 # InitClient creates a client instance in the current core module and returns its unique ID.
 async def _init_client(client_config):
-    return await core.init_client(json.dumps(client_config))
+    try:
+        return await core.init_client(json.dumps(client_config))
+    except Exception as e:
+        raise_typed_exception(e)
 
 
 # Invoke calls specified business logic from the SDK core.
 async def _invoke(invoke_config):
-    return await core.invoke(json.dumps(invoke_config))
+    try:
+        return await core.invoke(json.dumps(invoke_config))
+    except Exception as e:
+        raise_typed_exception(e)
 
 
 # Invoke calls specified business logic from the SDK core.
 def _invoke_sync(invoke_config):
-    return core.invoke_sync(json.dumps(invoke_config))
+    try:
+        return core.invoke_sync(json.dumps(invoke_config))
+    except Exception as e:
+        raise_typed_exception(e)
 
 
 # ReleaseClient releases memory in the SDK core associated with the given client ID.
