@@ -15,9 +15,11 @@ def raise_typed_exception(e: Exception):
     except Exception:
         raise e
 
-    message = typed_error["message"]
-    match typed_error["name"]:
-        case "RateLimitExceeded":
-            raise RateLimitExceededException(message)
-        case _:
-            raise Exception(message)
+    message = typed_error.get("message")
+    error_name = typed_error.get("name")
+    if error_name == "RateLimitExceeded":
+        raise RateLimitExceededException(message)
+    elif message is not None:
+        raise Exception(message)
+    else:
+        raise e
