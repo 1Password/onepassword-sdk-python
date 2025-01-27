@@ -3,6 +3,7 @@
 from .client import Client
 from .defaults import DEFAULT_INTEGRATION_NAME, DEFAULT_INTEGRATION_VERSION
 from .types import *  # noqa F403
+from .errors import *  # noqa F403
 from .secrets import Secrets
 from .items import Items
 from .vaults import Vaults
@@ -30,5 +31,13 @@ for name, obj in inspect.getmembers(sys.modules["onepassword.types"]):
         )
         or isinstance(obj, int)
         or type(obj) == typing._LiteralGenericAlias
+    ):
+        __all__.append(name)
+
+for name, obj in inspect.getmembers(sys.modules["onepassword.errors"]):
+    # Add all classes defined in errors.py.
+    if (
+        inspect.isclass(obj)
+        and inspect.getmodule(obj) == sys.modules["onepassword.errors"]
     ):
         __all__.append(name)
