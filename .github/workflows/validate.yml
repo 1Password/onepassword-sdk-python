@@ -40,6 +40,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
           OP_VAULT_ID: ${{ secrets.TEST_SERVICE_ACCOUNT_VAULT_ID }}
         run: |
+          pip install . &&
           python example/example.py
   lint:
     name: Lint
@@ -107,6 +108,7 @@ jobs:
         OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         OP_VAULT_ID: ${{ secrets.TEST_SERVICE_ACCOUNT_VAULT_ID }}
       run: |
+        pip install . &&
         python example/example.py
     
     - run: |
