@@ -103,11 +103,11 @@ jobs:
         echo "Integration tests completed successfully!"
 
     - name: Example Test
-        env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
-          OP_VAULT_ID: ${{ secrets.TEST_SERVICE_ACCOUNT_VAULT_ID }}
-        run: |
-          python example/example.py
+      env:
+        OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+        OP_VAULT_ID: ${{ secrets.TEST_SERVICE_ACCOUNT_VAULT_ID }}
+      run: |
+        python example/example.py
     
     - run: |
         echo "Example file ran successfully!"
