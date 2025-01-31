@@ -20,6 +20,7 @@ jobs:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
         python-version: ["3.9", "3.10", "3.11", "3.12"]
+      max-parallel: 1
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -37,8 +38,8 @@ jobs:
           python -m pytest src/onepassword/test_client.py
       - name: Example Test
         env:
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
-          OP_VAULT_ID: ${{ secrets.TEST_SERVICE_ACCOUNT_VAULT_ID }}
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.EXAMPLE_TESTS_OP_SERVICE_ACCOUNT_TOKEN }}
+          OP_VAULT_ID: ${{ secrets.EXAMPLE_TESTS_OP_VAULT_ID }}
         run: |
           pip install . &&
           python example/example.py
