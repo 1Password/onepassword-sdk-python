@@ -1,4 +1,7 @@
 # 1Password Python SDK v0.1.7
 
-## BUGS:
+## IMPROVED:
+* The SDK now returns an error with a custom type when it hits the rate limit of the 1Password servers.
+
+## FIXED:
 * Using an SDK client in a long-running process no longer causes 401 server responses.
