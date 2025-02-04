@@ -1,4 +1,4 @@
-# 1Password Go SDK v0.1.7
+# 1Password Python SDK v0.1.7
 
 ## BUGS:
 * Using an SDK client in a long-running process no longer causes 401 server responses.
