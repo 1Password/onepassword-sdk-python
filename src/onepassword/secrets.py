@@ -4,7 +4,7 @@ from .core import _invoke, _invoke_sync
 from .iterator import SDKIterator
 from typing import Optional, List
 from pydantic import TypeAdapter
-from .types import GeneratePasswordResponse, PasswordRecipe
+from .types import GeneratePasswordResponse, PasswordRecipe, ResolveAllResponse
 
 
 class Secrets:
@@ -33,6 +33,25 @@ class Secrets:
         )
 
         response = TypeAdapter(str).validate_json(response)
+        return response
+
+    async def resolve_all(self, secret_references: List[str]) -> ResolveAllResponse:
+        """
+        Resolve takes in a list of secret references and returns the secrets they point to or errors if any.
+        """
+        response = await _invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "SecretsResolveAll",
+                        "parameters": {"secret_references": secret_references},
+                    },
+                }
+            }
+        )
+
+        response = TypeAdapter(ResolveAllResponse).validate_json(response)
         return response
 
     @staticmethod

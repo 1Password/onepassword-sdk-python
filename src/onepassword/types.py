@@ -6,7 +6,13 @@ from __future__ import annotations
 
 from enum import Enum
 from pydantic import BaseModel, ConfigDict, Field
-from typing import List, Literal, Optional, Union
+from typing import Generic, List, Literal, Optional, TypeVar, Union
+
+E = TypeVar("E")
+T = TypeVar("T")
+
+
+ErrorMessage = str
 
 
 class GeneratePasswordResponse(BaseModel):
@@ -58,11 +64,13 @@ class ItemFieldType(str, Enum):
     TOTP = "Totp"
     EMAIL = "Email"
     REFERENCE = "Reference"
+    SSHKEY = "SshKey"
     UNSUPPORTED = "Unsupported"
 
 
 class ItemFieldDetailsTypes(str, Enum):
     OTP = "Otp"
+    SSH_KEY = "SshKey"
 
 
 class ItemFieldDetailsOtp(BaseModel):
@@ -74,8 +82,17 @@ class ItemFieldDetailsOtp(BaseModel):
     content: OtpFieldDetails
 
 
+class ItemFieldDetailsSshKey(BaseModel):
+    """
+    Computed SSH Key attributes
+    """
+
+    type: Literal[ItemFieldDetailsTypes.SSH_KEY] = ItemFieldDetailsTypes.SSH_KEY
+    content: Optional[SshKeyAttributes]
+
+
 # Field type-specific attributes.
-ItemFieldDetails = ItemFieldDetailsOtp
+ItemFieldDetails = Union[ItemFieldDetailsOtp, ItemFieldDetailsSshKey]
 
 
 class ItemField(BaseModel):
@@ -450,6 +467,247 @@ class OtpFieldDetails(BaseModel):
     error_message: Optional[str] = Field(alias="errorMessage", default=None)
     """
     The error message, if the OTP code could not be computed
+    """
+
+
+class Response(BaseModel, Generic[T, E]):
+    content: Optional[T] = Field(default=None)
+    error: Optional[E] = Field(default=None)
+
+
+class ResolveReferenceErrorTypes(str, Enum):
+    PARSING = "parsing"
+    FIELD_NOT_FOUND = "fieldNotFound"
+    VAULT_NOT_FOUND = "vaultNotFound"
+    TOO_MANY_VAULTS = "tooManyVaults"
+    ITEM_NOT_FOUND = "itemNotFound"
+    TOO_MANY_ITEMS = "tooManyItems"
+    TOO_MANY_MATCHING_FIELDS = "tooManyMatchingFields"
+    NO_MATCHING_SECTIONS = "noMatchingSections"
+    TOO_MANY_MATCHING_SECTIONS = "tooManyMatchingSections"
+    INCOMPATIBLE_TOTP_QUERY_PARAMETER_FIELD = "incompatibleTOTPQueryParameterField"
+    UNABLE_TO_GENERATE_TOTP_CODE = "unableToGenerateTotpCode"
+    S_SH_KEY_METADATA_NOT_FOUND = "sSHKeyMetadataNotFound"
+    UNSUPPORTED_FILE_FORMAT = "unsupportedFileFormat"
+    INCOMPATIBLE_SSH_KEY_QUERY_PARAMETER_FIELD = "incompatibleSshKeyQueryParameterField"
+    UNABLE_TO_PARSE_PRIVATE_KEY = "unableToParsePrivateKey"
+    UNABLE_TO_FORMAT_PRIVATE_KEY_TO_OPEN_SSH = "unableToFormatPrivateKeyToOpenSsh"
+    OTHER = "other"
+
+
+class ResolveReferenceErrorParsing(BaseModel):
+    """
+    Error parsing the secret reference
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.PARSING] = (
+        ResolveReferenceErrorTypes.PARSING
+    )
+    message: ErrorMessage
+
+
+class ResolveReferenceErrorFieldNotFound(BaseModel):
+    """
+    The specified reference cannot be found within the item
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.FIELD_NOT_FOUND] = (
+        ResolveReferenceErrorTypes.FIELD_NOT_FOUND
+    )
+
+
+class ResolveReferenceErrorVaultNotFound(BaseModel):
+    """
+    No vault matched the secret reference query
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.VAULT_NOT_FOUND] = (
+        ResolveReferenceErrorTypes.VAULT_NOT_FOUND
+    )
+
+
+class ResolveReferenceErrorTooManyVaults(BaseModel):
+    """
+    More than one vault matched the secret reference query
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.TOO_MANY_VAULTS] = (
+        ResolveReferenceErrorTypes.TOO_MANY_VAULTS
+    )
+
+
+class ResolveReferenceErrorItemNotFound(BaseModel):
+    """
+    No item matched the secret reference query
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.ITEM_NOT_FOUND] = (
+        ResolveReferenceErrorTypes.ITEM_NOT_FOUND
+    )
+
+
+class ResolveReferenceErrorTooManyItems(BaseModel):
+    """
+    More than one item matched the secret reference query
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.TOO_MANY_ITEMS] = (
+        ResolveReferenceErrorTypes.TOO_MANY_ITEMS
+    )
+
+
+class ResolveReferenceErrorTooManyMatchingFields(BaseModel):
+    """
+    More than one field matched the provided secret reference
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.TOO_MANY_MATCHING_FIELDS] = (
+        ResolveReferenceErrorTypes.TOO_MANY_MATCHING_FIELDS
+    )
+
+
+class ResolveReferenceErrorNoMatchingSections(BaseModel):
+    """
+    No section found within the item for the provided identifier
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.NO_MATCHING_SECTIONS] = (
+        ResolveReferenceErrorTypes.NO_MATCHING_SECTIONS
+    )
+
+
+class ResolveReferenceErrorTooManyMatchingSections(BaseModel):
+    """
+    More than one matching section found within the item
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.TOO_MANY_MATCHING_SECTIONS] = (
+        ResolveReferenceErrorTypes.TOO_MANY_MATCHING_SECTIONS
+    )
+
+
+class ResolveReferenceErrorIncompatibleTOTPQueryParameterField(BaseModel):
+    """
+    Incompatiable TOTP query parameters
+    """
+
+    type: Literal[
+        ResolveReferenceErrorTypes.INCOMPATIBLE_TOTP_QUERY_PARAMETER_FIELD
+    ] = ResolveReferenceErrorTypes.INCOMPATIBLE_TOTP_QUERY_PARAMETER_FIELD
+
+
+class ResolveReferenceErrorUnableToGenerateTotpCode(BaseModel):
+    """
+    The totp was not able to be generated
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.UNABLE_TO_GENERATE_TOTP_CODE] = (
+        ResolveReferenceErrorTypes.UNABLE_TO_GENERATE_TOTP_CODE
+    )
+    message: ErrorMessage
+
+
+class ResolveReferenceErrorSSHKeyMetadataNotFound(BaseModel):
+    """
+    Couldn't find attributes specific to an SSH Key field
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.S_SH_KEY_METADATA_NOT_FOUND] = (
+        ResolveReferenceErrorTypes.S_SH_KEY_METADATA_NOT_FOUND
+    )
+
+
+class ResolveReferenceErrorUnsupportedFileFormat(BaseModel):
+    """
+    Currently only support text files
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.UNSUPPORTED_FILE_FORMAT] = (
+        ResolveReferenceErrorTypes.UNSUPPORTED_FILE_FORMAT
+    )
+
+
+class ResolveReferenceErrorIncompatibleSshKeyQueryParameterField(BaseModel):
+    """
+    Trying to convert a non-private key to a private key format
+    """
+
+    type: Literal[
+        ResolveReferenceErrorTypes.INCOMPATIBLE_SSH_KEY_QUERY_PARAMETER_FIELD
+    ] = ResolveReferenceErrorTypes.INCOMPATIBLE_SSH_KEY_QUERY_PARAMETER_FIELD
+
+
+class ResolveReferenceErrorUnableToParsePrivateKey(BaseModel):
+    """
+    Unable to properly parse a private key string to convert to an internal Private Key type
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.UNABLE_TO_PARSE_PRIVATE_KEY] = (
+        ResolveReferenceErrorTypes.UNABLE_TO_PARSE_PRIVATE_KEY
+    )
+
+
+class ResolveReferenceErrorUnableToFormatPrivateKeyToOpenSsh(BaseModel):
+    """
+    Unable to format a private key to OpenSSH format
+    """
+
+    type: Literal[
+        ResolveReferenceErrorTypes.UNABLE_TO_FORMAT_PRIVATE_KEY_TO_OPEN_SSH
+    ] = ResolveReferenceErrorTypes.UNABLE_TO_FORMAT_PRIVATE_KEY_TO_OPEN_SSH
+
+
+class ResolveReferenceErrorOther(BaseModel):
+    """
+    Other type
+    """
+
+    type: Literal[ResolveReferenceErrorTypes.OTHER] = ResolveReferenceErrorTypes.OTHER
+
+
+ResolveReferenceError = Union[
+    ResolveReferenceErrorParsing,
+    ResolveReferenceErrorFieldNotFound,
+    ResolveReferenceErrorVaultNotFound,
+    ResolveReferenceErrorTooManyVaults,
+    ResolveReferenceErrorItemNotFound,
+    ResolveReferenceErrorTooManyItems,
+    ResolveReferenceErrorTooManyMatchingFields,
+    ResolveReferenceErrorNoMatchingSections,
+    ResolveReferenceErrorTooManyMatchingSections,
+    ResolveReferenceErrorIncompatibleTOTPQueryParameterField,
+    ResolveReferenceErrorUnableToGenerateTotpCode,
+    ResolveReferenceErrorSSHKeyMetadataNotFound,
+    ResolveReferenceErrorUnsupportedFileFormat,
+    ResolveReferenceErrorIncompatibleSshKeyQueryParameterField,
+    ResolveReferenceErrorUnableToParsePrivateKey,
+    ResolveReferenceErrorUnableToFormatPrivateKeyToOpenSsh,
+    ResolveReferenceErrorOther,
+]
+
+
+class ResolveAllResponse(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    individual_responses: List[Response[str, ResolveReferenceError]] = Field(
+        alias="individualResponses"
+    )
+
+
+class SshKeyAttributes(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    public_key: str = Field(alias="publicKey")
+    """
+    The public part of the SSH Key
+    """
+    fingerprint: str
+    """
+    The fingerprint of the SSH Key
+    """
+    key_type: str = Field(alias="keyType")
+    """
+    The key type ("Ed25519" or "RSA, {length}-bit")
     """
 
 
