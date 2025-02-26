@@ -58,11 +58,13 @@ class ItemFieldType(str, Enum):
     TOTP = "Totp"
     EMAIL = "Email"
     REFERENCE = "Reference"
+    SSHKEY = "SshKey"
     UNSUPPORTED = "Unsupported"
 
 
 class ItemFieldDetailsTypes(str, Enum):
     OTP = "Otp"
+    SSH_KEY = "SshKey"
 
 
 class ItemFieldDetailsOtp(BaseModel):
@@ -74,8 +76,17 @@ class ItemFieldDetailsOtp(BaseModel):
     content: OtpFieldDetails
 
 
+class ItemFieldDetailsSshKey(BaseModel):
+    """
+    Computed SSH Key attributes
+    """
+
+    type: Literal[ItemFieldDetailsTypes.SSH_KEY] = ItemFieldDetailsTypes.SSH_KEY
+    content: Optional[SshKeyAttributes]
+
+
 # Field type-specific attributes.
-ItemFieldDetails = ItemFieldDetailsOtp
+ItemFieldDetails = Union[ItemFieldDetailsOtp, ItemFieldDetailsSshKey]
 
 
 class ItemField(BaseModel):
@@ -450,6 +461,23 @@ class OtpFieldDetails(BaseModel):
     error_message: Optional[str] = Field(alias="errorMessage", default=None)
     """
     The error message, if the OTP code could not be computed
+    """
+
+
+class SshKeyAttributes(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    public_key: str = Field(alias="publicKey")
+    """
+    The public part of the SSH Key
+    """
+    fingerprint: str
+    """
+    The fingerprint of the SSH Key
+    """
+    key_type: str = Field(alias="keyType")
+    """
+    The key type ("Ed25519" or "RSA, {length}-bit")
     """
 
 
