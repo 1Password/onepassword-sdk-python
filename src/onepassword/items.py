@@ -5,6 +5,7 @@ from .iterator import SDKIterator
 from typing import Optional, List
 from pydantic import TypeAdapter
 from .items_shares import ItemsShares
+from .items_files import ItemsFiles
 from .types import Item, ItemCreateParams, ItemOverview
 
 
@@ -16,6 +17,8 @@ class Items:
     def __init__(self, client_id):
         self.client_id = client_id
         self.shares = ItemsShares(client_id)
+
+        self.files = ItemsFiles(client_id)
 
     async def create(self, params: ItemCreateParams) -> Item:
         """
