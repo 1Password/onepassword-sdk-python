@@ -307,7 +307,7 @@ async def create_and_replace_document_item(client: Client):
     print(content)
 
 async def create_attach_and_delete_file_field_item(client: Client):
-    # [developer-docs.sdk.python.create-file-field-item]-start
+    # [developer-docs.sdk.python.create-item-with-file-field]-start
     to_create = ItemCreateParams(
         title="FileField Item created with Python SDK",
         category=ItemCategory.LOGIN,
@@ -334,7 +334,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
     )
 
     created_item = await client.items.create(to_create)
-    # [developer-docs.sdk.python.create-file-field-item]-end
+    # [developer-docs.sdk.python.create-item-with-file-field]-end
 
     # [developer-docs.sdk.python.attach-file-field-item]-start
     # Attach a file to the item
