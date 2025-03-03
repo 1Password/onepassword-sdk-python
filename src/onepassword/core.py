@@ -6,7 +6,7 @@ from onepassword.errors import raise_typed_exception
 # In empirical tests, we determined that maximum message size that can cross the FFI boundary 
 # is ~128MB. Past this limit, FFI will throw an error and the program will crash.
 # We set the limit to 50MB to be safe and consistent with the other SDKs, to be reconsidered upon further testing
-MESSAGE_LIMIT = 50 * 1024 * 1024; 
+MESSAGE_LIMIT = 50 * 1024 * 1024
 
 machine_arch = platform.machine().lower()
 
