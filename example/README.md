@@ -22,9 +22,9 @@ This folder contains a code snippet demonstrating how to use the 1Password Pytho
     export OP_VAULT_ID="<your vault uuid>"
     ```
 
-## Execution
+## How to Run
 
-To run the example file, navigate to project root directory and run": 
+To run the example file, navigate to project root directory and run: 
 ```bash
 python example/example.py
 ```
