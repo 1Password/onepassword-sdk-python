@@ -3,6 +3,10 @@ import platform
 
 from onepassword.errors import raise_typed_exception
 
+# In empirical tests, we determined that maximum message size that can cross the FFI boundary 
+# is ~128MB. Past this limit, FFI will throw an error and the program will crash.
+# We set the limit to 50MB to be safe and consistent with the other SDKs, to be reconsidered upon further testing
+MESSAGE_LIMIT = 50 * 1024 * 1024; 
 
 machine_arch = platform.machine().lower()
 
@@ -26,16 +30,24 @@ async def _init_client(client_config):
 
 # Invoke calls specified business logic from the SDK core.
 async def _invoke(invoke_config):
+    serialized_config = json.dumps(invoke_config)
+    if len(serialized_config) > MESSAGE_LIMIT:
+        raise ValueError(
+            f"Message size exceeds the limit of {MESSAGE_LIMIT} bytes.")
     try:
-        return await core.invoke(json.dumps(invoke_config))
+        return await core.invoke(serialized_config)
     except Exception as e:
         raise_typed_exception(e)
 
 
 # Invoke calls specified business logic from the SDK core.
 def _invoke_sync(invoke_config):
+    serialized_config = json.dumps(invoke_config)
+    if len(serialized_config) > MESSAGE_LIMIT:
+        raise ValueError(
+            f"Message size exceeds the limit of {MESSAGE_LIMIT} bytes.")
     try:
-        return core.invoke_sync(json.dumps(invoke_config))
+        return core.invoke_sync(serialized_config)
     except Exception as e:
         raise_typed_exception(e)
 
