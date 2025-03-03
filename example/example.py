@@ -289,17 +289,17 @@ async def create_and_replace_document_item(client: Client):
             ItemSection(id="totpsection", title=""),
         ],
         tags=["test tag 1", "test tag 2"],
-        document=DocumentCreateParams(name="file.txt",content=Path("file.txt").read_bytes())
+        document=DocumentCreateParams(name="file.txt",content=Path("./example/file.txt").read_bytes())
     )
     created_item = await client.items.create(to_create)
     # [developer-docs.sdk.python.create-document-item]-end
 
-	# [developer-docs.sdk.python.replace-document-item]-start
+    # [developer-docs.sdk.python.replace-document-item]-start
     # Replace the document in the item
-    replaced_item = await client.items.files.replace_document(created_item,DocumentCreateParams(name="file2.txt",content=Path("file2.txt").read_bytes()))
+    replaced_item = await client.items.files.replace_document(created_item,DocumentCreateParams(name="file2.txt",content=Path("./example/file2.txt").read_bytes()))
     # [developer-docs.sdk.python.replace-document-item]-end
 
-	# [developer-docs.sdk.python.read-document-item]-start
+    # [developer-docs.sdk.python.read-document-item]-start
     # Read the document in the item
     content = await client.items.files.read(replaced_item.vault_id,replaced_item.id,replaced_item.document)
     # [developer-docs.sdk.python.read-document-item]-end
@@ -330,7 +330,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
             ItemSection(id="", title=""),
         ],
         tags=["test tag 1", "test tag 2"],
-        files=[FileCreateParams(name="file.txt",content=Path("file.txt").read_bytes(),sectionId="",fieldId="file_field")]
+        files=[FileCreateParams(name="file.txt",content=Path("./example/file.txt").read_bytes(),sectionId="",fieldId="file_field")]
     )
 
     created_item = await client.items.create(to_create)
@@ -338,7 +338,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
 
     # [developer-docs.sdk.python.attach-file-field-item]-start
     # Attach a file to the item
-    attached_item = await client.items.files.attach(created_item,FileCreateParams(name="file2.txt",content=Path("file2.txt").read_bytes(),sectionId="",fieldId="new_file_field"))
+    attached_item = await client.items.files.attach(created_item,FileCreateParams(name="file2.txt",content=Path("./example/file2.txt").read_bytes(),sectionId="",fieldId="new_file_field"))
     # [developer-docs.sdk.python.attach-file-field-item]-end
 
     # [developer-docs.sdk.python.delete-file-field-item]-start
