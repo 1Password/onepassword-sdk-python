@@ -234,7 +234,7 @@ async def create_ssh_key_item(client: Client):
     )
 
     # Serialize the private key in PKCS8 format (PEM)
-    private_pem = private_key.private_bytes(
+    ssh_key_pkcs8_pem = private_key.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.PKCS8,
         encryption_algorithm=serialization.NoEncryption()
@@ -251,22 +251,22 @@ async def create_ssh_key_item(client: Client):
                 id="private_key",
                 title="private key",
                 field_type=ItemFieldType.SSHKEY,
-                value=private_pem,
+                value=ssh_key_pkcs8_pem,
                 sectionId="",
             ),
         ],
         sections=[
             ItemSection(id="", title=""),
-            ItemSection(id="totpsection", title=""),
         ],
     )
     created_item = await client.items.create(to_create)
+
+    print(created_item.fields[0].value)
+    print(created_item.fields[0].details.content.public_key)
+    print(created_item.fields[0].details.content.fingerprint)
+    print(created_item.fields[0].details.content.key_type)
     # [developer-docs.sdk.python.create-sshkey-item]-end
 
-    print(f"Private Key is: {created_item.fields[0].value}")
-    print(f"Public Key is: {created_item.fields[0].details.content.public_key}")
-    print(f"Fingerprint is: {created_item.fields[0].details.content.fingerprint}")
-    print(f"Key Type is: {created_item.fields[0].details.content.key_type}")
 
 async def create_and_replace_document_item(client: Client):
     # [developer-docs.sdk.python.create-document-item]-start
