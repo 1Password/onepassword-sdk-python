@@ -1,5 +1,6 @@
 import asyncio
 import os
+from pathlib import Path
 
 # [developer-docs.sdk.python.sdk-import]-start
 from onepassword import *
@@ -45,7 +46,7 @@ async def main():
 
     # [developer-docs.sdk.python.resolve-secret]-start
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
-    value = await client.secrets.resolve("op://tst-vault/.Login/username")
+    value = await client.secrets.resolve("op://vault/item/field")
     print(value)
     # [developer-docs.sdk.python.resolve-secret]-end
 
@@ -288,14 +289,14 @@ async def create_and_replace_document_item(client: Client):
             ItemSection(id="totpsection", title=""),
         ],
         tags=["test tag 1", "test tag 2"],
-        document=DocumentCreateParams(name="document.txt",content=bytes("Hello World","utf-8"))
+        document=DocumentCreateParams(name="file.txt",content=Path("file.txt").read_bytes())
     )
     created_item = await client.items.create(to_create)
     # [developer-docs.sdk.python.create-document-item]-end
 
 	# [developer-docs.sdk.python.replace-document-item]-start
     # Replace the document in the item
-    replaced_item = await client.items.files.replace_document(created_item,DocumentCreateParams(name="replaced.txt",content=bytes("Hello World. This is a replaced document","utf-8")))
+    replaced_item = await client.items.files.replace_document(created_item,DocumentCreateParams(name="file2.txt",content=Path("file2.txt").read_bytes()))
     # [developer-docs.sdk.python.replace-document-item]-end
 
 	# [developer-docs.sdk.python.read-document-item]-start
@@ -329,7 +330,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
             ItemSection(id="", title=""),
         ],
         tags=["test tag 1", "test tag 2"],
-        files=[FileCreateParams(name="file.txt",content=bytes("Hello World","utf-8"),sectionId="",fieldId="file_field")]
+        files=[FileCreateParams(name="file.txt",content=Path("file.txt").read_bytes(),sectionId="",fieldId="file_field")]
     )
 
     created_item = await client.items.create(to_create)
@@ -337,7 +338,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
 
     # [developer-docs.sdk.python.attach-file-field-item]-start
     # Attach a file to the item
-    attached_item = await client.items.files.attach(created_item,FileCreateParams(name="attach.txt",content=bytes("Hello World. This is an attached file.","utf-8"),sectionId="",fieldId="new_file_field"))
+    attached_item = await client.items.files.attach(created_item,FileCreateParams(name="file2.txt",content=Path("file2.txt").read_bytes(),sectionId="",fieldId="new_file_field"))
     # [developer-docs.sdk.python.attach-file-field-item]-end
 
     # [developer-docs.sdk.python.delete-file-field-item]-start
@@ -345,7 +346,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
     deleted_item = await client.items.files.delete(attached_item, attached_item.files[0].section_id, attached_item.files[0].field_id)
     # [developer-docs.sdk.python.delete-file-field-item]-end
 
-    print(deleted_item.files)
+    print(len(deleted_item.files))
 
 if __name__ == "__main__":
     asyncio.run(main())
