@@ -45,7 +45,7 @@ def _invoke_sync(invoke_config):
     serialized_config = json.dumps(invoke_config)
     if len(serialized_config.encode()) > MESSAGE_LIMIT:
         raise ValueError(
-            f"Message size exceeds the limit of {MESSAGE_LIMIT} bytes.")
+            f"message size exceeds the limit of {MESSAGE_LIMIT} bytes, please contact 1Password at support@1password.com or https://developer.1password.com/joinslack if you need help.")
     try:
         return core.invoke_sync(serialized_config)
     except Exception as e:
