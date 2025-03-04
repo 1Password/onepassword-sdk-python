@@ -25,6 +25,10 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          sparse-checkout: |
+            example/*
+          sparse-checkout-cone-mode: true
       
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
@@ -42,7 +46,7 @@ jobs:
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
           CIBW_ARCHS: "native"
           CIBW_BEFORE_TEST: "pip install pydantic"
-          CIBW_TEST_COMMAND: "python3 onepassword-sdk-python/example/example.py"
+          CIBW_TEST_COMMAND: "python3 example/example.py"
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
           
         uses: pypa/cibuildwheel@v2.23.0
