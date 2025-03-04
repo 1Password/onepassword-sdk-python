@@ -87,10 +87,10 @@ Operations:
 - [x] [Create items](https://developer.1password.com/docs/sdks/manage-items#create-an-item)
 - [x] [Update items](https://developer.1password.com/docs/sdks/manage-items#update-an-item)
 - [x] [Delete items](https://developer.1password.com/docs/sdks/manage-items#delete-an-item)
-- [x] Archive items
+- [x] [Archive items](https://developer.1password.com/docs/sdks/manage-items/#archive-an-item)
 - [x] [List items](https://developer.1password.com/docs/sdks/list-vaults-items/)
-- [x] Share items
-- [x] Generate PIN, random and memorable passwords
+- [x] [Share items](https://developer.1password.com/docs/sdks/share-items) (items with files cannot be shared)
+- [x] [Generate PIN, random and memorable passwords](https://developer.1password.com/docs/sdks/manage-items#generate-a-password)
 
 Field types:
 - [x] API Keys
@@ -98,7 +98,7 @@ Field types:
 - [x] Concealed fields
 - [x] Text fields
 - [x] Notes
-- [x] SSH private keys, public keys, fingerprint and key type (partially supported: supported in resolving secret references, not yet supported in item create/get/update)
+- [x] SSH private keys, public keys, fingerprint and key type 
 - [x] One-time passwords
 - [x] URLs
 - [x] Websites (used to suggest and autofill logins)
@@ -108,8 +108,10 @@ Field types:
 - [x] Emails
 - [x] References to other items
 - [ ] Address
-- [ ] Date / MM/YY
-- [ ] Files attachments and Document items
+- [ ] Date
+- [x] MM/YY
+- [x] Files attachments and Document items
+- [x] Menu
 
 ### Vault management
 - [ ] Retrieve vaults

@@ -1,15 +1,13 @@
-# 1Password Python SDK v0.1.6
+# 1Password Python SDK v0.2.0
 
 ## NEW
-* Support for item sharing: You can now create an item sharing link via the 1Password SDKs using the new `client.items.shares` API.
-* Support for item archiving: You can now move items to the archive with the SDKs, using the new `client.items.archive(vault_uuid, item_uuid)` function.
+
+- **File Support:** You can now create Document items, attach files to items, delete files from items, and read file contents using the SDK.
 
 ## IMPROVED
-* Support for item notes: You can now read, create and edit items with a notes field, accessing it via `item.notes`.
-* Support for SSH key attributes in secret references: You can now retrieve an SSH key's public key, key type and fingerprint with `client.secrets.resolve`.
-* Support for additional field types: You can now read, create and edit items with Email (email addresses) and Reference (ID references to other 1Password items) type fields.
-* Type hinting: When developing with the Python SDK, the functions now show type hints on their parameters and return types.
 
-## BUGS
-* Improved field matching logic for secret references: Retrieving a field from the item's default field section is now possible even if there is an identically named field in one of the item's named sections.
-
+- **Read files using secret references**: You can now resolve secret references that point to files attached to 1Password items.
+- **Read SSH keys in Open SSH format**: You can now use a secret reference to fetch a private key in OpenSSH format. For example: `op://vault/<SSH item>/private key?ssh-format=openssh`
+- **Support for more item field types**: You can now create, retrieve, and edit items containing SSH keys, Month-Year and Menu-type fields using the SDK.
+- **Read more field types using secret references**: You can now resolve secret references that point to information stored in Date, Month/Year, Address, and Reference field types.
+- **Improved error messages**: The error messages returned by the SDK were improved to be more clear and actionable.
