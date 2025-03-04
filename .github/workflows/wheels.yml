@@ -1,0 +1,52 @@
+name: Build
+
+on: [push, pull_request, workflow_dispatch] # this is just for testing
+  # push:
+  #   branches:
+  #   - main
+  #   # Release branches
+  #   - "sdk-core/*"
+  # pull_request:
+  #   branches:
+  #   - main
+  #   - "sdk-core/*"
+  # Allow manual triggering of the workflow
+  # workflow_dispatch:
+
+jobs:
+  build_wheels:
+    name: Build wheels for Python SDK on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix: 
+        # Macos 13 is an intel runner and macos 14 is an apple silicon runner 
+        os: [ubuntu-22.04, ubuntu-22.04-arm, windows-latest, macos-13, macos-14]
+
+
+    steps:
+      - uses: actions/checkout@v4
+      
+      # Need to grab the SDK version for the wheel name
+      - name: Extract SDK Version
+        run: echo "SDK_VERSION=$(python -c 'import version; print(version.SDK_VERSION)')" >> $GITHUB_ENV 
+      
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13" 
+
+      - name: Build wheels
+        env:
+          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux2_32"
+          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux2_32"
+          CIBW_ARCHS: "native"
+          CIBW_BEFORE_TEST: "pip install pydantic"
+          CIBW_TEST_COMMAND: "python3 example/example.py"
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+          
+        uses: pypa/cibuildwheel@v2.23.0
+      
+      - uses: actions/upload-artifact@v4
+        with:
+          name: onepassword-sdk-${{ env.SDK_VERSION }}-${{ matrix.os }}-${{ strategy.job-index }}
+          path: ./wheelhouse/*.whl
