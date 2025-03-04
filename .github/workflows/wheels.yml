@@ -28,7 +28,7 @@ jobs:
         with:
           sparse-checkout: |
             example/*
-          sparse-checkout-cone-mode: true
+          sparse-checkout-cone-mode: false
       
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
