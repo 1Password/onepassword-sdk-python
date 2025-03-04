@@ -1,4 +1,5 @@
 from pathlib import Path
+import sysconfig
 from setuptools import setup, find_packages
 from sysconfig import get_platform
 from version import SDK_VERSION
@@ -19,10 +20,25 @@ try:
 except ImportError:
     bdist_wheel = None
 
+def get_data_files():
+    # Specify the destination directory for platform-specific shared libraries
+    shared_libs = get_shared_library_data_to_include()
+    data_files = []
+
+    # Use sysconfig to get the correct platform-specific site-packages directory
+    platlib_path = sysconfig.get_paths()["platlib"]
+
+    for file_path in shared_libs:
+        if file_path:
+            # Add the library file to data_files list with correct platlib path
+            data_files.append((platlib_path, [file_path]))
+
+    return data_files
+
 
 def get_shared_library_data_to_include():
     # Return the correct uniffi C shared library extension for the given platform
-    include_path = "lib"
+    include_path = "src/onepassword/lib"
     machine_type = os.getenv("PYTHON_MACHINE_PLATFORM") or platform.machine().lower()
     if machine_type in ["x86_64", "amd64"]:
         include_path = os.path.join(include_path, "x86_64")
@@ -73,7 +89,7 @@ setup(
         "License :: OSI Approved :: MIT License",
     ],
     cmdclass={"bdist_wheel": bdist_wheel},
-    package_data={"": get_shared_library_data_to_include()},
+    data_files=get_data_files(),
     install_requires=[
         "pydantic>=2.5",  # Minimum Pydantic version to run the Python SDK
     ],
