@@ -7,8 +7,6 @@ from onepassword import *
 # [developer-docs.sdk.python.sdk-import]-end
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives import hashes
-from cryptography.hazmat.primitives.asymmetric import padding
 
 async def main():
     # [developer-docs.sdk.python.client-initialization]-start
@@ -267,6 +265,7 @@ async def create_ssh_key_item(client: Client):
     print(created_item.fields[0].details.content.fingerprint)
     print(created_item.fields[0].details.content.key_type)
     # [developer-docs.sdk.python.create-sshkey-item]-end
+    await client.items.delete(created_item.vault_id, created_item.id)
 
 
 async def create_and_replace_document_item(client: Client):
@@ -276,20 +275,9 @@ async def create_and_replace_document_item(client: Client):
         title="Document Item Created with Python SDK",
         category=ItemCategory.DOCUMENT,
         vault_id="7turaasywpymt3jecxoxk5roli",
-        fields=[
-            ItemField(
-                id="onetimepassword",
-                title="one-time-password",
-                field_type=ItemFieldType.TOTP,
-                section_id="totpsection",
-                value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
-            ),
-        ],
         sections=[
             ItemSection(id="", title=""),
-            ItemSection(id="totpsection", title=""),
         ],
-        tags=["test tag 1", "test tag 2"],
         document=DocumentCreateParams(name="file.txt",content=Path("./example/file.txt").read_bytes())
     )
     created_item = await client.items.create(to_create)
@@ -306,6 +294,9 @@ async def create_and_replace_document_item(client: Client):
     # [developer-docs.sdk.python.read-document-item]-end
     
     print(content)
+
+    await client.items.delete(replaced_item.vault_id, replaced_item.id)
+
 
 async def create_attach_and_delete_file_field_item(client: Client):
     # [developer-docs.sdk.python.create-item-with-file-field]-start
@@ -331,7 +322,6 @@ async def create_attach_and_delete_file_field_item(client: Client):
         sections=[
             ItemSection(id="", title=""),
         ],
-        tags=["test tag 1", "test tag 2"],
         files=[FileCreateParams(name="file.txt",content=Path("./example/file.txt").read_bytes(),sectionId="",fieldId="file_field")]
     )
 
@@ -345,10 +335,12 @@ async def create_attach_and_delete_file_field_item(client: Client):
 
     # [developer-docs.sdk.python.delete-file-field-item]-start
     # Delete a file field from an item
-    deleted_item = await client.items.files.delete(attached_item, attached_item.files[0].section_id, attached_item.files[0].field_id)
+    deleted_file_item = await client.items.files.delete(attached_item, attached_item.files[0].section_id, attached_item.files[0].field_id)
     # [developer-docs.sdk.python.delete-file-field-item]-end
 
-    print(len(deleted_item.files))
+    print(len(deleted_file_item.files))
+
+    await client.items.delete(deleted_file_item.vault_id, deleted_file_item.id)
 
 if __name__ == "__main__":
     asyncio.run(main())
