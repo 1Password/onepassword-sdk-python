@@ -38,8 +38,8 @@ jobs:
       - name: Build wheels
         env:
           CIBW_SKIP: pp*
-          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux_2_32"
-          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux_2_32"
+          CIBW_MANYLINUX_X86_64_IMAGE: "manylinux_2_34"
+          CIBW_MANYLINUX_AARCH64_IMAGE: "manylinux_2_34"
           CIBW_ARCHS: "native"
           CIBW_BEFORE_TEST: "pip install pydantic"
           CIBW_TEST_COMMAND: "python3 example/example.py"
