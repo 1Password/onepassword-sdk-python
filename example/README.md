@@ -9,6 +9,9 @@ This folder contains a code snippet demonstrating how to use the 1Password Pytho
 - Generate different types of passwords (PIN, memorable, and random).
 - Share an item with valid recipients and create a shareable link.
 - Archive or delete items from the vault.
+- Create and manage SSH key items.
+- Create and manage document items, including replacing and reading documents.
+- Create and manage file field items by attaching and deleting files.
 
 ## Prerequisites
 
@@ -38,5 +41,8 @@ When running the example, the terminal will display:
 - Details of newly created and updated items.
 - Generated passwords (PIN, memorable, random).
 - A shareable link for shared items.
+- SSH key attributes like public key and fingerprint.
+- Document content after replacing the file.
+- A list of file field items and file deletions.
 
-These outputs show the results of vault and item operations, password generation, and sharing.
+These outputs show the results of vault and item operations, password generation, item sharing, and management of SSH and document items.
