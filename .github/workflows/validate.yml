@@ -37,6 +37,7 @@ jobs:
           pip install pydantic &&
           python -m pytest src/onepassword/test_client.py
       - name: Example Test
+        if: matrix.os == 'ubuntu-latest'
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.EXAMPLE_TESTS_OP_SERVICE_ACCOUNT_TOKEN }}
           OP_VAULT_ID: ${{ secrets.EXAMPLE_TESTS_OP_VAULT_ID }}
