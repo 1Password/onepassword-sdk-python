@@ -1,9 +1,13 @@
 import asyncio
 import os
+from pathlib import Path
 
 # [developer-docs.sdk.python.sdk-import]-start
 from onepassword import *
+
 # [developer-docs.sdk.python.sdk-import]-end
+from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives import serialization
 
 
 async def main():
@@ -167,6 +171,12 @@ async def main():
 
     await share_item(client, created_item.vault_id, updated_item.id)
 
+    await create_ssh_key_item(client)
+
+    await create_and_replace_document_item(client)
+
+    await create_attach_and_delete_file_field_item(client)
+
     # [developer-docs.sdk.python.delete-item]-start
     # Delete a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
@@ -216,6 +226,152 @@ async def share_item(client: Client, vault_id: str, item_id: str):
 
     print(share_link)
     # [developer-docs.sdk.python.item-share-create-share]-end
+
+
+async def create_ssh_key_item(client: Client):
+    # Generate a 2048-bit RSA private key
+    private_key = rsa.generate_private_key(
+        public_exponent=65537,
+        key_size=4096,
+    )
+
+    # Serialize the private key in PKCS8 format (PEM)
+    ssh_key_pkcs8_pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption(),
+    )
+
+    # [developer-docs.sdk.python.create-sshkey-item]-start
+    # Create an Item containing SSH Key and add it to your vault.
+    to_create = ItemCreateParams(
+        title="SSH Key Item Created With Python SDK",
+        category=ItemCategory.SSHKEY,
+        vault_id="7turaasywpymt3jecxoxk5roli",
+        fields=[
+            ItemField(
+                id="private_key",
+                title="private key",
+                field_type=ItemFieldType.SSHKEY,
+                value=ssh_key_pkcs8_pem,
+                sectionId="",
+            ),
+        ],
+        sections=[
+            ItemSection(id="", title=""),
+        ],
+    )
+    created_item = await client.items.create(to_create)
+
+    print(created_item.fields[0].value)
+    print(created_item.fields[0].details.content.public_key)
+    print(created_item.fields[0].details.content.fingerprint)
+    print(created_item.fields[0].details.content.key_type)
+    # [developer-docs.sdk.python.create-sshkey-item]-end
+    await client.items.delete(created_item.vault_id, created_item.id)
+
+
+async def create_and_replace_document_item(client: Client):
+    # [developer-docs.sdk.python.create-document-item]-start
+    # Create a Document Item
+    to_create = ItemCreateParams(
+        title="Document Item Created with Python SDK",
+        category=ItemCategory.DOCUMENT,
+        vault_id="7turaasywpymt3jecxoxk5roli",
+        sections=[
+            ItemSection(id="", title=""),
+        ],
+        document=DocumentCreateParams(
+            name="file.txt", content=Path("./example/file.txt").read_bytes()
+        ),
+    )
+    created_item = await client.items.create(to_create)
+    # [developer-docs.sdk.python.create-document-item]-end
+
+    # [developer-docs.sdk.python.replace-document-item]-start
+    # Replace the document in the item
+    replaced_item = await client.items.files.replace_document(
+        created_item,
+        DocumentCreateParams(
+            name="file2.txt", content=Path("./example/file2.txt").read_bytes()
+        ),
+    )
+    # [developer-docs.sdk.python.replace-document-item]-end
+
+    # [developer-docs.sdk.python.read-document-item]-start
+    # Read the document in the item
+    content = await client.items.files.read(
+        replaced_item.vault_id, replaced_item.id, replaced_item.document
+    )
+    # [developer-docs.sdk.python.read-document-item]-end
+
+    print(content.decode())
+
+    await client.items.delete(replaced_item.vault_id, replaced_item.id)
+
+
+async def create_attach_and_delete_file_field_item(client: Client):
+    # [developer-docs.sdk.python.create-item-with-file-field]-start
+    # Create a File Field Item
+    to_create = ItemCreateParams(
+        title="FileField Item created with Python SDK",
+        category=ItemCategory.LOGIN,
+        vault_id="7turaasywpymt3jecxoxk5roli",
+        fields=[
+            ItemField(
+                id="username",
+                title="username",
+                field_type=ItemFieldType.TEXT,
+                value="mynameisjeff",
+            ),
+            ItemField(
+                id="password",
+                title="password",
+                field_type=ItemFieldType.CONCEALED,
+                value="jeff",
+            ),
+        ],
+        sections=[
+            ItemSection(id="", title=""),
+        ],
+        files=[
+            FileCreateParams(
+                name="file.txt",
+                content=Path("./example/file.txt").read_bytes(),
+                sectionId="",
+                fieldId="file_field",
+            )
+        ],
+    )
+
+    created_item = await client.items.create(to_create)
+    # [developer-docs.sdk.python.create-item-with-file-field]-end
+
+    # [developer-docs.sdk.python.attach-file-field-item]-start
+    # Attach a file field to the item
+    attached_item = await client.items.files.attach(
+        created_item,
+        FileCreateParams(
+            name="file2.txt",
+            content=Path("./example/file2.txt").read_bytes(),
+            sectionId="",
+            fieldId="new_file_field",
+        ),
+    )
+    # [developer-docs.sdk.python.attach-file-field-item]-end
+
+    # [developer-docs.sdk.python.delete-file-field-item]-start
+    # Delete a file field from an item
+    deleted_file_item = await client.items.files.delete(
+        attached_item,
+        attached_item.files[1].section_id,
+        attached_item.files[1].field_id,
+    )
+    # [developer-docs.sdk.python.delete-file-field-item]-end
+
+    print(len(deleted_file_item.files))
+
+    await client.items.delete(deleted_file_item.vault_id, deleted_file_item.id)
 
 
 if __name__ == "__main__":

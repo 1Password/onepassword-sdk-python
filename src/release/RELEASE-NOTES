@@ -1,7 +1,13 @@
-# 1Password Python SDK v0.1.7
+# 1Password Python SDK v0.2.0
 
-## IMPROVED:
-* The SDK now returns an error with a custom type when it hits the rate limit of the 1Password servers.
+## NEW
 
-## FIXED:
-* Using an SDK client in a long-running process no longer causes 401 server responses.
+- **File Support:** You can now create Document items, attach files to items, delete files from items, and read file contents using the SDK.
+
+## IMPROVED
+
+- **Read files using secret references**: You can now resolve secret references that point to files attached to 1Password items.
+- **Read SSH keys in Open SSH format**: You can now use a secret reference to fetch a private key in OpenSSH format. For example: `op://vault/<SSH item>/private key?ssh-format=openssh`
+- **Support for more item field types**: You can now create, retrieve, and edit items containing SSH keys, Month-Year and Menu-type fields using the SDK.
+- **Read more field types using secret references**: You can now resolve secret references that point to information stored in Date, Month/Year, Address, and Reference field types.
+- **Improved error messages**: The error messages returned by the SDK were improved to be more clear and actionable.
