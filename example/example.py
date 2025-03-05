@@ -175,11 +175,11 @@ async def main():
 
     await share_item(client, created_item.vault_id, updated_item.id)
 
-    await create_ssh_key_item(client)
+    await create_ssh_key_item(client, vault_id)
 
-    await create_and_replace_document_item(client)
+    await create_and_replace_document_item(client, vault_id)
 
-    await create_attach_and_delete_file_field_item(client)
+    await create_attach_and_delete_file_field_item(client, vault_id)
 
     # [developer-docs.sdk.python.delete-item]-start
     # Delete a item from your vault.
@@ -232,7 +232,7 @@ async def share_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.item-share-create-share]-end
 
 
-async def create_ssh_key_item(client: Client):
+async def create_ssh_key_item(client: Client, vault_id: str):
     # Generate a 2048-bit RSA private key
     private_key = rsa.generate_private_key(
         public_exponent=65537,
@@ -251,7 +251,7 @@ async def create_ssh_key_item(client: Client):
     to_create = ItemCreateParams(
         title="SSH Key Item Created With Python SDK",
         category=ItemCategory.SSHKEY,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id=vault_id,
         fields=[
             ItemField(
                 id="private_key",
@@ -275,13 +275,13 @@ async def create_ssh_key_item(client: Client):
     await client.items.delete(created_item.vault_id, created_item.id)
 
 
-async def create_and_replace_document_item(client: Client):
+async def create_and_replace_document_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.create-document-item]-start
     # Create a Document Item
     to_create = ItemCreateParams(
         title="Document Item Created with Python SDK",
         category=ItemCategory.DOCUMENT,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id=vault_id,
         sections=[
             ItemSection(id="", title=""),
         ],
@@ -314,13 +314,13 @@ async def create_and_replace_document_item(client: Client):
     await client.items.delete(replaced_item.vault_id, replaced_item.id)
 
 
-async def create_attach_and_delete_file_field_item(client: Client):
+async def create_attach_and_delete_file_field_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.create-item-with-file-field]-start
     # Create a File Field Item
     to_create = ItemCreateParams(
         title="FileField Item created with Python SDK",
         category=ItemCategory.LOGIN,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id=vault_id,
         fields=[
             ItemField(
                 id="username",
