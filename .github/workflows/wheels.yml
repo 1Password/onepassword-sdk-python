@@ -39,12 +39,10 @@ jobs:
           CIBW_BEFORE_TEST: "pip install pydantic cryptography"
           CIBW_TEST_COMMAND: "python {project}/example/example.py"
           MACOSX_DEPLOYMENT_TARGET: 11.0 # Required for building on macOS
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.EXAMPLE_TESTS_OP_SERVICE_ACCOUNT_TOKEN }}
           OP_VAULT_ID: ${{ secrets.EXAMPLE_TESTS_OP_VAULT_ID }}
           CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN, OP_VAULT_ID # to pass in the SA token, for some reason linux doesn't read the env variables
 
-
-        continue-on-error: true
         uses: pypa/cibuildwheel@v2.23.0
       
       - uses: actions/upload-artifact@v4
