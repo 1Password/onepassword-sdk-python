@@ -30,23 +30,19 @@ jobs:
       - name: Extract SDK Version
         run: echo "SDK_VERSION=$(python -c 'import version; print(version.SDK_VERSION)')" >> $GITHUB_ENV
       
-      - name: Debug directory contents
-        run: |
-          echo "Current working directory:"
-          pwd
-          echo "Listing files in the example directory:"
-          ls -alh /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/
-          echo "Attempting to read example.py:"
-          cat /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/example.py
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.12" 
           
-      - name: Verify Python version
+      - name: Debug directory contents
         run: |
-            python3 --version
-            which python3
+            echo "Current working directory:"
+            pwd
+            echo "Listing files in the example directory:"
+            ls -alh /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/
+            echo "Attempting to read example.py:"
+            python3 /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/example.py
 
       - name: Build wheels
         env:
