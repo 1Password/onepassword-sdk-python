@@ -37,7 +37,7 @@ jobs:
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
           CIBW_ARCHS: "native"
           CIBW_BEFORE_TEST: "pip install pydantic cryptography"
-          CIBW_TEST_COMMAND: python ./onepassword-sdk-python/example/example.py
+          CIBW_TEST_COMMAND: python3 ./onepassword-sdk-python/example/example.py
           MACOSX_DEPLOYMENT_TARGET: 11.0 # Required for building on macOS
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         continue-on-error: true
