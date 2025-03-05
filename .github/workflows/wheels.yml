@@ -1,4 +1,4 @@
-name: Build
+name: Build Wheels for Python SDK
 
 on: [push, pull_request, workflow_dispatch] # this is just for testing
   # push:
@@ -20,7 +20,7 @@ jobs:
     strategy:
       matrix: 
         # Macos 13 is an intel runner and macos 14 is an apple silicon runner 
-        os: [ubuntu-22.04, ubuntu-22.04-arm, windows-latest, macos-13, macos-14]
+        os: [ubuntu-22.04, ubuntu-22.04-arm]
 
 
     steps:
@@ -28,7 +28,11 @@ jobs:
       
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
-        run: echo "SDK_VERSION=$(python -c 'import version; print(version.SDK_VERSION)')" >> $GITHUB_ENV 
+        run: echo "SDK_VERSION=$(python -c 'import version; print(version.SDK_VERSION)')" >> $GITHUB_ENV
+      
+      - name: List Files in Example Directory
+        run: ls -alh /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/
+      
       
       - name: Setup Python
         uses: actions/setup-python@v5
@@ -43,7 +47,7 @@ jobs:
           CIBW_ARCHS: "native"
           CIBW_BEFORE_TEST: "pip install pydantic cryptography"
           CIBW_TEST_COMMAND: "python ${{github.workspace}}/example/example.py"
-          MACOSX_DEPLOYMENT_TARGET: 11.0
+          MACOSX_DEPLOYMENT_TARGET: 11.0 # Required for building on macOS
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         continue-on-error: true
         uses: pypa/cibuildwheel@v2.23.0
