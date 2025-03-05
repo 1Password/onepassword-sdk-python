@@ -1,6 +1,6 @@
 name: Build
 
-on: [push, pull_request, workflow_dispatch] # this is just for testing
+on: [workflow_dispatch] # this is just for testing
   # push:
   #   branches:
   #   - main
