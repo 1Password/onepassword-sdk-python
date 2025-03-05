@@ -1,14 +1,11 @@
 name: Build Wheels for Python SDK
 
 on:
-  push:
-    branches:
-      - sdk-core/*
   workflow_dispatch:
 
 jobs:
   build_wheels:
-    if: github.event_name == 'workflow_dispatch'
+    # if: github.event_name == 'workflow_dispatch'
     name: Build wheels for Python SDK on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
