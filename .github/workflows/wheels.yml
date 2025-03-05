@@ -31,7 +31,7 @@ jobs:
         run: echo "SDK_VERSION=$(python -c 'import version; print(version.SDK_VERSION)')" >> $GITHUB_ENV
       
       - name: Make test script executable
-        run: chmod +x ${{github.workspace}}/run_test.sh
+        run: chmod +x ${{github.workspace}}/run_example.sh
 
       - name: Build wheels
         env:
@@ -40,7 +40,7 @@ jobs:
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
           CIBW_ARCHS: "native"
           CIBW_BEFORE_TEST: "pip install pydantic cryptography"
-          CIBW_TEST_COMMAND: ${{github.workspace}}/run_test.sh
+          CIBW_TEST_COMMAND: ${{github.workspace}}/run_example.sh
           MACOSX_DEPLOYMENT_TARGET: 11.0 # Required for building on macOS
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         continue-on-error: true
