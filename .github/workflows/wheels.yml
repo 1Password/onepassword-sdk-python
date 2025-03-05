@@ -38,13 +38,15 @@ jobs:
           ls -alh /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/
           echo "Attempting to read example.py:"
           cat /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/example.py
-      
-      
-      
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
-          python-version: "3.13" 
+          python-version: "3.12" 
+          
+      - name: Verify Python version
+        run: |
+            python3 --version
+            which python3
 
       - name: Build wheels
         env:
