@@ -25,6 +25,13 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: List all files in the workspace
+        run: |
+          if [ "$(uname)" == "Linux" ] || [ "$(uname)" == "Darwin" ]; then
+          find $GITHUB_WORKSPACE
+          else
+            dir $GITHUB_WORKSPACE
+          fi
       
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
@@ -43,6 +50,7 @@ jobs:
           CIBW_ARCHS: "native"
           CIBW_BEFORE_TEST: "pip install pydantic cryptography"
           CIBW_TEST_COMMAND: "python3 ${{github.workspace}}/example/example.py"
+          MACOSX_DEPLOYMENT_TARGET: 11.0
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         continue-on-error: true
         uses: pypa/cibuildwheel@v2.23.0
