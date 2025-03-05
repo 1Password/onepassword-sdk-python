@@ -42,7 +42,7 @@ jobs:
             echo "Listing files in the example directory:"
             ls -alh /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/
             echo "Attempting to read example.py:"
-            python3 /home/runner/work/onepassword-sdk-python/onepassword-sdk-python/example/example.py
+            python3 ${{github.workspace}}/example/example.py
 
       - name: Build wheels
         env:
