@@ -1,5 +1,5 @@
 from pathlib import Path
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Distribution
 from sysconfig import get_platform
 from version import SDK_VERSION
 import platform
@@ -19,6 +19,9 @@ try:
 except ImportError:
     bdist_wheel = None
 
+class BinaryDistribution(Distribution):
+    def has_ext_modules(self):
+        return True
 
 def get_shared_library_data_to_include():
     # Return the correct uniffi C shared library extension for the given platform
@@ -56,6 +59,7 @@ setup(
     packages=find_packages(
         where="src",
     ),
+    distclass=BinaryDistribution,
     license="MIT",
     license_files="LICENSE",
     package_dir={"": "src"},
