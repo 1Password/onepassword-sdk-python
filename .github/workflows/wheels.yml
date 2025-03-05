@@ -10,6 +10,7 @@ on:
 
 jobs:
   build_wheels:
+    if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/sdk-core/')
     name: Build wheels for Python SDK on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
