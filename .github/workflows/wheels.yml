@@ -41,7 +41,7 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_34_x86_64"
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
           CIBW_ARCHS: "native"
-          CIBW_BEFORE_TEST: "pip install pydantic"
+          CIBW_BEFORE_TEST: "pip install pydantic cryptography"
           CIBW_TEST_COMMAND: "python3 ${{github.workspace}}/example/example.py"
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
           
