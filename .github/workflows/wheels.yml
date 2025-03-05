@@ -25,13 +25,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: List all files in the workspace
-        run: |
-          if [ "$(uname)" == "Linux" ] || [ "$(uname)" == "Darwin" ]; then
-          find $GITHUB_WORKSPACE
-          else
-            dir $GITHUB_WORKSPACE
-          fi
+      - name: Check file permissions for example.py
+        run: ls -l $GITHUB_WORKSPACE/example/example.py
+        continue-on-error: true
       
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
