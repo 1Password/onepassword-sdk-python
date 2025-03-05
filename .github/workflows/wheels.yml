@@ -1,17 +1,17 @@
 name: Build Wheels for Python SDK
 
-on: [push, pull_request, workflow_dispatch] # this is just for testing
-  # push:
-  #   branches:
-  #   - main
-  #   # Release branches
-  #   - "sdk-core/*"
-  # pull_request:
-  #   branches:
-  #   - main
-  #   - "sdk-core/*"
+on:
+  push:
+    branches:
+    - main
+    # Release branches
+    - "sdk-core/*"
+  pull_request:
+    branches:
+    - main
+    - "sdk-core/*"
   # Allow manual triggering of the workflow
-  # workflow_dispatch:
+  workflow_dispatch:
 
 jobs:
   build_wheels:
