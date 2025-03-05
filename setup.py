@@ -1,9 +1,6 @@
 from pathlib import Path
-import sysconfig
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Distribution
 from sysconfig import get_platform
-
-import setuptools
 from version import SDK_VERSION
 import platform
 import os
@@ -22,7 +19,7 @@ try:
 except ImportError:
     bdist_wheel = None
 
-class BinaryDistribution (setuptools.Distribution):
+class BinaryDistribution(Distribution):
     def has_ext_modules(self):
         return True
 
