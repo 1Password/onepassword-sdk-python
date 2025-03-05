@@ -3,12 +3,7 @@ name: Build Wheels for Python SDK
 on:
   push:
     branches:
-    - main
     # Release branches
-    - "sdk-core/*"
-  pull_request:
-    branches:
-    - main
     - "sdk-core/*"
   # Allow manual triggering of the workflow
   workflow_dispatch:
@@ -36,7 +31,7 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_34_x86_64"
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
           CIBW_ARCHS: "native"
-          CIBW_BEFORE_TEST: "pip install pydantic cryptography pytest pytest-asyncio"
+          CIBW_TEST_REQUIRES: "pydantic pytest pytest-asyncio"
           CIBW_TEST_COMMAND: "python -m pytest {project}/src/onepassword/test_client.py"
           MACOSX_DEPLOYMENT_TARGET: 11.0 # Required for building on macOS
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
