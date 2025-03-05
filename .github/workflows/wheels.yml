@@ -39,6 +39,7 @@ jobs:
           CIBW_BEFORE_TEST: "pip install pydantic cryptography"
           CIBW_TEST_COMMAND: "python {project}/example/example.py"
           MACOSX_DEPLOYMENT_TARGET: 11.0 # Required for building on macOS
+          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN # to pass in the SA token, for some reason linux doesn't read the env variables
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         continue-on-error: true
         uses: pypa/cibuildwheel@v2.23.0
