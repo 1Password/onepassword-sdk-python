@@ -42,6 +42,7 @@ jobs:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.EXAMPLE_TESTS_OP_SERVICE_ACCOUNT_TOKEN }}
           OP_VAULT_ID: ${{ secrets.EXAMPLE_TESTS_OP_VAULT_ID }}
         run: |
+          pip install -r requirements.txt &&
           pip install . &&
           python example/example.py
   lint:
