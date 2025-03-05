@@ -36,12 +36,11 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_34_x86_64"
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
           CIBW_ARCHS: "native"
-          CIBW_BEFORE_TEST: "pip install pydantic cryptography"
-          CIBW_TEST_COMMAND: "python {project}/example/example.py"
+          CIBW_BEFORE_TEST: "pip install pydantic cryptography pytest pytest-asyncio"
+          CIBW_TEST_COMMAND: "python -m pytest {project}/src/onepassword/test_client.py"
           MACOSX_DEPLOYMENT_TARGET: 11.0 # Required for building on macOS
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.EXAMPLE_TESTS_OP_SERVICE_ACCOUNT_TOKEN }}
-          OP_VAULT_ID: ${{ secrets.EXAMPLE_TESTS_OP_VAULT_ID }}
-          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN, OP_VAULT_ID # to pass in the SA token, for some reason linux doesn't read the env variables
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN # to pass in the SA token, for some reason linux doesn't read the env variables
 
         uses: pypa/cibuildwheel@v2.23.0
       
