@@ -25,9 +25,6 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
-      - name: Check file permissions for example.py
-        run: ls -l $GITHUB_WORKSPACE/example/example.py
-        continue-on-error: true
       
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
@@ -45,7 +42,7 @@ jobs:
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
           CIBW_ARCHS: "native"
           CIBW_BEFORE_TEST: "pip install pydantic cryptography"
-          CIBW_TEST_COMMAND: "python3 ${{github.workspace}}/example/example.py"
+          CIBW_TEST_COMMAND: "python ${{github.workspace}}/example/example.py"
           MACOSX_DEPLOYMENT_TARGET: 11.0
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         continue-on-error: true
