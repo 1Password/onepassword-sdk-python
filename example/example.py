@@ -44,18 +44,16 @@ async def main():
         print(error)
     # [developer-docs.sdk.python.validate-secret-reference]-end
 
-    # [developer-docs.sdk.python.resolve-secret]-start
-    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
-    value = await client.secrets.resolve("op://vault/item/field")
-    print(value)
-    # [developer-docs.sdk.python.resolve-secret]-end
+    vault_id= os.getenv("OP_VAULT_ID")
+    if vault_id is None:
+        raise Exception("OP_VAULT_ID environment variable is not set")
 
     # [developer-docs.sdk.python.create-item]-start
     # Create an Item and add it to your vault.
     to_create = ItemCreateParams(
         title="MyName",
         category=ItemCategory.LOGIN,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id=vault_id,
         fields=[
             ItemField(
                 id="username",
@@ -95,6 +93,12 @@ async def main():
 
     print(dict(created_item))
 
+    # [developer-docs.sdk.python.resolve-secret]-start
+    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
+    value = await client.secrets.resolve(f"op://{created_item.vault_id}/{created_item.id}/username")
+    print(value)
+    # [developer-docs.sdk.python.resolve-secret]-end
+
     # [developer-docs.sdk.python.resolve-totp-code]-start
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     code = await client.secrets.resolve(
@@ -102,7 +106,7 @@ async def main():
     )
     print(code)
     # [developer-docs.sdk.python.resolve-totp-code]-end
-
+    # hello
     # [developer-docs.sdk.python.get-totp-item-crud]-start
     # Fetch a totp code from the item
     for f in created_item.fields:
