@@ -3,13 +3,12 @@ name: Build Wheels for Python SDK
 on:
   push:
     branches:
-    # Release branches
-    - "sdk-core/*"
-  # Allow manual triggering of the workflow
+      - sdk-core/*
   workflow_dispatch:
 
 jobs:
   build_wheels:
+    if: github.event_name == 'workflow_dispatch'
     name: Build wheels for Python SDK on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
@@ -43,3 +42,12 @@ jobs:
         with:
           name: onepassword-sdk-${{ env.SDK_VERSION }}-${{ matrix.os }}-${{ strategy.job-index }}
           path: ./wheelhouse/*.whl
+  
+  build-sdist:
+    name: Build source distribution for Python SDK
+    runs-on: ubuntu-latest
+    needs: build_wheels
+    steps:
+      - uses: actions/checkout@v4
+      - name: Build source distribution
+        run: python setup.py sdist
