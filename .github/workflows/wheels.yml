@@ -1,10 +1,6 @@
 name: Build Wheels for Python SDK
 
 on:
-  push:
-    branches:
-      # Only build wheels for the RC branches
-      - "sdk-core/*"
   workflow_dispatch:
     inputs:
       build-wheels:
