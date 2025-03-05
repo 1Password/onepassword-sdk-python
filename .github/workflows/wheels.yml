@@ -1,5 +1,4 @@
 name: Build Wheels for Python SDK
-
 on:
   # Allow manual triggering of the workflow
   workflow_dispatch:
@@ -15,13 +14,11 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix: 
-        # Macos 13 is an intel runner and macos 14 is an apple silicon runner 
+        # macOS 13 is an Intel runner and macOS 14 is an Apple Silicon runner 
         os: [ubuntu-22.04, ubuntu-22.04-arm, windows-latest, macos-13, macos-14]
-
-
     steps:
       - uses: actions/checkout@v4
-      
+
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
         run: echo "SDK_VERSION=$(python -c 'import version; print(version.SDK_VERSION)')" >> $GITHUB_ENV
@@ -36,11 +33,11 @@ jobs:
           CIBW_TEST_COMMAND: "python -m pytest {project}/src/onepassword/test_client.py"
           MACOSX_DEPLOYMENT_TARGET: 11.0 # Required for building on macOS
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
-          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN # to pass in the SA token, for some reason linux doesn't read the env variables
+          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN # to pass in the SA token, for some reason Linux doesn't read the env variables correctly
 
         uses: pypa/cibuildwheel@v2.23.0
-      
+
       - uses: actions/upload-artifact@v4
         with:
-          name: onepassword-sdk-${{ env.SDK_VERSION }}-${{ matrix.os }}-${{ strategy.job-index }}
+          name: onepassword-sdk-${{ env.SDK_VERSION }}-${{ matrix.os }}
           path: ./wheelhouse/*.whl
