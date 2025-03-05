@@ -7,10 +7,14 @@ on:
     - "sdk-core/*"
   # Allow manual triggering of the workflow
   workflow_dispatch:
+    inputs:
+      build-wheels:
+        description: 'Do you want to build wheels for the Python SDK?'
+        type: boolean
+        default: false
 
 jobs:
   build_wheels:
-    if: github.event_name == 'workflow_dispatch' && startsWith(github.ref, 'refs/heads/sdk-core/')
     name: Build wheels for Python SDK on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     strategy:
