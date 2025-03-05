@@ -6,6 +6,11 @@ on:
       # Only build wheels for the RC branches
       - "sdk-core/*"
   workflow_dispatch:
+    inputs:
+      build-wheels:
+        description: 'Do you want to build wheels for the Python SDK?'
+        type: boolean
+        default: false
 
 jobs:
   build_wheels:
