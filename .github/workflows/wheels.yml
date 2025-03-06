@@ -1,13 +1,9 @@
-name: Build Wheels for Python SDK
+name: Release Builder
 on:
-  pull_request:
-    branches:
-      - main
-  # Allow manual triggering of the workflow
   workflow_dispatch:
     inputs:
-      build-wheels:
-        description: 'Do you want to build wheels for the Python SDK?'
+      build-release:
+        description: 'Do you want to build the release for the Python SDK (this includes the wheels + sdist)?'
         type: boolean
         default: false
 
@@ -70,4 +66,4 @@ jobs:
       - uses: actions/upload-artifact@v4
         with:
           name: onepassword-sdk-${{ env.SDK_VERSION }}
-          path: ./wheelhouse/*.tar.gz
+          path: ./dist/*.tar.gz
