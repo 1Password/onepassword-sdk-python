@@ -18,7 +18,7 @@ async def test_valid_resolve():
         integration_version=onepassword_defaults.DEFAULT_INTEGRATION_VERSION,
     )
     result = await client.secrets.resolve(
-        secret_reference="op://gowwbvgow7kxocrfmfvtwni6vi/6ydrn7ne6mwnqc2prsbqx4i4aq/password"
+        secret_reference="op://bhld6zk6hkuntyqlsjy3bdawey/yykbqryow5jjqwnghecitxgaie/password"
     )
     assert result == "test_password_42"
 
