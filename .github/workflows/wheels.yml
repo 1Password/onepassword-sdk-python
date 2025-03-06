@@ -54,6 +54,8 @@ jobs:
         run: echo "SDK_VERSION=$(python -c 'import version; print(version.SDK_VERSION)')" >> $GITHUB_ENV
       
       - uses: actions/checkout@v4
+      - name: Install dependencies
+        run: pip install build pydantic pytest pytest-asyncio
 
       - name: Build source distribution
         run: python -m build --sdist
