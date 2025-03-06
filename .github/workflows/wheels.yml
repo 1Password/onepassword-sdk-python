@@ -1,5 +1,8 @@
 name: Build Wheels for Python SDK
 on:
+  pull_request:
+    branches:
+      - main
   # Allow manual triggering of the workflow
   workflow_dispatch:
     inputs:
