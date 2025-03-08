@@ -1,1 +1,0 @@
-SDK_VERSION = "{{ version }}"
