@@ -55,7 +55,7 @@ async def main():
     to_create = ItemCreateParams(
         title="MyName",
         category=ItemCategory.LOGIN,
-        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
+        vault_id="7turaasywpymt3jecxoxk5roli",
         fields=[
             ItemField(
                 id="username",
@@ -410,10 +410,10 @@ def generate_special_item_fields():
             ItemField(
                 id="address",
                 title="Address",
+                sectionId="",
                 field_type=ItemFieldType.ADDRESS,
                 value="",
                 details=ItemFieldDetailsAddress(
-                    type="Address",
                     content=AddressFieldDetails(
                         street="1234 Main St",
                         city="San Francisco",
@@ -422,15 +422,14 @@ def generate_special_item_fields():
                         country="USA",
                     ),
                 ),
-                sectionId="",
             ),
             # [developer-docs.sdk.python.address-field-type]-end
             # [developer-docs.sdk.python.date-field-type]-start
             ItemField(
                 id="date",
                 title="Date",
+                section_id="",
                 field_type=ItemFieldType.DATE,
-                section_id="mysection",
                 value="1998-03-15",
             ),
             # [developer-docs.sdk.python.date-field-type]-end
@@ -438,8 +437,8 @@ def generate_special_item_fields():
             ItemField(
                 id="month_year",
                 title="Month Year",
+                section_id="",
                 field_type=ItemFieldType.MONTHYEAR,
-                section_id="mysection",
                 value="03/1998",
             ),
             # [developer-docs.sdk.python.month-year-field-type]-end
@@ -447,17 +446,17 @@ def generate_special_item_fields():
             ItemField(
                 id="Reference",
                 title="Reference",
+                sectionId="",
                 field_type=ItemFieldType.REFERENCE,
                 value="f43hnkatjllm5fsfsmgaqdhv7a",
-                sectionId="references",
             ),
             # [developer-docs.sdk.python.reference-field-type]-end
             # [developer-docs.sdk.python.totp-field-type]-start
             ItemField(
                 id="onetimepassword",
                 title="one-time-password",
+                section_id="",
                 field_type=ItemFieldType.TOTP,
-                section_id="totpsection",
                 value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
             ),
             # [developer-docs.sdk.python.totp-field-type]-end
