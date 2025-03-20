@@ -31,9 +31,9 @@ async def main():
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
-    items = await client.items.list_all(vault.id)
-    async for item in items:
-        print(item.title)
+    # items = await client.items.list_all(vault.id)
+    # async for item in items:
+    #     print(item.title)
     # [developer-docs.sdk.python.list-items]-end
 
     # [developer-docs.sdk.python.validate-secret-reference]-start
@@ -229,6 +229,7 @@ async def share_item(client: Client, vault_id: str, item_id: str):
 
 
 async def create_ssh_key_item(client: Client):
+    # [developer-docs.sdk.python.create-sshkey-item]-start
     # Generate a 2048-bit RSA private key
     private_key = rsa.generate_private_key(
         public_exponent=65537,
@@ -242,7 +243,6 @@ async def create_ssh_key_item(client: Client):
         encryption_algorithm=serialization.NoEncryption(),
     )
 
-    # [developer-docs.sdk.python.create-sshkey-item]-start
     # Create an Item containing SSH Key and add it to your vault.
     to_create = ItemCreateParams(
         title="SSH Key Item Created With Python SDK",
@@ -398,18 +398,8 @@ if __name__ == "__main__":
 
 def generate_special_item_fields():
 
-    # Generate an Ed25519 private key
-    private_key = ed25519.Ed25519PrivateKey.generate()
-
-    # Encode the private key into a PEM encoded string. This will be assigned to the item field
-    private_pem = private_key.private_bytes(
-        encoding=serialization.Encoding.PEM,
-        format=serialization.PrivateFormat.PKCS8,
-        encryption_algorithm=serialization.NoEncryption()
-    )
-
     fields=[
-        # Address
+    # [developer-docs.sdk.python.address-field-type]-start
         ItemField(
             id="address",
             title="Address",
@@ -418,7 +408,8 @@ def generate_special_item_fields():
             details=ItemFieldDetailsAddress(type="Address", content=AddressFieldDetails(street="1234 Main St", city="San Francisco", state="CA", zip="94111", country="USA")),
             sectionId="",
         ),
-        # Date
+        # [developer-docs.sdk.python.address-field-type]-end
+        # [developer-docs.sdk.python.date-field-type]-start
         ItemField(
             id="date",
             title="Date",
@@ -426,7 +417,8 @@ def generate_special_item_fields():
             section_id="mysection",
             value="1998-03-15",
 	    ),
-        # MonthYear
+		# [developer-docs.sdk.python.date-field-type]-end
+		# [developer-docs.sdk.python.month-year-field-type]-start
         ItemField(
             id="month_year",
             title="Month Year",
@@ -434,6 +426,7 @@ def generate_special_item_fields():
             section_id="mysection",
             value="03/1998",
 	    ),
+		# [developer-docs.sdk.python.month-year-field-type]-end
         # Reference
         ItemField(
             id="Reference",
@@ -442,7 +435,8 @@ def generate_special_item_fields():
             value="f43hnkatjllm5fsfsmgaqdhv7a",
             sectionId="references"
 	    ),
-        # TOTP from URL
+		# [developer-docs.sdk.python.reference-field-type]-end
+		# [developer-docs.sdk.python.totp-field-type]-start
         ItemField(
             id="onetimepassword",
             title="one-time-password",
@@ -450,20 +444,5 @@ def generate_special_item_fields():
             section_id="totpsection",
             value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
 	    ),
-        # TOTP from Secret
-        ItemField(
-            id="onetimepassword",
-            title="one-time-password",
-            field_type=ItemFieldType.TOTP,
-            section_id="totpsection",
-            value="jncrjgbdjnrncbjsr",
-	    ),
-        # SSH key
-        ItemField(
-            id="private_key",
-            title="private key",
-            field_type=ItemFieldType.SSHKEY,
-            value=private_pem,
-            sectionId="",
-        ),
+		# [developer-docs.sdk.python.totp-field-type]-end
     ],
