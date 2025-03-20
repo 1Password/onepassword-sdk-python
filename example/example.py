@@ -55,7 +55,7 @@ async def main():
     to_create = ItemCreateParams(
         title="MyName",
         category=ItemCategory.LOGIN,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
         fields=[
             ItemField(
                 id="username",
@@ -249,7 +249,7 @@ async def create_ssh_key_item(client: Client):
     to_create = ItemCreateParams(
         title="SSH Key Item Created With Python SDK",
         category=ItemCategory.SSHKEY,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
         fields=[
             ItemField(
                 id="private_key",
@@ -279,7 +279,7 @@ async def create_and_replace_document_item(client: Client):
     to_create = ItemCreateParams(
         title="Document Item Created with Python SDK",
         category=ItemCategory.DOCUMENT,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
         sections=[
             ItemSection(id="", title=""),
         ],
@@ -318,7 +318,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
     to_create = ItemCreateParams(
         title="FileField Item created with Python SDK",
         category=ItemCategory.LOGIN,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
         fields=[
             ItemField(
                 id="username",
@@ -402,11 +402,6 @@ async def resolve_all_secrets(
             print(secret.content.secret)
     # [developer-docs.sdk.python.resolve-bulk-secret]-end
 
-
-if __name__ == "__main__":
-    asyncio.run(main())
-
-
 def generate_special_item_fields():
     fields = (
         [
@@ -467,3 +462,6 @@ def generate_special_item_fields():
             # [developer-docs.sdk.python.totp-field-type]-end
         ],
     )
+
+if __name__ == "__main__":
+    asyncio.run(main())
