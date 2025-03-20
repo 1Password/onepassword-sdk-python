@@ -102,7 +102,7 @@ async def main():
     )
     print(code)
     # [developer-docs.sdk.python.resolve-totp-code]-end
-
+    await resolve_all_secrets(client,created_item.vault_id, created_item.id, "username", "password")
     # [developer-docs.sdk.python.get-totp-item-crud]-start
     # Fetch a totp code from the item
     for f in created_item.fields:
@@ -381,6 +381,17 @@ async def create_attach_and_delete_file_field_item(client: Client):
 
     await client.items.delete(deleted_file_item.vault_id, deleted_file_item.id)
 
+
+async def resolve_all_secrets(client: Client, vault_id: str, item_id: str, field_id: str, field_id2: str):
+    # [developer-docs.sdk.python.resolve-bulk-secret]-start
+    # Retrieves multiple secret from 1Password.
+    secrets = await client.secrets.resolve_all([f"op://{vault_id}//{item_id}/{field_id}", f"op://{vault_id}/{item_id}/{field_id2}"])
+    for secret in secrets.individual_responses.values():
+        if secret.error is not None:
+            print(str(secret.error))
+        else:
+            print(secret.content.secret)
+    # [developer-docs.sdk.python.resolve-bulk-secret]-end
 
 if __name__ == "__main__":
     asyncio.run(main())
