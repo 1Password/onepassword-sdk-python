@@ -402,6 +402,7 @@ async def resolve_all_secrets(
             print(secret.content.secret)
     # [developer-docs.sdk.python.resolve-bulk-secret]-end
 
+
 def generate_special_item_fields():
     fields = (
         [
@@ -442,7 +443,7 @@ def generate_special_item_fields():
                 value="03/1998",
             ),
             # [developer-docs.sdk.python.month-year-field-type]-end
-            # Reference
+            # [developer-docs.sdk.python.reference-field-type]-start
             ItemField(
                 id="Reference",
                 title="Reference",
@@ -462,6 +463,7 @@ def generate_special_item_fields():
             # [developer-docs.sdk.python.totp-field-type]-end
         ],
     )
+
 
 if __name__ == "__main__":
     asyncio.run(main())
