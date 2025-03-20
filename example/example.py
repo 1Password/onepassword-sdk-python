@@ -459,6 +459,7 @@ def generate_special_item_fields():
             value="jncrjgbdjnrncbjsr",
 	    ),
         # SSH key
+        # id and title must be "private_key" and "private key", respectively
         ItemField(
             id="private_key",
             title="private key",
