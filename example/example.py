@@ -6,7 +6,7 @@ from pathlib import Path
 from onepassword import *
 
 # [developer-docs.sdk.python.sdk-import]-end
-from cryptography.hazmat.primitives.asymmetric import rsa
+from cryptography.hazmat.primitives.asymmetric import rsa, ed25519
 from cryptography.hazmat.primitives import serialization
 
 
@@ -384,3 +384,75 @@ async def create_attach_and_delete_file_field_item(client: Client):
 
 if __name__ == "__main__":
     asyncio.run(main())
+
+def generate_special_item_fields():
+
+    # Generate an Ed25519 private key
+    private_key = ed25519.Ed25519PrivateKey.generate()
+
+    # Encode the private key into a PEM encoded string. This will be assigned to the item field
+    private_pem = private_key.private_bytes(
+        encoding=serialization.Encoding.PEM,
+        format=serialization.PrivateFormat.PKCS8,
+        encryption_algorithm=serialization.NoEncryption()
+    )
+
+    fields=[
+        # Address
+        ItemField(
+            id="address",
+            title="Address",
+            field_type=ItemFieldType.ADDRESS,
+            value="",
+            details=ItemFieldDetailsAddress(type="Address", content=AddressFieldDetails(street="1234 Main St", city="San Francisco", state="CA", zip="94111", country="USA")),
+            sectionId="",
+        ),
+        # Date
+        ItemField(
+            id="date",
+            title="Date",
+            field_type=ItemFieldType.DATE,
+            section_id="mysection",
+            value="1998-03-15",
+	    ),
+        # MonthYear
+        ItemField(
+            id="month_year",
+            title="Month Year",
+            field_type=ItemFieldType.MONTHYEAR,
+            section_id="mysection",
+            value="03/1998",
+	    ),
+        # Reference
+        ItemField(
+            id="Reference",
+            title="Reference",
+            field_type=ItemFieldType.REFERENCE,
+            value="f43hnkatjllm5fsfsmgaqdhv7a",
+            sectionId="references"
+	    ),
+        # TOTP from URL
+        ItemField(
+            id="onetimepassword",
+            title="one-time-password",
+            field_type=ItemFieldType.TOTP,
+            section_id="totpsection",
+            value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
+	    ),
+        # TOTP from Secret
+        ItemField(
+            id="onetimepassword",
+            title="one-time-password",
+            field_type=ItemFieldType.TOTP,
+            section_id="totpsection",
+            value="jncrjgbdjnrncbjsr",
+	    ),
+        # SSH key
+        ItemField(
+            id="private_key",
+            title="private key",
+            field_type=ItemFieldType.SSHKEY,
+            value=private_pem,
+            sectionId="",
+        ),
+    ],
