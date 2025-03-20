@@ -6,7 +6,7 @@ from pathlib import Path
 from onepassword import *
 
 # [developer-docs.sdk.python.sdk-import]-end
-from cryptography.hazmat.primitives.asymmetric import rsa, ed25519
+from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
 
 
@@ -31,9 +31,9 @@ async def main():
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
-    # items = await client.items.list_all(vault.id)
-    # async for item in items:
-    #     print(item.title)
+    items = await client.items.list_all(vault.id)
+    async for item in items:
+        print(item.title)
     # [developer-docs.sdk.python.list-items]-end
 
     # [developer-docs.sdk.python.validate-secret-reference]-start
@@ -102,7 +102,9 @@ async def main():
     )
     print(code)
     # [developer-docs.sdk.python.resolve-totp-code]-end
-    await resolve_all_secrets(client,created_item.vault_id, created_item.id, "username", "password")
+    await resolve_all_secrets(
+        client, created_item.vault_id, created_item.id, "username", "password"
+    )
     # [developer-docs.sdk.python.get-totp-item-crud]-start
     # Fetch a totp code from the item
     for f in created_item.fields:
@@ -382,10 +384,17 @@ async def create_attach_and_delete_file_field_item(client: Client):
     await client.items.delete(deleted_file_item.vault_id, deleted_file_item.id)
 
 
-async def resolve_all_secrets(client: Client, vault_id: str, item_id: str, field_id: str, field_id2: str):
+async def resolve_all_secrets(
+    client: Client, vault_id: str, item_id: str, field_id: str, field_id2: str
+):
     # [developer-docs.sdk.python.resolve-bulk-secret]-start
     # Retrieves multiple secret from 1Password.
-    secrets = await client.secrets.resolve_all([f"op://{vault_id}//{item_id}/{field_id}", f"op://{vault_id}/{item_id}/{field_id2}"])
+    secrets = await client.secrets.resolve_all(
+        [
+            f"op://{vault_id}//{item_id}/{field_id}",
+            f"op://{vault_id}/{item_id}/{field_id2}",
+        ]
+    )
     for secret in secrets.individual_responses.values():
         if secret.error is not None:
             print(str(secret.error))
@@ -393,56 +402,68 @@ async def resolve_all_secrets(client: Client, vault_id: str, item_id: str, field
             print(secret.content.secret)
     # [developer-docs.sdk.python.resolve-bulk-secret]-end
 
+
 if __name__ == "__main__":
     asyncio.run(main())
 
-def generate_special_item_fields():
 
-    fields=[
-    # [developer-docs.sdk.python.address-field-type]-start
-        ItemField(
-            id="address",
-            title="Address",
-            field_type=ItemFieldType.ADDRESS,
-            value="",
-            details=ItemFieldDetailsAddress(type="Address", content=AddressFieldDetails(street="1234 Main St", city="San Francisco", state="CA", zip="94111", country="USA")),
-            sectionId="",
-        ),
-        # [developer-docs.sdk.python.address-field-type]-end
-        # [developer-docs.sdk.python.date-field-type]-start
-        ItemField(
-            id="date",
-            title="Date",
-            field_type=ItemFieldType.DATE,
-            section_id="mysection",
-            value="1998-03-15",
-	    ),
-		# [developer-docs.sdk.python.date-field-type]-end
-		# [developer-docs.sdk.python.month-year-field-type]-start
-        ItemField(
-            id="month_year",
-            title="Month Year",
-            field_type=ItemFieldType.MONTHYEAR,
-            section_id="mysection",
-            value="03/1998",
-	    ),
-		# [developer-docs.sdk.python.month-year-field-type]-end
-        # Reference
-        ItemField(
-            id="Reference",
-            title="Reference",
-            field_type=ItemFieldType.REFERENCE,
-            value="f43hnkatjllm5fsfsmgaqdhv7a",
-            sectionId="references"
-	    ),
-		# [developer-docs.sdk.python.reference-field-type]-end
-		# [developer-docs.sdk.python.totp-field-type]-start
-        ItemField(
-            id="onetimepassword",
-            title="one-time-password",
-            field_type=ItemFieldType.TOTP,
-            section_id="totpsection",
-            value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
-	    ),
-		# [developer-docs.sdk.python.totp-field-type]-end
-    ],
+def generate_special_item_fields():
+    fields = (
+        [
+            # [developer-docs.sdk.python.address-field-type]-start
+            ItemField(
+                id="address",
+                title="Address",
+                field_type=ItemFieldType.ADDRESS,
+                value="",
+                details=ItemFieldDetailsAddress(
+                    type="Address",
+                    content=AddressFieldDetails(
+                        street="1234 Main St",
+                        city="San Francisco",
+                        state="CA",
+                        zip="94111",
+                        country="USA",
+                    ),
+                ),
+                sectionId="",
+            ),
+            # [developer-docs.sdk.python.address-field-type]-end
+            # [developer-docs.sdk.python.date-field-type]-start
+            ItemField(
+                id="date",
+                title="Date",
+                field_type=ItemFieldType.DATE,
+                section_id="mysection",
+                value="1998-03-15",
+            ),
+            # [developer-docs.sdk.python.date-field-type]-end
+            # [developer-docs.sdk.python.month-year-field-type]-start
+            ItemField(
+                id="month_year",
+                title="Month Year",
+                field_type=ItemFieldType.MONTHYEAR,
+                section_id="mysection",
+                value="03/1998",
+            ),
+            # [developer-docs.sdk.python.month-year-field-type]-end
+            # Reference
+            ItemField(
+                id="Reference",
+                title="Reference",
+                field_type=ItemFieldType.REFERENCE,
+                value="f43hnkatjllm5fsfsmgaqdhv7a",
+                sectionId="references",
+            ),
+            # [developer-docs.sdk.python.reference-field-type]-end
+            # [developer-docs.sdk.python.totp-field-type]-start
+            ItemField(
+                id="onetimepassword",
+                title="one-time-password",
+                field_type=ItemFieldType.TOTP,
+                section_id="totpsection",
+                value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
+            ),
+            # [developer-docs.sdk.python.totp-field-type]-end
+        ],
+    )
