@@ -3,7 +3,7 @@ import platform
 
 from onepassword.errors import raise_typed_exception
 
-# In empirical tests, we determined that maximum message size that can cross the FFI boundary 
+# In empirical tests, we determined that maximum message size that can cross the FFI boundary
 # is ~128MB. Past this limit, FFI will throw an error and the program will crash.
 # We set the limit to 50MB to be safe and consistent with the other SDKs (where this limit is 64MB), to be reconsidered upon further testing
 MESSAGE_LIMIT = 50 * 1024 * 1024
@@ -33,7 +33,8 @@ async def _invoke(invoke_config):
     serialized_config = json.dumps(invoke_config)
     if len(serialized_config.encode()) > MESSAGE_LIMIT:
         raise ValueError(
-            f"message size exceeds the limit of {MESSAGE_LIMIT} bytes, please contact 1Password at support@1password.com or https://developer.1password.com/joinslack if you need help.")
+            f"message size exceeds the limit of {MESSAGE_LIMIT} bytes, please contact 1Password at support@1password.com or https://developer.1password.com/joinslack if you need help."
+        )
     try:
         return await core.invoke(serialized_config)
     except Exception as e:
@@ -45,7 +46,8 @@ def _invoke_sync(invoke_config):
     serialized_config = json.dumps(invoke_config)
     if len(serialized_config.encode()) > MESSAGE_LIMIT:
         raise ValueError(
-            f"message size exceeds the limit of {MESSAGE_LIMIT} bytes, please contact 1Password at support@1password.com or https://developer.1password.com/joinslack if you need help.")
+            f"message size exceeds the limit of {MESSAGE_LIMIT} bytes, please contact 1Password at support@1password.com or https://developer.1password.com/joinslack if you need help."
+        )
     try:
         return core.invoke_sync(serialized_config)
     except Exception as e:
