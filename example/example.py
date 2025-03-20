@@ -249,7 +249,7 @@ async def create_ssh_key_item(client: Client):
     to_create = ItemCreateParams(
         title="SSH Key Item Created With Python SDK",
         category=ItemCategory.SSHKEY,
-        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
+        vault_id="7turaasywpymt3jecxoxk5roli",
         fields=[
             ItemField(
                 id="private_key",
@@ -279,7 +279,7 @@ async def create_and_replace_document_item(client: Client):
     to_create = ItemCreateParams(
         title="Document Item Created with Python SDK",
         category=ItemCategory.DOCUMENT,
-        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
+        vault_id="7turaasywpymt3jecxoxk5roli",
         sections=[
             ItemSection(id="", title=""),
         ],
@@ -318,7 +318,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
     to_create = ItemCreateParams(
         title="FileField Item created with Python SDK",
         category=ItemCategory.LOGIN,
-        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
+        vault_id="7turaasywpymt3jecxoxk5roli",
         fields=[
             ItemField(
                 id="username",
