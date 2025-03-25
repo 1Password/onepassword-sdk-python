@@ -388,10 +388,10 @@ async def resolve_all_secrets(
     client: Client, vault_id: str, item_id: str, field_id: str, field_id2: str
 ):
     # [developer-docs.sdk.python.resolve-bulk-secret]-start
-    # Retrieves multiple secret from 1Password.
+    # Retrieves multiple secrets from 1Password.
     secrets = await client.secrets.resolve_all(
         [
-            f"op://{vault_id}//{item_id}/{field_id}",
+            f"op://{vault_id}/{item_id}/{field_id}",
             f"op://{vault_id}/{item_id}/{field_id2}",
         ]
     )
