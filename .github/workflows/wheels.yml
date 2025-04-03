@@ -58,7 +58,7 @@ jobs:
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.head.ref, 'sdk-core/')
     steps:
       - uses: actions/checkout@v4
-        # Need to grab the SDK version for the wheel name
+
       - name: Extract SDK Version
         run: echo "SDK_VERSION=$(cat version.txt)" >> "$GITHUB_ENV"
         shell: bash
