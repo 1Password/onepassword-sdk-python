@@ -1,4 +1,4 @@
-name: Release Builder
+name: Wheels Builder and Publisher
 on:
   pull_request:
     branches:
@@ -12,17 +12,21 @@ jobs:
     runs-on: ${{ matrix.os }}
     if: github.event.pull_request.merged == true && contains(github.event.pull_request.head.ref, 'sdk-core/')
     strategy:
-      matrix: 
-        # macOS 13 is an Intel runner and macOS 14 is an Apple Silicon runner 
+      fail-fast: false
+      matrix:
+        # macOS 13 is an Intel runner and macOS 14 is an Apple Silicon runner
         os: [ubuntu-22.04, ubuntu-22.04-arm, windows-latest, macos-13, macos-14]
     steps:
       - uses: actions/checkout@v4
+      - name: Upgrade build dependencies
+        run: python -m pip install --upgrade pip setuptools wheel
+
 
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
         run: echo "SDK_VERSION=$(cat version.txt)" >> "$GITHUB_ENV"
         shell: bash
-      
+
       - name: Install cibuildwheel
         run: |
           python -m pip install cibuildwheel
@@ -33,10 +37,13 @@ jobs:
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_34_x86_64"
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
           CIBW_ARCHS: "native"
+          CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
           CIBW_TEST_REQUIRES: "pydantic pytest pytest-asyncio"
+          MACOSX_DEPLOYMENT_TARGET: "12.0"
           CIBW_TEST_COMMAND: "python -m pytest {project}/src/onepassword/test_client.py"
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
-          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN # to pass in the SA token, for some reason Linux doesn't read the env variables correctly
+          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN # We have to specify this to pass the token to the test command
         run: |
           python -m cibuildwheel --output-dir dist
 
@@ -55,13 +62,13 @@ jobs:
       - name: Extract SDK Version
         run: echo "SDK_VERSION=$(cat version.txt)" >> "$GITHUB_ENV"
         shell: bash
-        
+
       - name: Install dependencies
         run: pip3 install build pydantic pytest pytest-asyncio
 
       - name: Build source distribution
         run: python3 -m build --sdist
-      
+
       - name: Test Source Distribution
         env:
           OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
@@ -73,7 +80,7 @@ jobs:
         with:
           name: onepassword-sdk-${{ env.SDK_VERSION }}
           path: ./dist/*.tar.gz
-  
+
   publish-to-pypi:
     name: Publish to PyPI
     runs-on: ubuntu-latest
@@ -82,7 +89,7 @@ jobs:
       name: pypi
       url: https://pypi.org/project/onepassword-sdk/
     permissions:
-      id-token: write  # Required for PyPi trusted publishing
+      id-token: write  # IMPORTANT: this permission is mandatory for trusted publishing
     needs: [build_wheels, build-sdist]
     steps:
       - uses: actions/download-artifact@v4
@@ -90,5 +97,5 @@ jobs:
             pattern: onepassword-sdk-*
             path: ./dist
             merge-multiple: true
-      - name: Publish package distributions to PyPI
+      - name: Publish package distributions to PyPi
         uses: pypa/gh-action-pypi-publish@release/v1.12

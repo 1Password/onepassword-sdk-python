@@ -1,0 +1,29 @@
+name: Release SDK
+
+on:
+  workflow_dispatch:
+
+jobs:
+  Release-SDK:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/sdk-core/') # Only run on branches that start with sdk-core/
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+          git_tag_gpgsign: true
+      - name: Setup Git User
+        run: |
+          git config --global user.email "${{ steps.import-gpg.outputs.email }}"
+          git config --global user.name "${{ steps.import-gpg.outputs.name }}"
+
+      - name: Run the Release Script
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: make release
+        shell: bash
