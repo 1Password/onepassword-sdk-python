@@ -36,7 +36,7 @@ jobs:
           CIBW_SKIP: pp* *-musllinux_*
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_34_x86_64"
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
-          CIBW_ARCHS: "native"
+          CIBW_ARCHS: "native" # Equivalent to python's platform.machine()
           CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
           CIBW_TEST_REQUIRES: "pydantic pytest pytest-asyncio"

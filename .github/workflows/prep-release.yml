@@ -4,15 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version number"
+        description: "Version number:"
         required: true
         type: string
       build_number:
-        description: "Build number "
-        required: true
-        type: string
-      release_notes:
-        description: "Release notes for the version"
+        description: "Build number:"
         required: true
         type: string
 
@@ -42,7 +38,6 @@ jobs:
           # Get inputs passed to the workflow
           VERSION="${{ github.event.inputs.version }}"
           BUILD_NUMBER="${{ github.event.inputs.build_number }}"
-          echo -e "${{ github.event.inputs.RELEASE_NOTES }}" > src/release/RELEASE-NOTES
 
           # Save the parsed values for future steps
           echo "VERSION=$VERSION" >> $GITHUB_ENV
