@@ -19,8 +19,8 @@ jobs:
           git_tag_gpgsign: true
       - name: Setup Git User
         run: |
-          git config --global user.email "${{ steps.import-gpg.outputs.email }}"
-          git config --global user.name "${{ steps.import-gpg.outputs.name }}"
+          git config user.name "$GITHUB_ACTOR"
+          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Run the Release Script
         env:
