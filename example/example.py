@@ -25,14 +25,14 @@ async def main():
     # [developer-docs.sdk.python.client-initialization]-end
 
     # [developer-docs.sdk.python.list-vaults]-start
-    vaults = await client.vaults.list_all()
-    async for vault in vaults:
+    vaults = await client.vaults.list()
+    for vault in vaults:
         print(vault.title)
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
-    items = await client.items.list_all(vault.id)
-    async for item in items:
+    items = await client.items.list(vault.id)
+    for item in items:
         print(item.title)
     # [developer-docs.sdk.python.list-items]-end
 
@@ -55,7 +55,7 @@ async def main():
     to_create = ItemCreateParams(
         title="MyName",
         category=ItemCategory.LOGIN,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
         fields=[
             ItemField(
                 id="username",
@@ -171,7 +171,7 @@ async def main():
     print(random_password)
     # [developer-docs.sdk.python.generate-random-password]-end
 
-    await share_item(client, created_item.vault_id, updated_item.id)
+    await share_item(client, updated_item.vault_id, updated_item.id)
 
     await create_ssh_key_item(client)
 
@@ -179,16 +179,14 @@ async def main():
 
     await create_attach_and_delete_file_field_item(client)
 
+    await archive_item(client, updated_item.vault_id, updated_item.id)
+
     # [developer-docs.sdk.python.delete-item]-start
     # Delete a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
 
 
-## NOTE: this is in a separate function to avoid creating a new item
-## NOTE: just for the sake of archiving it. This is because the SDK
-## NOTE: only works with active items, so archiving and then deleting
-## NOTE: is not yet possible.
 async def archive_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.archive-item]-start
     # Archive a item from your vault.
@@ -249,7 +247,7 @@ async def create_ssh_key_item(client: Client):
     to_create = ItemCreateParams(
         title="SSH Key Item Created With Python SDK",
         category=ItemCategory.SSHKEY,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
         fields=[
             ItemField(
                 id="private_key",
@@ -279,7 +277,7 @@ async def create_and_replace_document_item(client: Client):
     to_create = ItemCreateParams(
         title="Document Item Created with Python SDK",
         category=ItemCategory.DOCUMENT,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
         sections=[
             ItemSection(id="", title=""),
         ],
@@ -318,7 +316,7 @@ async def create_attach_and_delete_file_field_item(client: Client):
     to_create = ItemCreateParams(
         title="FileField Item created with Python SDK",
         category=ItemCategory.LOGIN,
-        vault_id="7turaasywpymt3jecxoxk5roli",
+        vault_id="bhld6zk6hkuntyqlsjy3bdawey",
         fields=[
             ItemField(
                 id="username",
