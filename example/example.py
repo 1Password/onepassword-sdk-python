@@ -106,7 +106,9 @@ async def main():
     )
     print(code)
     # [developer-docs.sdk.python.resolve-totp-code]-end
-
+    await resolve_all_secrets(
+        client, created_item.vault_id, created_item.id, "username", "password"
+    )
     # [developer-docs.sdk.python.get-totp-item-crud]-start
     # Fetch a totp code from the item
     for f in created_item.fields:
@@ -233,6 +235,7 @@ async def share_item(client: Client, vault_id: str, item_id: str):
 
 
 async def create_ssh_key_item(client: Client, vault_id: str):
+    # [developer-docs.sdk.python.create-sshkey-item]-start
     # Generate a 2048-bit RSA private key
     private_key = rsa.generate_private_key(
         public_exponent=65537,
@@ -246,7 +249,6 @@ async def create_ssh_key_item(client: Client, vault_id: str):
         encryption_algorithm=serialization.NoEncryption(),
     )
 
-    # [developer-docs.sdk.python.create-sshkey-item]-start
     # Create an Item containing SSH Key and add it to your vault.
     to_create = ItemCreateParams(
         title="SSH Key Item Created With Python SDK",
@@ -384,6 +386,86 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
     print(len(deleted_file_item.files))
 
     await client.items.delete(deleted_file_item.vault_id, deleted_file_item.id)
+
+
+async def resolve_all_secrets(
+    client: Client, vault_id: str, item_id: str, field_id: str, field_id2: str
+):
+    # [developer-docs.sdk.python.resolve-bulk-secret]-start
+    # Retrieves multiple secrets from 1Password.
+    secrets = await client.secrets.resolve_all(
+        [
+            f"op://{vault_id}/{item_id}/{field_id}",
+            f"op://{vault_id}/{item_id}/{field_id2}",
+        ]
+    )
+    for secret in secrets.individual_responses.values():
+        if secret.error is not None:
+            print(str(secret.error))
+        else:
+            print(secret.content.secret)
+    # [developer-docs.sdk.python.resolve-bulk-secret]-end
+
+
+def generate_special_item_fields():
+    fields = (
+        [
+            # [developer-docs.sdk.python.address-field-type]-start
+            ItemField(
+                id="address",
+                title="Address",
+                sectionId="",
+                field_type=ItemFieldType.ADDRESS,
+                value="",
+                details=ItemFieldDetailsAddress(
+                    content=AddressFieldDetails(
+                        street="1234 Main St",
+                        city="San Francisco",
+                        state="CA",
+                        zip="94111",
+                        country="USA",
+                    ),
+                ),
+            ),
+            # [developer-docs.sdk.python.address-field-type]-end
+            # [developer-docs.sdk.python.date-field-type]-start
+            ItemField(
+                id="date",
+                title="Date",
+                section_id="",
+                field_type=ItemFieldType.DATE,
+                value="1998-03-15",
+            ),
+            # [developer-docs.sdk.python.date-field-type]-end
+            # [developer-docs.sdk.python.month-year-field-type]-start
+            ItemField(
+                id="month_year",
+                title="Month Year",
+                section_id="",
+                field_type=ItemFieldType.MONTHYEAR,
+                value="03/1998",
+            ),
+            # [developer-docs.sdk.python.month-year-field-type]-end
+            # [developer-docs.sdk.python.reference-field-type]-start
+            ItemField(
+                id="Reference",
+                title="Reference",
+                sectionId="",
+                field_type=ItemFieldType.REFERENCE,
+                value="f43hnkatjllm5fsfsmgaqdhv7a",
+            ),
+            # [developer-docs.sdk.python.reference-field-type]-end
+            # [developer-docs.sdk.python.totp-field-type]-start
+            ItemField(
+                id="onetimepassword",
+                title="one-time-password",
+                section_id="",
+                field_type=ItemFieldType.TOTP,
+                value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
+            ),
+            # [developer-docs.sdk.python.totp-field-type]-end
+        ],
+    )
 
 
 if __name__ == "__main__":
