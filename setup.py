@@ -1,7 +1,5 @@
-from pathlib import Path
-from setuptools import setup, find_packages
+from setuptools import setup, find_packages, Distribution
 from sysconfig import get_platform
-from version import SDK_VERSION
 import platform
 import os
 
@@ -19,6 +17,9 @@ try:
 except ImportError:
     bdist_wheel = None
 
+class BinaryDistribution(Distribution):
+    def has_ext_modules(self):
+        return True
 
 def get_shared_library_data_to_include():
     # Return the correct uniffi C shared library extension for the given platform
@@ -46,35 +47,11 @@ def get_shared_library_data_to_include():
 
 
 setup(
-    name="onepassword-sdk",
-    version=SDK_VERSION,
-    author="1Password",
-    long_description=(Path(__file__).parent / "README.md").read_text(),
-    long_description_content_type="text/markdown",
-    description="The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python.",
-    url="https://github.com/1Password/onepassword-sdk-python",
     packages=find_packages(
         where="src",
     ),
-    license="MIT",
-    license_files="LICENSE",
+    distclass=BinaryDistribution,
     package_dir={"": "src"},
-    python_requires=">=3.9",
-    classifiers=[
-        "Development Status :: 5 - Production/Stable",
-        "Operating System :: MacOS",
-        "Operating System :: POSIX :: Linux",
-        "Operating System :: Microsoft :: Windows",
-        "Programming Language :: Python :: 3.9",
-        "Programming Language :: Python :: 3.10",
-        "Programming Language :: Python :: 3.11",
-        "Programming Language :: Python :: 3.12",
-        "Programming Language :: Python :: 3.13",
-        "License :: OSI Approved :: MIT License",
-    ],
     cmdclass={"bdist_wheel": bdist_wheel},
     package_data={"": get_shared_library_data_to_include()},
-    install_requires=[
-        "pydantic>=2.5",  # Minimum Pydantic version to run the Python SDK
-    ],
 )
