@@ -1,21 +1,55 @@
-:wq
-# 1Password Python SDK v0.2.1
+# 1Password Python SDK v0.3.0
 
 ## NEW
 
-- **`CreatedAt` and `UpdatedAt` item metadata:** Items and item overviews now expose attributes with their creation and last edit times.
-- **Resolving secrets in bulk**: With the `client.secrets.resolveAll` function, the SDK is now able to resolve multiple secrets at once, improving the performance of the operation.
+- **Support for item states**: You can now fetch an item's state using the SDK. `Item` and `ItemOverview` expose two states: `Active` and`Archived`.
+    - `Active`: An item located inside a vault. (Default)
+    - `Archived`: An item that has been moved to the Archive. 1Password doesn't include archived items in search results or suggest them when you fill in apps and browsers. You can keep archived items as long as you'd like.
+- **Filtering the return of item listing by state**: You can now filter the listed items by item state. The current exposed filter is `ByState`, which allows devs to filter `ItemOverviews` by their `State` .
 
 ## IMPROVED
 
-- **Support for new field types:** Items with `Address` and `Date` fields can now be created, retrieved, and edited using the 1Password SDK.
-- **Item sharing for attachments and documents**: Items with files attached now can also be shared using the `client.items.shares` functions.
-- **Adding custom fields in sections automatically**: The SDK now automatically adds custom fields without a section to an empty section within the item, creating it if necessary.
-- **`Tags` in item overviews**: The return type of `items.listAll` now also contains the item tags.
-- **Broader item editing capabilities**: You are now able to use the `items.put` function on more items, including those with fields that are not directly editable through the SDK (such as legacy fields, passkeys etc.)
+- **Improved Deleting Capabilities:** You can now delete `Archived` items in the SDKs.
 
-## FIXED
+### ⚠️ BREAKING CHANGES ⚠️
 
-- **Improvements to resolving secret references:**
-    - Archived items are no longer used for secret references.
-    - When multiple sections match a section query in resolving secret references, the SDK look through the fields in all sections, instead of erroring.
+This release contains a breaking change for the Go SDK.
+
+`items.list_all()` has changed to `items.list()` and below is how to migrate.
+
+Before:
+```python
+overviews = await client.items.list_all(vault_id)
+# To iterate through this you can do the following:
+async for overview in overviews:
+        print(overview.ID)
+```
+
+After:
+
+```python
+overviews = await client.items.list(vault_id, ItemListFilter(
+                content=ItemListFilterByStateInner(
+                    active=active,
+                    archived=archived
+                )
+            ))
+# to iterate through it you can do the following:
+for overview in overviews:
+   print(overview.ID)
+```
+`vaults.list_all()` has changed to `vaults.list()` and the migration guide is below:
+
+Before:
+```python
+    vaults = await client.vaults.list_all()
+    async for vault in vaults:
+        print(vault.title)
+```
+
+After:
+```python
+    vaults = await client.vaults.list()
+    for vault in vaults:
+        print(vault.title)
+```
