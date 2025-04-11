@@ -55,3 +55,5 @@ After:
 ```
 
 *  All functions that return an Iterator will now return the appropriate list type.
+
+This does not affect any code already deployed, and will not take effect in your codebase until you choose to update to v0.3.0+ of the 1Password Python SDK 
