@@ -31,11 +31,20 @@ async def main():
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
-    items = await client.items.list(vault.id)
-    for item in items:
-        print(item.title)
+    overviews = await client.items.list(vault.id)
+    for overview in overviews:
+        print(overview.title)
     # [developer-docs.sdk.python.list-items]-end
-
+    # [developer-docs.sdk.python.list-archived-items]-start
+    archived_overviews = await client.items.list(
+        vault.id,
+        ItemListFilterByState(
+            content=ItemListFilterByStateInner(active=False, archived=True)
+        ),
+    )
+    for overview in archived_overviews:
+        print(overview.title)
+    # [developer-docs.sdk.python.list-archived-items]-end
     # [developer-docs.sdk.python.validate-secret-reference]-start
     # Validate secret reference to ensure no syntax errors
     try:
