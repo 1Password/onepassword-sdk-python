@@ -13,13 +13,13 @@ on:
 
 jobs:
 
-  integration-test-trusted:
+  test-trusted:
     # actions that are trusted by default must only be opened from within the repo, and skipped for forks because they'll fail there
     if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository
     strategy:
       matrix:
         os: [ubuntu-latest, windows-latest, macos-latest]
-        python-version: ["3.9", "3.10", "3.11", "3.12"]
+        python-version: ["3.9", "3.10", "3.11", "3.12", "3.13"]
     runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v3
@@ -35,7 +35,15 @@ jobs:
           pip install pytest-asyncio &&
           pip install pydantic &&
           python -m pytest src/onepassword/test_client.py
-
+      - name: Example Test
+        if: matrix.os == 'ubuntu-latest' && matrix.python-version == '3.9'
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.EXAMPLE_TESTS_OP_SERVICE_ACCOUNT_TOKEN }}
+          OP_VAULT_ID: ${{ secrets.EXAMPLE_TESTS_OP_VAULT_ID }}
+        run: |
+          pip install cryptography &&
+          pip install . &&
+          python example/example.py
   lint:
     name: Lint
     runs-on: ubuntu-latest
@@ -84,7 +92,7 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.x'
-          
+
     - name: Integration Test
       env:
         OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
@@ -94,8 +102,14 @@ jobs:
         pip install pydantic &&
         python -m pytest src/onepassword/test_client.py
 
-    - run: |
-        echo "Integration tests completed successfully!"
+    - name: Example Test
+      if: matrix.os == 'ubuntu-latest'
+      env:
+        OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+        OP_VAULT_ID: ${{ secrets.TEST_SERVICE_ACCOUNT_VAULT_ID }}
+      run: |
+        pip install . &&
+        python example/example.py
 
     # Update check run called "integration-fork" on the forked PR
     - uses: actions/github-script@v6
@@ -105,7 +119,7 @@ jobs:
         job: ${{ github.job }}
         ref: ${{ github.event.client_payload.pull_request.head.sha }}
         # Conveniently, job.status maps to https://developer.github.com/v3/checks/runs/#update-a-check-run
-        conclusion: ${{ job.status }} 
+        conclusion: ${{ job.status }}
       with:
         github-token: ${{ secrets.GITHUB_TOKEN }}
         script: |
