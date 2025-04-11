@@ -53,3 +53,5 @@ After:
     for vault in vaults:
         print(vault.title)
 ```
+
+*  All functions that return an Iterator will now return the appropriate list type.
