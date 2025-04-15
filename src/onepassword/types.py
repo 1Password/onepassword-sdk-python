@@ -332,7 +332,7 @@ class ItemFile(BaseModel):
 
 class Item(BaseModel):
     """
-    Represents a 1Password item.
+    Represents an active 1Password item.
     """
 
     model_config = ConfigDict(populate_by_name=True)
@@ -448,6 +448,21 @@ class ItemCreateParams(BaseModel):
     """
 
 
+class ItemState(str, Enum):
+    """
+    Represents the state of an item in the SDK.
+    """
+
+    ACTIVE = "active"
+    """
+    The item is active
+    """
+    ARCHIVED = "archived"
+    """
+    The item is archived meaning it's hidden from regular view and stored in the archive.
+    """
+
+
 class ItemOverview(BaseModel):
     """
     Represents a decrypted 1Password item overview.
@@ -494,6 +509,10 @@ class ItemOverview(BaseModel):
     ] = Field(alias="updatedAt")
     """
     The time the item was updated at
+    """
+    state: ItemState
+    """
+    Indicates the state of the item
     """
 
 
@@ -965,6 +984,27 @@ class VaultOverview(BaseModel):
     """
     The vault's title
     """
+
+
+class ItemListFilterByStateInner(BaseModel):
+    """
+    Generated type representing the anonymous struct variant `ByState` of the `ItemListFilter` Rust enum
+    """
+
+    active: bool
+    archived: bool
+
+
+class ItemListFilterTypes(str, Enum):
+    BY_STATE = "ByState"
+
+
+class ItemListFilterByState(BaseModel):
+    type: Literal[ItemListFilterTypes.BY_STATE] = ItemListFilterTypes.BY_STATE
+    content: ItemListFilterByStateInner
+
+
+ItemListFilter = ItemListFilterByState
 
 
 class PasswordRecipeMemorableInner(BaseModel):
