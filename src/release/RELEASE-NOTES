@@ -12,7 +12,7 @@
 - **Deleting Archived Items:** The SDK now supports deleting items from the archive.
 
 ## ⚠️ BREAKING CHANGES ⚠️
-This release contains breaking changes for two functions in the Go SDK.
+This release contains breaking changes for two functions in the Python SDK.
 
 **Vault listing**
 
