@@ -11,22 +11,38 @@
 
 - **Deleting Archived Items:** The SDK now supports deleting items from the archive.
 
-### ⚠️ BREAKING CHANGES ⚠️
+## ⚠️ BREAKING CHANGES ⚠️
+This release contains breaking changes for two functions in the Go SDK.
 
-This release contains a breaking change for the Python SDK.
+**Vault listing**
 
-`items.list_all()` has changed to `items.list()` and the return type has also changed from SDKIterator[ItemOverview] to List[ItemOverview]. To migrate to the latest SDK version:
-
-Wherever you were using:
+* The function name has changed from `list_all` to `list`. To use this in your code, replace:
 ```python
-overviews = await client.items.list_all(vault_id)
-
-async for overview in overviews:
-        print(overview.ID)
+vaults = await client.vaults.list_all(vault_id)
+```
+with
+```python
+vaults = await client.vaults.list(vault_id)
 ```
 
-You must now use:
+* The return type of the vault listing function has changed from `*Iterator[VaultOverview]` to `[]VaultOverview`. To use this in your code, replace:
 
+```python
+async for vault in vaults:
+    # using vault overview
+```
+with
+```python
+for vault in vaults:
+    # using vault overview
+```
+**Item listing**
+
+* The function name has changed from `ListAll` to `List`. To use this in your code, replace:
+```python
+overviews = await client.items.list_all(vault_id)
+```
+with:
 ```python
 overviews = await client.items.list(vault_id, ItemListFilter(
                 content=ItemListFilterByStateInner(
@@ -34,24 +50,17 @@ overviews = await client.items.list(vault_id, ItemListFilter(
                     archived=archived
                 )
             ))
+```
 
+* The return type of the item listing function has changed from `*Iterator[ItemOverview]` to `[]ItemOverview`. To use this in your code, replace:
+```python
+async for overview in overviews:
+    # using item overview
+```
+with
+```python
 for overview in overviews:
-   print(overview.ID)
-```
-`vaults.list_all()` has changed to `vaults.list()` nd the return type has also changed from SDKIterator[VaultOverview] to List[VaultOverview]. To migrate to the latest SDK version:
-
-Wherever you were using:
-```python
-    vaults = await client.vaults.list_all()
-    async for vault in vaults:
-        print(vault.title)
-```
-
-You must now use:
-```python
-    vaults = await client.vaults.list()
-    for vault in vaults:
-        print(vault.title)
+    # using item overview
 ```
 
 This does not affect any code that's already deployed, and will not take effect in your codebase until updating to v0.3.0+ of the 1Password Python SDK.
