@@ -2,10 +2,10 @@
 
 ## NEW
 
-- **Support for item states**: You can now fetch an item's state using the SDK.`ItemOverview` exposes one of two states: `Active` or `Archived`.
+- **Support for item states**: You can now fetch an item's state using the SDK. `ItemOverview` exposes one of two states: `Active` or `Archived`.
     - `Active`: An item located inside a vault. (Default)
     - `Archived`: An item that has been moved to the Archive. 1Password doesn't include archived items in search results or suggest them when you fill in apps and browsers. You can keep archived items as long as you'd like.
-- **Filtering the return of item listing by state**: You can now filter the listed items by item state.
+- **Filtering listed items by state**: You can now filter the results of the item list function by item state.
 
 ## FIXED
 
@@ -20,7 +20,7 @@ This release contains breaking changes for two functions in the Python SDK.
 ```python
 vaults = await client.vaults.list_all(vault_id)
 ```
-with
+with:
 ```python
 vaults = await client.vaults.list(vault_id)
 ```
@@ -31,7 +31,7 @@ vaults = await client.vaults.list(vault_id)
 async for vault in vaults:
     # using vault overview
 ```
-with
+with:
 ```python
 for vault in vaults:
     # using vault overview
@@ -57,7 +57,7 @@ overviews = await client.items.list(vault_id, ItemListFilter(
 async for overview in overviews:
     # using item overview
 ```
-with
+with:
 ```python
 for overview in overviews:
     # using item overview
