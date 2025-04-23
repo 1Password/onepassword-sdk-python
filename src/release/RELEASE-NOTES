@@ -63,4 +63,4 @@ for overview in overviews:
     # using item overview
 ```
 
-This does not affect any code that's already deployed, and will not take effect in your codebase until updating to v0.3.0+ of the 1Password Python SDK.
+This does not affect any code that's already deployed, and will not take effect in your codebase until you choose to update to version 0.3.0 or later of the 1Password Python SDK.
