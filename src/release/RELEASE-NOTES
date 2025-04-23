@@ -46,8 +46,8 @@ with:
 ```python
 overviews = await client.items.list(vault_id, ItemListFilter(
                 content=ItemListFilterByStateInner(
-                    active=active,
-                    archived=archived
+                    active=True,
+                    archived=True,
                 )
             ))
 ```
