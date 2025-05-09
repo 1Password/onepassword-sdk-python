@@ -4,6 +4,79 @@ on:
   workflow_dispatch:
 
 jobs:
+  build_wheels:
+    name: Build wheels for Python SDK on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    if: startsWith(github.ref, 'refs/heads/sdk-core/')
+    strategy:
+      fail-fast: false
+      matrix:
+        # macOS 13 is an Intel runner and macOS 14 is an Apple Silicon runner
+        os: [ubuntu-22.04, ubuntu-22.04-arm, windows-latest, macos-13, macos-14]
+    steps:
+      - uses: actions/checkout@v4
+      - name: Upgrade build dependencies
+        run: python -m pip install --upgrade pip setuptools wheel
+
+      # Need to grab the SDK version for the wheel name
+      - name: Extract SDK Version
+        run: echo "SDK_VERSION=$(cat .VERSION)" >> "$GITHUB_ENV"
+        shell: bash
+
+      - name: Install cibuildwheel
+        run: |
+          python -m pip install cibuildwheel
+
+      - name: Build wheels
+        env:
+          CIBW_SKIP: pp* *-musllinux_*
+          CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_34_x86_64"
+          CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
+          CIBW_ARCHS: "native" # Equivalent to python's platform.machine()
+          CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
+          CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
+          CIBW_TEST_REQUIRES: "pydantic pytest pytest-asyncio"
+          MACOSX_DEPLOYMENT_TARGET: "12.0"
+          CIBW_TEST_COMMAND: "python -m pytest {project}/src/onepassword/test_client.py"
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN # We have to specify this to pass the token to the test command
+        run: |
+          python -m cibuildwheel --output-dir dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: onepassword-sdk-${{ env.SDK_VERSION }}-${{ matrix.os }}
+          path: ./dist/*.whl
+
+  build-sdist:
+    name: Build source distribution for Python SDK
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/sdk-core/')
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Extract SDK Version
+        run: echo "SDK_VERSION=$(cat .VERSION)" >> "$GITHUB_ENV"
+        shell: bash
+
+      - name: Install dependencies
+        run: pip3 install build pydantic pytest pytest-asyncio
+
+      - name: Build source distribution
+        run: python3 -m build --sdist
+
+      - name: Test Source Distribution
+        env:
+          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
+        run: |
+          python3 -m pip install dist/*.tar.gz
+          python3 -m pytest src/onepassword/test_client.py
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: onepassword-sdk-${{ env.SDK_VERSION }}
+          path: ./dist/*.tar.gz
+
   release-sdk:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/sdk-core/') # Only run on branches that start with sdk-core/
@@ -17,13 +90,28 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
           git_tag_gpgsign: true
-      - name: Setup Git User
-        run: |
-          git config user.name "$GITHUB_ACTOR"
-          git config user.email "$GITHUB_ACTOR@users.noreply.github.com"
 
       - name: Run the Release Script
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: make release
         shell: bash
+
+  publish-to-pypi:
+    name: Publish to PyPI
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/sdk-core/')
+    environment:
+      name: pypi
+      url: https://pypi.org/project/onepassword-sdk/
+    permissions:
+      id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
+    needs: [build_wheels, build-sdist]
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: onepassword-sdk-*
+          path: ./dist
+          merge-multiple: true
+      - name: Publish package distributions to PyPi
+        uses: pypa/gh-action-pypi-publish@release/v1.12
