@@ -13,14 +13,14 @@ macOS_version_x86_64=10.9
 macOS_version_arm64=11.0
 
 # Extracts the current verison number for cleanup function
-current_version=$(cat version.txt)
+current_version=$(cat .VERSION)
 
 # Function to execute upon exit
 cleanup() {
     echo "Performing cleanup tasks..."
     # Remove dist and egg-info and the potential release candidate if created
     rm -r dist src/*.egg-info/ onepassword_sdk-"${current_version}"
-    exit 1   
+    exit 1
 }
 
 # Set the trap to call the cleanup function on exit
@@ -42,7 +42,7 @@ build_wheels() {
     export PYTHON_OS_PLATFORM=$os_platform
     export PYTHON_MACHINE_PLATFORM=$machine_platform
 
-    case "$os_platform" in 
+    case "$os_platform" in
         Darwin)
             macos_version=
             # Min MacOS version for Python 3.13+ is 10.13

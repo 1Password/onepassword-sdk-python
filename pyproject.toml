@@ -30,4 +30,4 @@ dependencies = [
 Homepage = "https://github.com/1Password/onepassword-sdk-python"
 
 [tool.setuptools.dynamic]
-version = {file = "./version.txt"}
+version = {file = "./.VERSION"}

@@ -5,7 +5,7 @@
 set -e
 
 # Read the contents of the files into variables
-version=$(cat "version.txt")
+version=$(cat ".VERSION")
 build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "src/onepassword/build_number.py")
 release_notes=$(< src/release/RELEASE-NOTES)
 

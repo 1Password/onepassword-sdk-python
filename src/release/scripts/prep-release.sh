@@ -2,12 +2,12 @@
 
 # Helper script to prepare a release for the Python SDK.
 
-output_version_file="version.txt"
+output_version_file=".VERSION"
 output_build_file="src/onepassword/build_number.py"
 build_number_template_file="src/release/templates/build_number.tpl.py"
 
 
-# Extracts the current build/version number for comparison and backup 
+# Extracts the current build/version number for comparison and backup
 current_version=$(cat "$output_version_file")
 current_build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "$output_build_file")
 
@@ -17,7 +17,7 @@ cleanup() {
     # Revert changes to file if any
     echo -n "$current_version" > "$output_version_file"
     sed -e "s/{{ build }}/$current_build/" "$build_number_template_file" > "$output_build_file"
-    exit 1   
+    exit 1
 }
 
 # Set the trap to call the cleanup function on exit
@@ -38,14 +38,14 @@ update_and_validate_version() {
         read -p "Enter the version number (format: x.y.z(-beta.w)): " version
 
         # Validate the version number format
-        if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then        
+        if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then
             if [[ "${current_version}" != "${version}" ]]; then
                 # TODO: Check the less than case as well.
                 echo "New version number is: ${version}"
                 return 0
             else
                 echo "Version hasn't changed."
-            fi        
+            fi
         else
             echo "Invalid version number format: ${version}"
             echo "Please enter a version number in the 'x.y.z(-beta.w)' format."
@@ -54,7 +54,7 @@ update_and_validate_version() {
 }
 
 # Function to validate the build number format.
-# SEMVER Format: Mmmppbb - 7 Digits 
+# SEMVER Format: Mmmppbb - 7 Digits
 update_and_validate_build() {
     while true; do
         # Prompt the user to input the build number
@@ -83,9 +83,9 @@ enforce_latest_code
 update_and_validate_version
 
 # Update and validate the build number
-update_and_validate_build 
+update_and_validate_build
 
-# Update version & build number in version.txt and build_number.py respectively
+# Update version & build number in .VERSION and build_number.py respectively
 echo -n "$version" > "$output_version_file"
 sed  -e "s/{{ build }}/$build/" "$build_number_template_file" > "$output_build_file"
 
