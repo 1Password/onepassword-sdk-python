@@ -21,7 +21,6 @@ jobs:
       - name: Upgrade build dependencies
         run: python -m pip install --upgrade pip setuptools wheel
 
-
       # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
         run: echo "SDK_VERSION=$(cat version.txt)" >> "$GITHUB_ENV"

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  Release-SDK:
+  release-sdk:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/sdk-core/') # Only run on branches that start with sdk-core/
     steps:
