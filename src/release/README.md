@@ -1,5 +1,15 @@
-## How to Prepare a Release for the Python SDK
+# How to Release the Python SDK
 
+## Release off an Release Candidate Branch in Github Actions
+To release the Python SDK via Github Action, you must do the following:
+1. SDK core opens a new PR with the latest generated code and latest core. This branch should start off with `sdk-core/...`
+2. Add the release notes for the RC as well as update the examples if needed.
+3. Run the `Release Python SDKs` action and input the correct build and version number while referencing the RC branch.
+4. After the action is completed, the Python SDK is released on Github and PyPi, you can merge the PR branch.
+
+If the Github Action isn't working, you can follow the manual steps below to release the Python SDK.
+
+## Manual Steps to release a Python SDK
 Before running this script, the user must make sure that they have the write permissions to the Python SDK repository.
 
 Run this make command to install all dependencies required for the Python SDK release process.
@@ -10,7 +20,7 @@ release/install-dependencies
 Step 1. Make any changes to the SDK as required on a feature branch or main branch.
 NOTE: If ran on a main branch, a release branch will be created.
 
-Step 2. Go to the root of the repo and run 
+Step 2. Go to the root of the repo and run
 ```
 make prep-release
 ```

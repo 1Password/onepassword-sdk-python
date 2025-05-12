@@ -1,13 +1,56 @@
-name: Release SDK
+name: Release Python SDKs
 
 on:
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Version number"
+        required: true
+        type: string
+      build_number:
+        description: "Build number "
+        required: true
+        type: string
 
 jobs:
-  build_wheels:
+  prepare-release:
+    runs-on: ubuntu-latest
+    if: startsWith(github.ref, 'refs/heads/sdk-core/') # Only run on branches that start with sdk-core/
+    steps:
+      - name: Checkout the code
+        uses: actions/checkout@v4
+
+      - name: Import GPG key
+        uses: crazy-max/ghaction-import-gpg@v6
+        with:
+          gpg_private_key: ${{ secrets.GPG_PRIVATE_KEY }}
+          passphrase: ${{ secrets.PASSPHRASE }}
+          git_user_signingkey: true
+          git_commit_gpgsign: true
+
+      - name: Parse and Validate Inputs
+        run: |
+          # Get inputs passed to the workflow
+          VERSION="${{ github.event.inputs.version }}"
+          BUILD_NUMBER="${{ github.event.inputs.build_number }}"
+
+          # Save the parsed values for future steps
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
+        shell: bash
+
+      - name: Run the Prep Release Script
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          make prep-release VERSION="$VERSION" BUILD_NUMBER="$BUILD_NUMBER"
+        shell: bash
+
+  build-wheels:
     name: Build wheels for Python SDK on ${{ matrix.os }}
     runs-on: ${{ matrix.os }}
     if: startsWith(github.ref, 'refs/heads/sdk-core/')
+    needs: [prepare-release]
     strategy:
       fail-fast: false
       matrix:
@@ -15,6 +58,9 @@ jobs:
         os: [ubuntu-22.04, ubuntu-22.04-arm, windows-latest, macos-13, macos-14]
     steps:
       - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.ref }}
+
       - name: Upgrade build dependencies
         run: python -m pip install --upgrade pip setuptools wheel
 
@@ -32,7 +78,7 @@ jobs:
           CIBW_SKIP: pp* *-musllinux_*
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_34_x86_64"
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
-          CIBW_ARCHS: "native" # Equivalent to python's platform.machine()
+          CIBW_ARCHS: "native"
           CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
           CIBW_TEST_REQUIRES: "pydantic pytest pytest-asyncio"
@@ -52,9 +98,12 @@ jobs:
     name: Build source distribution for Python SDK
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/sdk-core/')
+    needs: [prepare-release]
     steps:
       - uses: actions/checkout@v4
-
+        with:
+          ref: ${{ github.ref }}
+        # Need to grab the SDK version for the wheel name
       - name: Extract SDK Version
         run: echo "SDK_VERSION=$(cat .VERSION)" >> "$GITHUB_ENV"
         shell: bash
@@ -77,14 +126,15 @@ jobs:
           name: onepassword-sdk-${{ env.SDK_VERSION }}
           path: ./dist/*.tar.gz
 
-  release-sdk:
+  Release-SDK:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/sdk-core/') # Only run on branches that start with sdk-core/
+    needs: [build-wheels, build-sdist]
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.PAT }}
+          ref: ${{ github.ref }}
 
       - name: Import GPG key
         uses: crazy-max/ghaction-import-gpg@v6
@@ -110,7 +160,7 @@ jobs:
       url: https://pypi.org/project/onepassword-sdk/
     permissions:
       id-token: write # IMPORTANT: this permission is mandatory for trusted publishing
-    needs: [build_wheels, build-sdist]
+    needs: [Release-SDK]
     steps:
       - uses: actions/download-artifact@v4
         with:
