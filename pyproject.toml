@@ -1,0 +1,33 @@
+[build-system]
+requires = ["setuptools>=66", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "onepassword-sdk"
+dynamic = ["version"]
+description = "The 1Password Python SDK offers programmatic read access to your secrets in 1Password in an interface native to Python."
+authors = [{ name = "1Password" }]
+license = { file = "LICENSE" }
+readme = "README.md"
+requires-python = ">=3.9"
+classifiers = [
+    "Development Status :: 5 - Production/Stable",
+    "Operating System :: MacOS",
+    "Operating System :: POSIX :: Linux",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "License :: OSI Approved :: MIT License",
+]
+dependencies = [
+    "pydantic>=2.5",
+]
+
+[project.urls]
+Homepage = "https://github.com/1Password/onepassword-sdk-python"
+
+[tool.setuptools.dynamic]
+version = {file = "./.VERSION"}

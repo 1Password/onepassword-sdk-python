@@ -2,23 +2,22 @@
 
 # Helper script to prepare a release for the Python SDK.
 
-output_version_file="version.py"
+output_version_file=".VERSION"
 output_build_file="src/onepassword/build_number.py"
-version_template_file="src/release/templates/version.tpl.py"
 build_number_template_file="src/release/templates/build_number.tpl.py"
 
 
-# Extracts the current build/version number for comparison and backup 
-current_version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "$output_version_file")
-current_build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "$output_build_file")
+# Extracts the current build/version number for comparison and backup
+current_version=$(cat "$output_version_file" | tr -d '[:space:]')
+current_build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "$output_build_file" | tr -d '[:space:]')
 
 # Function to execute upon exit
 cleanup() {
     echo "Performing cleanup tasks..."
     # Revert changes to file if any
-    sed -e "s/{{ version }}/$current_version/" "$version_template_file" > "$output_version_file"
+    echo -n "$current_version" > "$output_version_file"
     sed -e "s/{{ build }}/$current_build/" "$build_number_template_file" > "$output_build_file"
-    exit 1   
+    exit 1
 }
 
 # Set the trap to call the cleanup function on exit
@@ -39,23 +38,27 @@ update_and_validate_version() {
         read -p "Enter the version number (format: x.y.z(-beta.w)): " version
 
         # Validate the version number format
-        if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then        
+        if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then
             if [[ "${current_version}" != "${version}" ]]; then
                 # TODO: Check the less than case as well.
                 echo "New version number is: ${version}"
                 return 0
             else
                 echo "Version hasn't changed."
-            fi        
+            fi
         else
             echo "Invalid version number format: ${version}"
             echo "Please enter a version number in the 'x.y.z(-beta.w)' format."
+        fi
+        # If running in CI, exit immediately
+        if [[ -n "${SDK_CI}" ]]; then
+            exit 1
         fi
     done
 }
 
 # Function to validate the build number format.
-# SEMVER Format: Mmmppbb - 7 Digits 
+# SEMVER Format: Mmmppbb - 7 Digits
 update_and_validate_build() {
     while true; do
         # Prompt the user to input the build number
@@ -74,6 +77,10 @@ update_and_validate_build() {
             echo "Invalid build number format: ${build}"
             echo "Please enter a build number in the 'Mmmppbb' format."
         fi
+        # If running in CI, exit immediately
+        if [[ -n "${SDK_CI}" ]]; then
+            exit 1
+        fi
     done
 }
 
@@ -84,10 +91,10 @@ enforce_latest_code
 update_and_validate_version
 
 # Update and validate the build number
-update_and_validate_build 
+update_and_validate_build
 
-# Update version & build number in version.py and build_number.py respectively
-sed  -e "s/{{ version }}/$version/" "$version_template_file" > "$output_version_file"
+# Update version & build number in .VERSION and build_number.py respectively
+echo -n "$version" > "$output_version_file"
 sed  -e "s/{{ build }}/$build/" "$build_number_template_file" > "$output_build_file"
 
 

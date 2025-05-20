@@ -2,27 +2,21 @@
 
 # Helper script to build the required wheels for the Python SDK
 
-output_version_file="version.py"
-
 # The list of python verisons the SDKs release for
 python_versions=("$@")
 
 # Minimum glibc version we support
-glibc_version=2-32
-
-# These versions are being supported due to the SDKs supporting Python 3.9+
-macOS_version_x86_64=10.9
-macOS_version_arm64=11.0
+glibc_version=2-34
 
 # Extracts the current verison number for cleanup function
-current_version=$(awk -F "['\"]" '/SDK_VERSION =/{print $2}' "$output_version_file")
+current_version=$(cat .VERSION)
 
 # Function to execute upon exit
 cleanup() {
     echo "Performing cleanup tasks..."
     # Remove dist and egg-info and the potential release candidate if created
     rm -r dist src/*.egg-info/ onepassword_sdk-"${current_version}"
-    exit 1   
+    exit 1
 }
 
 # Set the trap to call the cleanup function on exit
@@ -44,23 +38,9 @@ build_wheels() {
     export PYTHON_OS_PLATFORM=$os_platform
     export PYTHON_MACHINE_PLATFORM=$machine_platform
 
-    case "$os_platform" in 
+    case "$os_platform" in
         Darwin)
-            macos_version=
-            # Min MacOS version for Python 3.13+ is 10.13
-            python_version=$(pyenv exec python3 --version 2>&1)
-
-            if [[ "$machine_platform" == "x86_64" ]]; then
-                if [[ "$python_version" == "Python 3.13"* ]]; then
-                macos_version="10.13"
-            else
-                macos_version=$macOS_version_x86_64
-            fi
-            else
-                macos_version=$macOS_version_arm64
-            fi
-
-            export _PYTHON_HOST_PLATFORM="macosx-${macos_version}-${PYTHON_MACHINE_PLATFORM}"
+            export _PYTHON_HOST_PLATFORM="macosx-12.0-${PYTHON_MACHINE_PLATFORM}"
             ;;
         Linux)
             export _PYTHON_HOST_PLATFORM="manylinux-${glibc_version}-${PYTHON_MACHINE_PLATFORM}"
