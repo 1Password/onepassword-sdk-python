@@ -4,11 +4,11 @@ on:
   workflow_dispatch:
     inputs:
       version:
-        description: "Version number"
+        description: "New version for the SDKs in the format of M.m.p"
         required: true
         type: string
       build_number:
-        description: "Build number "
+        description: "New build number for the SDKs in the format of Mmmppbb "
         required: true
         type: string
 
@@ -16,6 +16,9 @@ jobs:
   prepare-release:
     runs-on: ubuntu-latest
     if: startsWith(github.ref, 'refs/heads/sdk-core/') # Only run on branches that start with sdk-core/
+    env:
+      VERSION: ${{ github.event.inputs.version }}
+      BUILD_NUMBER: ${{ github.event.inputs.build_number }}
     steps:
       - name: Checkout the code
         uses: actions/checkout@v4
@@ -28,22 +31,11 @@ jobs:
           git_user_signingkey: true
           git_commit_gpgsign: true
 
-      - name: Parse and Validate Inputs
-        run: |
-          # Get inputs passed to the workflow
-          VERSION="${{ github.event.inputs.version }}"
-          BUILD_NUMBER="${{ github.event.inputs.build_number }}"
-
-          # Save the parsed values for future steps
-          echo "VERSION=$VERSION" >> $GITHUB_ENV
-          echo "BUILD_NUMBER=$BUILD_NUMBER" >> $GITHUB_ENV
-        shell: bash
-
       - name: Run the Prep Release Script
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          make prep-release VERSION="$VERSION" BUILD_NUMBER="$BUILD_NUMBER"
+          make prep-release VERSION="{{ env.SDK_VERSION }}" BUILD_NUMBER="{{ env.SDK_BUILD_NUMBER }}"
         shell: bash
 
   build-wheels:
@@ -52,6 +44,7 @@ jobs:
     if: startsWith(github.ref, 'refs/heads/sdk-core/')
     needs: [prepare-release]
     strategy:
+      # we don't want all of them failing if one fails
       fail-fast: false
       matrix:
         # macOS 13 is an Intel runner and macOS 14 is an Apple Silicon runner
@@ -75,17 +68,24 @@ jobs:
 
       - name: Build wheels
         env:
+          # Skip all the unneeded images like PyPy and musllinux images
           CIBW_SKIP: pp* *-musllinux_*
+          # Set the manylinux X86_64/aarch64 image to this specific 2.34 image
           CIBW_MANYLINUX_X86_64_IMAGE: "quay.io/pypa/manylinux_2_34_x86_64"
           CIBW_MANYLINUX_AARCH64_IMAGE: "quay.io/pypa/manylinux_2_34_aarch64"
+          # Set the wheel to the native archtiecture (output of platform.machine() which we use in the setup.py script)
           CIBW_ARCHS: "native"
+          # Windows reparing of wheels are not supported so manually install it.
           CIBW_BEFORE_BUILD_WINDOWS: "pip install delvewheel"
           CIBW_REPAIR_WHEEL_COMMAND_WINDOWS: "delvewheel repair -w {dest_dir} {wheel}"
+          # Dependencies required for testing each wheel
           CIBW_TEST_REQUIRES: "pydantic pytest pytest-asyncio"
+          # The minimum MacOS version for darwin wheels (matches OPH)
           MACOSX_DEPLOYMENT_TARGET: "12.0"
+          # The command to test every wheel
           CIBW_TEST_COMMAND: "python -m pytest {project}/src/onepassword/test_client.py"
-          OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
-          CIBW_ENVIRONMENT_PASS_LINUX: OP_SERVICE_ACCOUNT_TOKEN # We have to specify this to pass the token to the test command
+          # Pass the service account token in all wheel buildings for testing of the wheels.
+          CIBW_ENVIRONMENT: OP_SERVICE_ACCOUNT_TOKEN=${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
         run: |
           python -m cibuildwheel --output-dir dist
 

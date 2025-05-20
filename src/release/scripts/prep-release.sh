@@ -8,8 +8,8 @@ build_number_template_file="src/release/templates/build_number.tpl.py"
 
 
 # Extracts the current build/version number for comparison and backup
-current_version=$(cat "$output_version_file")
-current_build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "$output_build_file")
+current_version=$(cat "$output_version_file" | tr -d '[:space:]')
+current_build=$(awk -F "['\"]" '/SDK_BUILD_NUMBER =/{print $2}' "$output_build_file" | tr -d '[:space:]')
 
 # Function to execute upon exit
 cleanup() {
