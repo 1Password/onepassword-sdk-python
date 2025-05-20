@@ -6,11 +6,7 @@
 python_versions=("$@")
 
 # Minimum glibc version we support
-glibc_version=2-32
-
-# These versions are being supported due to the SDKs supporting Python 3.9+
-macOS_version_x86_64=10.9
-macOS_version_arm64=11.0
+glibc_version=2-34
 
 # Extracts the current verison number for cleanup function
 current_version=$(cat .VERSION)
@@ -44,21 +40,7 @@ build_wheels() {
 
     case "$os_platform" in
         Darwin)
-            macos_version=
-            # Min MacOS version for Python 3.13+ is 10.13
-            python_version=$(pyenv exec python3 --version 2>&1)
-
-            if [[ "$machine_platform" == "x86_64" ]]; then
-                if [[ "$python_version" == "Python 3.13"* ]]; then
-                macos_version="10.13"
-            else
-                macos_version=$macOS_version_x86_64
-            fi
-            else
-                macos_version=$macOS_version_arm64
-            fi
-
-            export _PYTHON_HOST_PLATFORM="macosx-${macos_version}-${PYTHON_MACHINE_PLATFORM}"
+            export _PYTHON_HOST_PLATFORM="macosx-12.0-${PYTHON_MACHINE_PLATFORM}"
             ;;
         Linux)
             export _PYTHON_HOST_PLATFORM="manylinux-${glibc_version}-${PYTHON_MACHINE_PLATFORM}"
