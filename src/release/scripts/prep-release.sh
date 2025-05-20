@@ -50,6 +50,10 @@ update_and_validate_version() {
             echo "Invalid version number format: ${version}"
             echo "Please enter a version number in the 'x.y.z(-beta.w)' format."
         fi
+        # If running in CI, exit immediately
+        if [[ -n "${SDK_CI}" ]]; then
+            exit 1
+        fi
     done
 }
 
@@ -72,6 +76,10 @@ update_and_validate_build() {
         else
             echo "Invalid build number format: ${build}"
             echo "Please enter a build number in the 'Mmmppbb' format."
+        fi
+        # If running in CI, exit immediately
+        if [[ -n "${SDK_CI}" ]]; then
+            exit 1
         fi
     done
 }
