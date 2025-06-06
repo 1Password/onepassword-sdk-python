@@ -483,7 +483,7 @@ def _uniffi_check_api_checksums(lib):
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
     if lib.uniffi_op_uniffi_core_checksum_func_invoke_sync() != 49373:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
-    if lib.uniffi_op_uniffi_core_checksum_func_release_client() != 57155:
+    if lib.uniffi_op_uniffi_core_checksum_func_release_client() != 20773:
         raise InternalError("UniFFI API checksum mismatch: try cleaning and rebuilding your project")
 
 # A ctypes library to expose the extern-C FFI definitions.

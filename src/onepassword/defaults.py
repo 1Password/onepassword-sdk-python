@@ -13,7 +13,8 @@ DEFAULT_OS_VERSION = "0.0.0"
 # Generates a configuration dictionary with the user's parameters
 def new_default_config(auth, integration_name, integration_version):
     client_config_dict = {
-        "serviceAccountToken": auth,
+        "pairingCode": auth,
+        "deviceUuid": "osgb3d43ajszg732e5nrmuns7u",
         "programmingLanguage": SDK_LANGUAGE,
         "sdkVersion": SDK_VERSION,
         "integrationName": integration_name,
