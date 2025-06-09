@@ -24,7 +24,7 @@ async def main():
     )
     # [developer-docs.sdk.python.client-initialization]-end
 
-    secret = await client.secrets.resolve("hi")
+    secret = await client.secrets.resolve("op://test/AcmeCorp/credential")
     print(f"Secret resolved: {secret}")
 
 if __name__ == "__main__":

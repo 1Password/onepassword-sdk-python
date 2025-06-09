@@ -21,14 +21,12 @@ class Secrets:
         """
         response = await _invoke(
             {
-                "invocation": {
-                    "clientId": self.client_id,
-                    "parameters": {
-                        "name": "SecretsResolve",
-                        "parameters": {"secret_reference": secret_reference},
-                    },
-                }
-            }
+                "ffiMethod": "invoke",
+    "payload": {
+            "name": "SecretsResolve",
+            "parameters": {"secret_reference": secret_reference}
+    }
+}
         )
 
         response = TypeAdapter(str).validate_json(response)
