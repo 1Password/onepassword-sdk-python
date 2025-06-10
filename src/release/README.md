@@ -4,7 +4,7 @@ Before running this script, the user must make sure that they have the write per
 
 Run this make command to install all dependencies required for the Python SDK release process.
 ```
-release/install-dependencies
+make release/install-dependencies
 ```
 
 Step 1. Make any changes to the SDK as required on a feature branch or main branch.
