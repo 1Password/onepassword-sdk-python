@@ -27,7 +27,7 @@ async def main():
     # [developer-docs.sdk.python.list-vaults]-start
     vaults = await client.vaults.list()
     for vault in vaults:
-        print(vault.title)
+        print(vault)
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
