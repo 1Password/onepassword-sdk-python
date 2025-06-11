@@ -976,6 +976,8 @@ class VaultOverview(BaseModel):
     Represents a decrypted 1Password vault.
     """
 
+    model_config = ConfigDict(populate_by_name=True)
+
     id: str
     """
     The vault's ID
@@ -983,6 +985,22 @@ class VaultOverview(BaseModel):
     title: str
     """
     The vault's title
+    """
+    created_at: Annotated[
+        datetime,
+        BeforeValidator(parse_rfc3339),
+        PlainSerializer(serialize_datetime_data),
+    ] = Field(alias="createdAt")
+    """
+    The time the vault was created at
+    """
+    updated_at: Annotated[
+        datetime,
+        BeforeValidator(parse_rfc3339),
+        PlainSerializer(serialize_datetime_data),
+    ] = Field(alias="updatedAt")
+    """
+    The time the vault was updated at
     """
 
 

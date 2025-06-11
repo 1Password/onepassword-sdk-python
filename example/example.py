@@ -27,7 +27,7 @@ async def main():
     # [developer-docs.sdk.python.list-vaults]-start
     vaults = await client.vaults.list()
     for vault in vaults:
-        print(vault.title)
+        print(vault)
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
@@ -53,7 +53,7 @@ async def main():
         print(error)
     # [developer-docs.sdk.python.validate-secret-reference]-end
 
-    vault_id= os.getenv("OP_VAULT_ID")
+    vault_id = os.getenv("OP_VAULT_ID")
     if vault_id is None:
         raise Exception("OP_VAULT_ID environment variable is not set")
 
@@ -104,7 +104,9 @@ async def main():
 
     # [developer-docs.sdk.python.resolve-secret]-start
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
-    value = await client.secrets.resolve(f"op://{created_item.vault_id}/{created_item.id}/username")
+    value = await client.secrets.resolve(
+        f"op://{created_item.vault_id}/{created_item.id}/username"
+    )
     print(value)
     # [developer-docs.sdk.python.resolve-secret]-end
 
