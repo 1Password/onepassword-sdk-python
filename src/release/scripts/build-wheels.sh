@@ -7,8 +7,9 @@ output_version_file="version.py"
 # The list of python verisons the SDKs release for
 python_versions=("$@")
 
-# Minimum glibc version we support
-glibc_version=2-32
+# Use the currently supported manylinux image greater than our minimum glibc version
+# https://github.com/pypa/manylinux/tree/main
+glibc_version=2-34
 
 # These versions are being supported due to the SDKs supporting Python 3.9+
 macOS_version_x86_64=10.9
