@@ -6,8 +6,9 @@ from .types import Item, ItemShareAccountPolicy, ItemShareParams, ValidRecipient
 
 
 class ItemsShares:
-    def __init__(self, client_id):
+    def __init__(self, client_id, core):
         self.client_id = client_id
+        self.core = core
 
     async def get_account_policy(
         self, vault_id: str, item_id: str
