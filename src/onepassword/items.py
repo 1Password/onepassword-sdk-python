@@ -15,8 +15,8 @@ class Items:
     def __init__(self, client_id, core):
         self.client_id = client_id
         self.core = core
-        self.shares = ItemsShares(client_id)
-        self.files = ItemsFiles(client_id)
+        self.shares = ItemsShares(client_id, core)
+        self.files = ItemsFiles(client_id, core)
 
     async def create(self, params: ItemCreateParams) -> Item:
         """
