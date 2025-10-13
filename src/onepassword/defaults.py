@@ -9,11 +9,19 @@ DEFAULT_REQUEST_LIBRARY = "reqwest"
 DEFAULT_REQUEST_LIBRARY_VERSION = "0.11.24"
 DEFAULT_OS_VERSION = "0.0.0"
 
+class DesktopAuth:
+    def __init__(self, account_name: str):
+        """
+        Initialize a DesktopAuth instance.
+
+        Args:
+            account_name (str): The name of the account.
+        """
+        self.account_name = account_name
 
 # Generates a configuration dictionary with the user's parameters
-def new_default_config(auth, integration_name, integration_version):
+def new_default_config(auth: DesktopAuth | str, integration_name, integration_version):
     client_config_dict = {
-        "serviceAccountToken": auth,
         "programmingLanguage": SDK_LANGUAGE,
         "sdkVersion": SDK_VERSION,
         "integrationName": integration_name,
@@ -24,4 +32,7 @@ def new_default_config(auth, integration_name, integration_version):
         "osVersion": DEFAULT_OS_VERSION,
         "architecture": platform.machine(),
     }
+    if isinstance(auth, str):
+        client_config_dict["serviceAccountToken"] = auth
+
     return client_config_dict

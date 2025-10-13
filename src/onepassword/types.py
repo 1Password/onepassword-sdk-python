@@ -1159,3 +1159,8 @@ class WordListType(str, Enum):
     """
     Three (random) letter "words"
     """
+
+class VaultListParams(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    decrypt_details: Optional[bool] = Field(alias="decryptDetails", default=None)
