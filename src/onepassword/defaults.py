@@ -34,7 +34,5 @@ def new_default_config(auth: DesktopAuth | str, integration_name, integration_ve
     }
     if isinstance(auth, str):
         client_config_dict["serviceAccountToken"] = auth
-    elif isinstance(auth, DesktopAuth):
-        client_config_dict["accountName"] = auth.account_name
 
     return client_config_dict

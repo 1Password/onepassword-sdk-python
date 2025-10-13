@@ -25,10 +25,10 @@ class Client:
             integration_version=integration_version,
         )
 
-        if isinstance(auth, str):
+        if isinstance(auth, DesktopAuth):
+            core = DesktopCore(auth.account_name)
+        else:
             core = UniffiCore()
-        elif isinstance(auth, DesktopAuth):
-            core = DesktopCore()
 
         client_id = int(await core.init_client(config))
 

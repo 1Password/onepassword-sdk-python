@@ -3,7 +3,7 @@
 from .core import Core
 from typing import Optional, List
 from pydantic import TypeAdapter
-from .types import VaultOverview
+from .types import VaultOverview, VaultListParams
 
 
 class Vaults:
@@ -15,7 +15,7 @@ class Vaults:
         self.client_id = client_id
         self.core = core
 
-    async def list(self) -> List[VaultOverview]:
+    async def list(self, params: Optional[VaultListParams] = None) -> List[VaultOverview]:
         """
         List all vaults
         """
@@ -23,7 +23,7 @@ class Vaults:
             {
                 "invocation": {
                     "clientId": self.client_id,
-                    "parameters": {"name": "VaultsList", "parameters": {}},
+                    "parameters": {"name": "VaultsList", "parameters": {"params": params.model_dump(by_alias=True) if params else {}}},
                 }
             }
         )
