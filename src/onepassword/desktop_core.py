@@ -65,7 +65,7 @@ class DesktopCore:
         )
 
         if ret != 0:
-            raise RuntimeError(f"send_message failed with code {ret}. Please make sure the Desktop app intehration setting is enabled, or contact 1Password support.")
+            raise RuntimeError(f"send_message failed with code {ret}. Please make sure the Desktop app integration setting is enabled, or contact 1Password support.")
 
         # Copy bytes into Python
         data = ctypes.string_at(out_buf, out_len.value)
