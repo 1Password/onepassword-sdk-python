@@ -4,7 +4,15 @@ from typing import Optional, List
 from pydantic import TypeAdapter
 from .items_shares import ItemsShares
 from .items_files import ItemsFiles
-from .types import Item, ItemCreateParams, ItemListFilter, ItemOverview
+from .types import (
+    Item,
+    ItemCreateParams,
+    ItemListFilter,
+    ItemOverview,
+    ItemsDeleteAllResponse,
+    ItemsGetAllResponse,
+    ItemsUpdateAllResponse,
+)
 
 
 class Items:
@@ -12,7 +20,7 @@ class Items:
     The Items API holds all operations the SDK client can perform on 1Password items.
     """
 
-    def __init__(self, client_id, core):
+    def __init__(self, client_id, core: Core):
         self.client_id = client_id
         self.core = core
         self.shares = ItemsShares(client_id, core)
@@ -37,6 +45,30 @@ class Items:
         response = TypeAdapter(Item).validate_json(response)
         return response
 
+    async def create_all(
+        self, vault_id: str, params: List[ItemCreateParams]
+    ) -> ItemsUpdateAllResponse:
+        """
+        Create items in batch, within a single vault.
+        """
+        response = await self.core.invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "ItemsCreateAll",
+                        "parameters": {
+                            "vault_id": vault_id,
+                            "params": [o.model_dump(by_alias=True) for o in params],
+                        },
+                    },
+                }
+            }
+        )
+
+        response = TypeAdapter(ItemsUpdateAllResponse).validate_json(response)
+        return response
+
     async def get(self, vault_id: str, item_id: str) -> Item:
         """
         Get an item by vault and item ID
@@ -54,6 +86,25 @@ class Items:
         )
 
         response = TypeAdapter(Item).validate_json(response)
+        return response
+
+    async def get_all(self, vault_id: str, item_ids: List[str]) -> ItemsGetAllResponse:
+        """
+        Get items by vault and their item IDs.
+        """
+        response = await self.core.invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "ItemsGetAll",
+                        "parameters": {"vault_id": vault_id, "item_ids": item_ids},
+                    },
+                }
+            }
+        )
+
+        response = TypeAdapter(ItemsGetAllResponse).validate_json(response)
         return response
 
     async def put(self, item: Item) -> Item:
@@ -92,6 +143,27 @@ class Items:
         )
 
         return None
+
+    async def delete_all(
+        self, vault_id: str, item_ids: List[str]
+    ) -> ItemsDeleteAllResponse:
+        """
+        Create items in batch, within a single vault.
+        """
+        response = await self.core.invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "ItemsDeleteAll",
+                        "parameters": {"vault_id": vault_id, "item_ids": item_ids},
+                    },
+                }
+            }
+        )
+
+        response = TypeAdapter(ItemsDeleteAllResponse).validate_json(response)
+        return response
 
     async def archive(self, vault_id: str, item_id: str) -> None:
         """

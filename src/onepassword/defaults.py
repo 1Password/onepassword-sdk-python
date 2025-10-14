@@ -32,7 +32,7 @@ def new_default_config(auth: DesktopAuth | str, integration_name, integration_ve
         "osVersion": DEFAULT_OS_VERSION,
         "architecture": platform.machine(),
     }
-    if isinstance(auth, str):
+    if not isinstance(auth, DesktopAuth):
         client_config_dict["serviceAccountToken"] = auth
 
     return client_config_dict
