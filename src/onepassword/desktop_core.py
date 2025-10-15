@@ -1,16 +1,37 @@
 import ctypes
 import json
 import os
+import platform
 import base64
+from pathlib import Path
 from ctypes import c_uint8, c_size_t, c_int32, POINTER, byref, c_void_p
 from .core import UniffiCore
 from onepassword.errors import raise_typed_exception
 
 
 def find_1password_lib_path():
-    locations = [
-        "/Users/andititu/core/target/debug/libop_sdk_ipc_client.dylib"
-    ]
+    os_name = platform.system()
+
+    # Define paths based on OS
+    if os_name == "Darwin":  # macOS
+        locations = [
+            "/Applications/1Password.app/Contents/Frameworks/libop_sdk_ipc_client.dylib",
+            str(Path.home() / "Applications/1Password.app/Contents/Frameworks/libop_sdk_ipc_client.dylib"),
+        ]
+    elif os_name == "Linux":
+        locations = [
+            "/usr/bin/1password/libop_sdk_ipc_client.so",
+			"/opt/1password/libop_sdk_ipc_client.so",
+			"/snap/bin/1password/libop_sdk_ipc_client.so",
+        ]
+    elif os_name == "Windows":
+        locations = [
+            r"C:\Program Files\1Password\op_sdk_ipc_client.dll",
+			r"C:\Program Files (x86)\1Password\op_sdk_ipc_client.dll",
+            str(Path.home() / r"AppData\Local\1Password\op_sdk_ipc_client.dll"),
+        ]
+    else:
+        raise OSError(f"Unsupported operating system: {os_name}")
 
     for lib_path in locations:
         if os.path.exists(lib_path):
