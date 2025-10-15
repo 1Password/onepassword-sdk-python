@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 import weakref
-from .core import Core, UniffiCore
+from .core import UniffiCore
 from .desktop_core import DesktopCore
 from .defaults import new_default_config, DesktopAuth
 from .secrets import Secrets

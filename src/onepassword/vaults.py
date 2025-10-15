@@ -18,7 +18,7 @@ class Vaults:
     The Vaults API holds all the operations the SDK client can perform on 1Password vaults.
     """
 
-    def __init__(self, client_id, core):
+    def __init__(self, client_id, core: Core):
         self.client_id = client_id
         self.core = core
 

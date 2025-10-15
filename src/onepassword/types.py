@@ -1529,6 +1529,7 @@ class WordListType(str, Enum):
     Three (random) letter "words"
     """
 
+
 ARCHIVE_ITEMS: int = 256
 CREATE_ITEMS: int = 128
 DELETE_ITEMS: int = 512

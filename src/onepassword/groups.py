@@ -12,6 +12,7 @@ class Groups:
 
     def __init__(self, client_id, core: Core):
         self.client_id = client_id
+        self.core = core
 
     async def get(self, group_id: str, group_params: GroupGetParams) -> Group:
         response = await self.core.invoke(
