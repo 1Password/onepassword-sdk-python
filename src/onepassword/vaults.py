@@ -30,7 +30,10 @@ class Vaults:
             {
                 "invocation": {
                     "clientId": self.client_id,
-                    "parameters": {"name": "VaultsList", "parameters": {"params": params.model_dump(by_alias=True) if params else {}}},
+                    "parameters": {
+                        "name": "VaultsList",
+                        "parameters": {"params": params.model_dump(by_alias=True) if params else None},
+                    },
                 }
             }
         )
