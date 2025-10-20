@@ -5,7 +5,6 @@ import platform
 import base64
 from pathlib import Path
 from ctypes import c_uint8, c_size_t, c_int32, POINTER, byref, c_void_p
-from .core import UniffiCore
 from onepassword.errors import raise_typed_exception
 
 

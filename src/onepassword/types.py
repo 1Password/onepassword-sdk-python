@@ -140,6 +140,149 @@ class GeneratePasswordResponse(BaseModel):
     """
 
 
+class GroupType(str, Enum):
+    OWNERS = "owners"
+    """
+    The owners group, which gives the following permissions:
+    - Do everything the Admin group can do
+    - See every vault other than the personal vaults
+    - Change people's names
+    - See billing
+    - Change billing
+    - Make other people owners
+    - Delete a person
+    """
+    ADMINISTRATORS = "administrators"
+    """
+    The administrators group, which gives the following permissions:
+    - Perform recovery
+    - Create new vaults
+    - Invite new members
+    - See vault metadata, including the vault name and who has access.
+    - Make other people admins
+    """
+    RECOVERY = "recovery"
+    """
+    The recovery group. It contains recovery keysets, and is added to every vault to allow for recovery.
+    
+    No one is added to this.
+    """
+    EXTERNALACCOUNTMANAGERS = "externalAccountManagers"
+    """
+    The external account managers group or EAM is a mandatory group for managed accounts that has
+    same permissions as the owners.
+    """
+    TEAMMEMBERS = "teamMembers"
+    """
+    Members of a team that a user is on.
+    """
+    USERDEFINED = "userDefined"
+    """
+    A custom, user defined group.
+    """
+    UNSUPPORTED = "unsupported"
+    """
+    Support for new or renamed group types
+    """
+
+
+class GroupState(str, Enum):
+    ACTIVE = "active"
+    """
+    This group is active
+    """
+    DELETED = "deleted"
+    """
+    This group has been deleted
+    """
+    UNSUPPORTED = "unsupported"
+    """
+    This group is in an unknown state
+    """
+
+
+class VaultAccessorType(str, Enum):
+    USER = "user"
+    GROUP = "group"
+
+
+class VaultAccess(BaseModel):
+    """
+    Represents the vault access information.
+    """
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    vault_uuid: str = Field(alias="vaultUuid")
+    """
+    The vault's UUID.
+    """
+    accessor_type: VaultAccessorType = Field(alias="accessorType")
+    """
+    The vault's accessor type.
+    """
+    accessor_uuid: str = Field(alias="accessorUuid")
+    """
+    The vault's accessor UUID.
+    """
+    permissions: int
+    """
+    The permissions granted to this vault
+    """
+
+
+class Group(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: str
+    title: str
+    description: str
+    group_type: GroupType = Field(alias="groupType")
+    state: GroupState
+    vault_access: Optional[List[VaultAccess]] = Field(alias="vaultAccess", default=None)
+
+
+class GroupAccess(BaseModel):
+    """
+    Represents a group's access to a 1Password vault.
+    This is used for granting permissions
+    """
+
+    group_id: str
+    """
+    The group's ID
+    """
+    permissions: int
+    """
+    The group's set of permissions for the vault
+    """
+
+
+class GroupGetParams(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    vault_permissions: Optional[bool] = Field(alias="vaultPermissions", default=None)
+
+
+class GroupVaultAccess(BaseModel):
+    """
+    Represents a group's access to a 1Password vault.
+    """
+
+    vault_id: str
+    """
+    The vault's ID
+    """
+    group_id: str
+    """
+    The group's ID
+    """
+    permissions: int
+    """
+    The group's set of permissions for the vault
+    """
+
+
 class ItemCategory(str, Enum):
     LOGIN = "Login"
     SECURENOTE = "SecureNote"
@@ -717,6 +860,147 @@ class ItemShareParams(BaseModel):
     """
 
 
+class Response(BaseModel, Generic[T, E]):
+    content: Optional[T] = Field(default=None)
+    error: Optional[E] = Field(default=None)
+
+
+class ItemUpdateFailureReasonTypes(str, Enum):
+    ITEM_VALIDATION_ERROR = "itemValidationError"
+    ITEM_STATUS_PERMISSION_ERROR = "itemStatusPermissionError"
+    ITEM_STATUS_INCORRECT_ITEM_VERSION = "itemStatusIncorrectItemVersion"
+    ITEM_STATUS_FILE_NOT_FOUND = "itemStatusFileNotFound"
+    ITEM_STATUS_TOO_BIG = "itemStatusTooBig"
+    ITEM_NOT_FOUND = "itemNotFound"
+    INTERNAL = "internal"
+
+
+class ItemUpdateFailureReasonItemValidationError(BaseModel):
+    """
+    Item update operation failed due to bad user input.
+    """
+
+    type: Literal[ItemUpdateFailureReasonTypes.ITEM_VALIDATION_ERROR] = (
+        ItemUpdateFailureReasonTypes.ITEM_VALIDATION_ERROR
+    )
+    message: ErrorMessage
+
+
+class ItemUpdateFailureReasonItemStatusPermissionError(BaseModel):
+    """
+    Item update operation is forbidden, permission issue. Make sure you have the correct permissions to update items in this vault.
+    """
+
+    type: Literal[ItemUpdateFailureReasonTypes.ITEM_STATUS_PERMISSION_ERROR] = (
+        ItemUpdateFailureReasonTypes.ITEM_STATUS_PERMISSION_ERROR
+    )
+
+
+class ItemUpdateFailureReasonItemStatusIncorrectItemVersion(BaseModel):
+    """
+    Item update operation failed due to incorrect version.
+    """
+
+    type: Literal[ItemUpdateFailureReasonTypes.ITEM_STATUS_INCORRECT_ITEM_VERSION] = (
+        ItemUpdateFailureReasonTypes.ITEM_STATUS_INCORRECT_ITEM_VERSION
+    )
+
+
+class ItemUpdateFailureReasonItemStatusFileNotFound(BaseModel):
+    """
+    Item update operation failed because a file reference didn't match a known file.
+    """
+
+    type: Literal[ItemUpdateFailureReasonTypes.ITEM_STATUS_FILE_NOT_FOUND] = (
+        ItemUpdateFailureReasonTypes.ITEM_STATUS_FILE_NOT_FOUND
+    )
+
+
+class ItemUpdateFailureReasonItemStatusTooBig(BaseModel):
+    """
+    Item update request is too big to be sent to the server.
+    """
+
+    type: Literal[ItemUpdateFailureReasonTypes.ITEM_STATUS_TOO_BIG] = (
+        ItemUpdateFailureReasonTypes.ITEM_STATUS_TOO_BIG
+    )
+
+
+class ItemUpdateFailureReasonItemNotFound(BaseModel):
+    """
+    The item was not found
+    """
+
+    type: Literal[ItemUpdateFailureReasonTypes.ITEM_NOT_FOUND] = (
+        ItemUpdateFailureReasonTypes.ITEM_NOT_FOUND
+    )
+
+
+class ItemUpdateFailureReasonInternal(BaseModel):
+    """
+    Item update operation experienced an internal error.
+    """
+
+    type: Literal[ItemUpdateFailureReasonTypes.INTERNAL] = (
+        ItemUpdateFailureReasonTypes.INTERNAL
+    )
+    message: ErrorMessage
+
+
+ItemUpdateFailureReason = Union[
+    ItemUpdateFailureReasonItemValidationError,
+    ItemUpdateFailureReasonItemStatusPermissionError,
+    ItemUpdateFailureReasonItemStatusIncorrectItemVersion,
+    ItemUpdateFailureReasonItemStatusFileNotFound,
+    ItemUpdateFailureReasonItemStatusTooBig,
+    ItemUpdateFailureReasonItemNotFound,
+    ItemUpdateFailureReasonInternal,
+]
+
+
+class ItemsDeleteAllResponse(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    individual_responses: Dict[str, Response[None, ItemUpdateFailureReason]] = Field(
+        alias="individualResponses"
+    )
+
+
+class ItemsGetAllErrorTypes(str, Enum):
+    ITEM_NOT_FOUND = "itemNotFound"
+    INTERNAL = "internal"
+
+
+class ItemsGetAllErrorItemNotFound(BaseModel):
+    type: Literal[ItemsGetAllErrorTypes.ITEM_NOT_FOUND] = (
+        ItemsGetAllErrorTypes.ITEM_NOT_FOUND
+    )
+
+
+class ItemsGetAllErrorInternal(BaseModel):
+    type: Literal[ItemsGetAllErrorTypes.INTERNAL] = ItemsGetAllErrorTypes.INTERNAL
+    message: ErrorMessage
+
+
+ItemsGetAllError = Union[ItemsGetAllErrorItemNotFound, ItemsGetAllErrorInternal]
+
+
+class ItemsGetAllResponse(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    individual_responses: List[Response[Item, ItemsGetAllError]] = Field(
+        alias="individualResponses"
+    )
+
+
+class ItemsUpdateAllResponse(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    individual_responses: List[Response[Item, ItemUpdateFailureReason]] = Field(
+        alias="individualResponses"
+    )
+
+
 class OtpFieldDetails(BaseModel):
     """
     Additional attributes for OTP fields.
@@ -732,11 +1016,6 @@ class OtpFieldDetails(BaseModel):
     """
     The error message, if the OTP code could not be computed
     """
-
-
-class Response(BaseModel, Generic[T, E]):
-    content: Optional[T] = Field(default=None)
-    error: Optional[E] = Field(default=None)
 
 
 class ResolvedReference(BaseModel):
@@ -971,20 +1250,110 @@ class SshKeyAttributes(BaseModel):
     """
 
 
-class VaultOverview(BaseModel):
+class VaultType(str, Enum):
     """
-    Represents a decrypted 1Password vault.
+    Represents the vault type.
+    """
+
+    PERSONAL = "personal"
+    EVERYONE = "everyone"
+    TRANSFER = "transfer"
+    USERCREATED = "userCreated"
+    UNSUPPORTED = "unsupported"
+
+
+class Vault(BaseModel):
+    """
+    Represents regular vault information together with the vault's access information.
     """
 
     model_config = ConfigDict(populate_by_name=True)
 
     id: str
     """
-    The vault's ID
+    The vault's ID.
     """
     title: str
     """
-    The vault's title
+    The vault's title.
+    """
+    description: str
+    """
+    The description of the vault.
+    """
+    vault_type: VaultType = Field(alias="vaultType")
+    """
+    The type of the vault.
+    """
+    active_item_count: int = Field(alias="activeItemCount")
+    """
+    The number of active items within the vault.
+    """
+    content_version: int = Field(alias="contentVersion")
+    """
+    The content version number of the vault. It gets incremented whenever the state of the vault's contents changes (e.g. items from within the vault get created or updated).
+    """
+    attribute_version: int = Field(alias="attributeVersion")
+    """
+    The attribute version number of the vault. It gets incremented whenever vault presentation information changes, such as its title or icon.
+    """
+    access: Optional[List[VaultAccess]] = Field(default=None)
+    """
+    The access information associated with the vault.
+    """
+
+
+class VaultGetParams(BaseModel):
+    """
+    Represents the possible query parameters used for retrieving extra information about a vault.
+    """
+
+    accessors: Optional[bool] = Field(default=None)
+    """
+    The vault's accessor params.
+    """
+
+
+class VaultListParams(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    decrypt_details: Optional[bool] = Field(alias="decryptDetails", default=None)
+
+
+class VaultOverview(BaseModel):
+    """
+    Holds information about a 1Password Vault.
+    """
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    id: str
+    """
+    The vault's ID.
+    """
+    title: str
+    """
+    The vault's title.
+    """
+    description: str
+    """
+    The description of this vault.
+    """
+    vault_type: VaultType = Field(alias="vaultType")
+    """
+    The type of the vault.
+    """
+    active_item_count: int = Field(alias="activeItemCount")
+    """
+    The number of active items within the vault.
+    """
+    content_version: int = Field(alias="contentVersion")
+    """
+    The content version number of the vault. It gets incremented whenever the state of the vault's contents changes (e.g. items from within the vault get created or updated).
+    """
+    attribute_version: int = Field(alias="attributeVersion")
+    """
+    The attribute version number of the vault. It gets incremented whenever vault presentation information changes, such as its title or icon.
     """
     created_at: Annotated[
         datetime,
@@ -1160,7 +1529,18 @@ class WordListType(str, Enum):
     Three (random) letter "words"
     """
 
-class VaultListParams(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
 
-    decrypt_details: Optional[bool] = Field(alias="decryptDetails", default=None)
+ARCHIVE_ITEMS: int = 256
+CREATE_ITEMS: int = 128
+DELETE_ITEMS: int = 512
+EXPORT_ITEMS: int = 4194304
+IMPORT_ITEMS: int = 2097152
+MANAGE_VAULT: int = 2
+NO_ACCESS: int = 0
+PRINT_ITEMS: int = 8388608
+READ_ITEMS: int = 32
+RECOVER_VAULT: int = 1
+REVEAL_ITEM_PASSWORD: int = 16
+SEND_ITEMS: int = 1048576
+UPDATE_ITEMS: int = 64
+UPDATE_ITEM_HISTORY: int = 1024

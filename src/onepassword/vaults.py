@@ -3,7 +3,14 @@
 from .core import Core
 from typing import Optional, List
 from pydantic import TypeAdapter
-from .types import VaultOverview, VaultListParams
+from .types import (
+    GroupAccess,
+    GroupVaultAccess,
+    Vault,
+    VaultGetParams,
+    VaultListParams,
+    VaultOverview,
+)
 
 
 class Vaults:
@@ -11,22 +18,120 @@ class Vaults:
     The Vaults API holds all the operations the SDK client can perform on 1Password vaults.
     """
 
-    def __init__(self, client_id, core):
+    def __init__(self, client_id, core: Core):
         self.client_id = client_id
         self.core = core
 
     async def list(self, params: Optional[VaultListParams] = None) -> List[VaultOverview]:
         """
-        List all vaults
+        List information about vaults that's configurable based on some input parameters.
         """
         response = await self.core.invoke(
             {
                 "invocation": {
                     "clientId": self.client_id,
-                    "parameters": {"name": "VaultsList", "parameters": {"params": params.model_dump(by_alias=True) if params else {}}},
+                    "parameters": {
+                        "name": "VaultsList",
+                        "parameters": {"params": params.model_dump(by_alias=True) if params else None},
+                    },
                 }
             }
         )
 
         response = TypeAdapter(List[VaultOverview]).validate_json(response)
         return response
+
+    async def get_overview(self, vault_uuid: str) -> VaultOverview:
+        response = await self.core.invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "VaultsGetOverview",
+                        "parameters": {"vault_uuid": vault_uuid},
+                    },
+                }
+            }
+        )
+
+        response = TypeAdapter(VaultOverview).validate_json(response)
+        return response
+
+    async def get(self, vault_uuid: str, vault_params: VaultGetParams) -> Vault:
+        response = await self.core.invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "VaultsGet",
+                        "parameters": {
+                            "vault_uuid": vault_uuid,
+                            "vault_params": vault_params.model_dump(by_alias=True),
+                        },
+                    },
+                }
+            }
+        )
+
+        response = TypeAdapter(Vault).validate_json(response)
+        return response
+
+    async def grant_group_permissions(
+        self, vault_id: str, group_permissions_list: List[GroupAccess]
+    ) -> None:
+        response = await self.core.invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "VaultsGrantGroupPermissions",
+                        "parameters": {
+                            "vault_id": vault_id,
+                            "group_permissions_list": [
+                                o.model_dump(by_alias=True)
+                                for o in group_permissions_list
+                            ],
+                        },
+                    },
+                }
+            }
+        )
+
+        return None
+
+    async def update_group_permissions(
+        self, group_permissions_list: List[GroupVaultAccess]
+    ) -> None:
+        response = await self.core.invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "VaultsUpdateGroupPermissions",
+                        "parameters": {
+                            "group_permissions_list": [
+                                o.model_dump(by_alias=True)
+                                for o in group_permissions_list
+                            ]
+                        },
+                    },
+                }
+            }
+        )
+
+        return None
+
+    async def revoke_group_permissions(self, vault_id: str, group_id: str) -> None:
+        response = await self.core.invoke(
+            {
+                "invocation": {
+                    "clientId": self.client_id,
+                    "parameters": {
+                        "name": "VaultsRevokeGroupPermissions",
+                        "parameters": {"vault_id": vault_id, "group_id": group_id},
+                    },
+                }
+            }
+        )
+
+        return None
