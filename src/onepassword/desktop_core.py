@@ -20,7 +20,7 @@ def find_1password_lib_path():
     elif os_name == "Linux":
         locations = [
             "/usr/bin/1password/libop_sdk_ipc_client.so",
-			"/opt/1password/libop_sdk_ipc_client.so",
+			"/opt/1Password/libop_sdk_ipc_client.so",
 			"/snap/bin/1password/libop_sdk_ipc_client.so",
         ]
     elif os_name == "Windows":
