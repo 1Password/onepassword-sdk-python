@@ -13,7 +13,7 @@ async def main():
     # Connects to the 1Password desktop app.
     client = await Client.authenticate(
         auth=DesktopAuth(
-            account_name="Happy Company"  # Set to your 1Password account name.
+            account_name="YourAccountNameAsShownInTheDesktopApp"  # Set to your 1Password account name.
         ),
         # Set the following to your own integration name and version.
         integration_name="My 1Password Integration",
@@ -122,6 +122,16 @@ async def main():
         else:
             print("Deleted item {}".format(id))
     # [developer-docs.sdk.python.batch-delete-items]-end
+
+    group_id = os.environ.get("OP_GROUP_ID")
+    if group_id is None:
+        raise Exception("OP_GROUP_ID is required")
+
+    # [developer-docs.sdk.python.get-group]-start
+    # Get a group
+    group = await client.groups.get(group_id, GroupGetParams(vaultPermissions=False))
+    print(group)
+    # [developer-docs.sdk.python.get-group]-end
 
 
 if __name__ == "__main__":
