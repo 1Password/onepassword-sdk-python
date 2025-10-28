@@ -8,14 +8,12 @@ from .defaults import new_default_config, DesktopAuth
 from .secrets import Secrets
 from .items import Items
 from .vaults import Vaults
-from .groups import Groups
 
 
 class Client:
     secrets: Secrets
     items: Items
     vaults: Vaults
-    groups: Groups
 
     @classmethod
     async def authenticate(
@@ -39,7 +37,6 @@ class Client:
         authenticated_client.secrets = Secrets(client_id, core)
         authenticated_client.items = Items(client_id, core)
         authenticated_client.vaults = Vaults(client_id, core)
-        authenticated_client.groups = Groups(client_id, core)
 
         authenticated_client._finalizer = weakref.finalize(
             cls, core.release_client, client_id

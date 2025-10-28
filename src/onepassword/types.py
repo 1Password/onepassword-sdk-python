@@ -140,108 +140,6 @@ class GeneratePasswordResponse(BaseModel):
     """
 
 
-class GroupType(str, Enum):
-    OWNERS = "owners"
-    """
-    The owners group, which gives the following permissions:
-    - Do everything the Admin group can do
-    - See every vault other than the personal vaults
-    - Change people's names
-    - See billing
-    - Change billing
-    - Make other people owners
-    - Delete a person
-    """
-    ADMINISTRATORS = "administrators"
-    """
-    The administrators group, which gives the following permissions:
-    - Perform recovery
-    - Create new vaults
-    - Invite new members
-    - See vault metadata, including the vault name and who has access.
-    - Make other people admins
-    """
-    RECOVERY = "recovery"
-    """
-    The recovery group. It contains recovery keysets, and is added to every vault to allow for recovery.
-    
-    No one is added to this.
-    """
-    EXTERNALACCOUNTMANAGERS = "externalAccountManagers"
-    """
-    The external account managers group or EAM is a mandatory group for managed accounts that has
-    same permissions as the owners.
-    """
-    TEAMMEMBERS = "teamMembers"
-    """
-    Members of a team that a user is on.
-    """
-    USERDEFINED = "userDefined"
-    """
-    A custom, user defined group.
-    """
-    UNSUPPORTED = "unsupported"
-    """
-    Support for new or renamed group types
-    """
-
-
-class GroupState(str, Enum):
-    ACTIVE = "active"
-    """
-    This group is active
-    """
-    DELETED = "deleted"
-    """
-    This group has been deleted
-    """
-    UNSUPPORTED = "unsupported"
-    """
-    This group is in an unknown state
-    """
-
-
-class VaultAccessorType(str, Enum):
-    USER = "user"
-    GROUP = "group"
-
-
-class VaultAccess(BaseModel):
-    """
-    Represents the vault access information.
-    """
-
-    model_config = ConfigDict(populate_by_name=True)
-
-    vault_uuid: str = Field(alias="vaultUuid")
-    """
-    The vault's UUID.
-    """
-    accessor_type: VaultAccessorType = Field(alias="accessorType")
-    """
-    The vault's accessor type.
-    """
-    accessor_uuid: str = Field(alias="accessorUuid")
-    """
-    The vault's accessor UUID.
-    """
-    permissions: int
-    """
-    The permissions granted to this vault
-    """
-
-
-class Group(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    id: str
-    title: str
-    description: str
-    group_type: GroupType = Field(alias="groupType")
-    state: GroupState
-    vault_access: Optional[List[VaultAccess]] = Field(alias="vaultAccess", default=None)
-
-
 class GroupAccess(BaseModel):
     """
     Represents a group's access to a 1Password vault.
@@ -256,12 +154,6 @@ class GroupAccess(BaseModel):
     """
     The group's set of permissions for the vault
     """
-
-
-class GroupGetParams(BaseModel):
-    model_config = ConfigDict(populate_by_name=True)
-
-    vault_permissions: Optional[bool] = Field(alias="vaultPermissions", default=None)
 
 
 class GroupVaultAccess(BaseModel):
@@ -1262,6 +1154,36 @@ class VaultType(str, Enum):
     UNSUPPORTED = "unsupported"
 
 
+class VaultAccessorType(str, Enum):
+    USER = "user"
+    GROUP = "group"
+
+
+class VaultAccess(BaseModel):
+    """
+    Represents the vault access information.
+    """
+
+    model_config = ConfigDict(populate_by_name=True)
+
+    vault_uuid: str = Field(alias="vaultUuid")
+    """
+    The vault's UUID.
+    """
+    accessor_type: VaultAccessorType = Field(alias="accessorType")
+    """
+    The vault's accessor type.
+    """
+    accessor_uuid: str = Field(alias="accessorUuid")
+    """
+    The vault's accessor UUID.
+    """
+    permissions: int
+    """
+    The permissions granted to this vault
+    """
+
+
 class Vault(BaseModel):
     """
     Represents regular vault information together with the vault's access information.
@@ -1528,19 +1450,3 @@ class WordListType(str, Enum):
     """
     Three (random) letter "words"
     """
-
-
-ARCHIVE_ITEMS: int = 256
-CREATE_ITEMS: int = 128
-DELETE_ITEMS: int = 512
-EXPORT_ITEMS: int = 4194304
-IMPORT_ITEMS: int = 2097152
-MANAGE_VAULT: int = 2
-NO_ACCESS: int = 0
-PRINT_ITEMS: int = 8388608
-READ_ITEMS: int = 32
-RECOVER_VAULT: int = 1
-REVEAL_ITEM_PASSWORD: int = 16
-SEND_ITEMS: int = 1048576
-UPDATE_ITEMS: int = 64
-UPDATE_ITEM_HISTORY: int = 1024
