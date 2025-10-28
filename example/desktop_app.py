@@ -32,14 +32,19 @@ async def main():
         print(overview.title)
     # [developer-docs.sdk.python.list-items]-end
 
-    # Vault get overview
+    # [developer-docs.sdk.python.get-vault-overview]-start
+	# Get vault overview
     vaultOverview = await client.vaults.get_overview(vault_id)
     print(vaultOverview)
+    # [developer-docs.sdk.python.get-vault-overview]-end
 
-    # Vault get details
+    # [developer-docs.sdk.python.get-vault-details]-start
+	# Get vault details
     vault = await client.vaults.get(vaultOverview.id, VaultGetParams(accessors=False))
     print(vault)
+    # [developer-docs.sdk.python.get-vault-details]-end
 
+	# [developer-docs.sdk.python.batch-create-items]-start
     items_to_create = []
     for i in range(1, 4):
         items_to_create.append(ItemCreateParams(
@@ -84,7 +89,7 @@ async def main():
             ],
         ))
 
-    # Batch item create
+	# Create all items in the same vault in a single batch
     batchCreateResponse = await client.items.create_all(vault.id, items_to_create)
 
     item_ids = []
@@ -95,8 +100,10 @@ async def main():
             item_ids.append(res.content.id)
         elif res.error is not None:
             print("[Batch create] Something went wrong: {}".format(res.error))
+    # [developer-docs.sdk.python.batch-create-items]-end
 
-    # Batch item get
+    # [developer-docs.sdk.python.batch-get-items]-start
+	# Get multiple items form the same vault in a single batch
     batchGetReponse = await client.items.get_all(vault.id, item_ids)
     for res in batchGetReponse.individual_responses:
         if res.content is not None:
@@ -104,14 +111,17 @@ async def main():
                 res.content.title, res.content.id))
         elif res.error is not None:
             print("[Batch get] Something went wrong: {}".format(res.error))
+    # [developer-docs.sdk.python.batch-get-items]-end
 
-    # Batch item delete
+    # [developer-docs.sdk.python.batch-delete-items]-start
+	# Delete multiple items from the same vault in a single batch
     batchDeleteResponse = await client.items.delete_all(vault.id, item_ids)
     for id, res in batchDeleteResponse.individual_responses.items():
         if res.error is not None:
             print("[Batch delete] Something went wrong: {}".format(res.error))
         else:
             print("Deleted item {}".format(id))
+    # [developer-docs.sdk.python.batch-delete-items]-end
 
 
 if __name__ == "__main__":
