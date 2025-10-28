@@ -7,6 +7,7 @@ from .errors import *  # noqa F403
 from .secrets import Secrets
 from .items import Items
 from .vaults import Vaults
+from .groups import Groups
 
 
 import sys
