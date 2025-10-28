@@ -149,7 +149,7 @@ class Items:
         self, vault_id: str, item_ids: List[str]
     ) -> ItemsDeleteAllResponse:
         """
-        Create items in batch, within a single vault.
+        Delete items in batch, within a single vault.
         """
         response = await self.core.invoke(
             {
