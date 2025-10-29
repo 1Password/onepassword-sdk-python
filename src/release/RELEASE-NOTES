@@ -1,5 +1,8 @@
-# 1Password Python SDK v0.3.1
+# 1Password Python SDK v0.4.0b1
 
 ## NEW
 
-- `VaultOverview` now includes `created_at` and `updated_at` fields that show when the vault was created and last updated.
+- The SDK can now authenticate with the Desktop App.
+- Vault `get`, `get_overview` as well as new options for vault `list` are now available.
+- Item batch operations are now available.
+- The Groups API has been introduced.
