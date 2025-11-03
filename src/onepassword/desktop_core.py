@@ -23,6 +23,13 @@ def find_1password_lib_path():
 			"/opt/1Password/libop_sdk_ipc_client.so",
 			"/snap/bin/1password/libop_sdk_ipc_client.so",
         ]
+    elif os_name == "Windows":
+        locations = [
+            str(Path.home() / r"AppData\Local\1Password\op_sdk_ipc_client.dll"),
+            r"C:\Program Files\1Password\app\8\op_sdk_ipc_client.dll",
+			r"C:\Program Files (x86)\1Password\app\8\op_sdk_ipc_client.dll",
+            str(Path.home() / r"AppData\Local\1Password\app\8\op_sdk_ipc_client.dll"),
+        ]
     else:
         raise OSError(f"Unsupported operating system: {os_name}")
 
