@@ -277,7 +277,7 @@ class AutofillBehavior(str, Enum):
     Controls the auto-fill behavior of a website.
 
 
-    For more information, visit https://support.1password.com/autofill-behavior/
+    For more information, visit <https://support.1password.com/autofill-behavior/>
     """
 
     ANYWHEREONWEBSITE = "AnywhereOnWebsite"
@@ -309,7 +309,7 @@ class Website(BaseModel):
     """
     The auto-fill behavior of the website
     
-    For more information, visit https://support.1password.com/autofill-behavior/
+    For more information, visit <https://support.1password.com/autofill-behavior/>
     """
 
 
