@@ -1,5 +1,5 @@
-# 1Password Python SDK v0.3.1
+# 1Password Python SDK v0.3.2
 
-## NEW
+## FIXED
 
-- `VaultOverview` now includes `created_at` and `updated_at` fields that show when the vault was created and last updated.
+- The `client.secrets.resolve_all()` SDK function now only sources secrets from active items.
