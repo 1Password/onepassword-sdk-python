@@ -1,6 +1,7 @@
+from __future__ import annotations
 import json
 import platform
-from typing import Protocol
+from typing import Any, Protocol
 from onepassword.desktop_core import DesktopCore
 from onepassword.errors import raise_typed_exception, DesktopSessionExpired
 
@@ -20,7 +21,7 @@ class Core(Protocol):
 class InnerClient:
     client_id: int
     core: DesktopCore | UniffiCore
-    config: dict[str, any]
+    config: dict[str, Any]
 
     def __init__(self, client_id: int, core: "DesktopCore | UniffiCore", config: dict[str, any]):
         self.client_id = client_id
