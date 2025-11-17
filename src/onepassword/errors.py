@@ -3,7 +3,7 @@
 import json
 
 
-class DesktopSessionExpired(Exception):
+class DesktopSessionExpiredException(Exception):
     def __init__(self, message):
         self.message = message
         super().__init__(self.message)
@@ -25,7 +25,7 @@ def raise_typed_exception(e: Exception):
     message = typed_error.get("message")
 
     if error_name == "DesktopSessionExpired":
-        raise DesktopSessionExpired(message)
+        raise DesktopSessionExpiredException(message)
     elif error_name == "RateLimitExceeded":
         raise RateLimitExceededException(message)
     elif message is not None:
