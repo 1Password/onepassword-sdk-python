@@ -2,7 +2,7 @@
 
 from __future__ import annotations
 import weakref
-from .core import UniffiCore
+from .core import UniffiCore, InnerClient
 from .desktop_core import DesktopCore
 from .defaults import new_default_config, DesktopAuth
 from .secrets import Secrets
@@ -34,12 +34,14 @@ class Client:
 
         client_id = int(await core.init_client(config))
 
+        inner_client = InnerClient(client_id, core, config)
+
         authenticated_client = cls()
 
-        authenticated_client.secrets = Secrets(client_id, core)
-        authenticated_client.items = Items(client_id, core)
-        authenticated_client.vaults = Vaults(client_id, core)
-        authenticated_client.groups = Groups(client_id, core)
+        authenticated_client.secrets = Secrets(inner_client)
+        authenticated_client.items = Items(inner_client)
+        authenticated_client.vaults = Vaults(inner_client)
+        authenticated_client.groups = Groups(inner_client)
 
         authenticated_client._finalizer = weakref.finalize(
             cls, core.release_client, client_id

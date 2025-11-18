@@ -1,18 +1,44 @@
+from __future__ import annotations
 import json
 import platform
-from typing import Protocol
-from onepassword.errors import raise_typed_exception
+from typing import Any, Protocol
+from onepassword.desktop_core import DesktopCore
+from onepassword.errors import raise_typed_exception, DesktopSessionExpiredException
 
 # In empirical tests, we determined that maximum message size that can cross the FFI boundary
 # is ~128MB. Past this limit, FFI will throw an error and the program will crash.
 # We set the limit to 50MB to be safe and consistent with the other SDKs (where this limit is 64MB), to be reconsidered upon further testing
 MESSAGE_LIMIT = 50 * 1024 * 1024
 
+
 class Core(Protocol):
     async def init_client(self, client_config: dict) -> str: ...
     async def invoke(self, invoke_config: dict) -> str: ...
     def invoke_sync(self, invoke_config: dict) -> str: ...
     def release_client(self, client_id: int) -> None: ...
+
+
+class InnerClient:
+    client_id: int
+    core: DesktopCore | UniffiCore
+    config: dict[str, Any]
+
+    def __init__(self, client_id: int, core: "DesktopCore | UniffiCore", config: dict[str, any]):
+        self.client_id = client_id
+        self.core = core
+        self.config = config
+
+    async def invoke(self, invoke_config: dict):
+        try:
+            return await self.core.invoke(invoke_config)
+        except DesktopSessionExpiredException:
+            new_client_id = await self.core.init_client(self.config)
+            self.client_id = new_client_id
+            invoke_config["invocation"]["clientId"] = self.client_id
+            return await self.core.invoke(invoke_config)
+        except Exception as e:
+            raise e
+
 
 class UniffiCore:
     def __init__(self):
