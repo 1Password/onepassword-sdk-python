@@ -21,7 +21,9 @@ class Vaults:
     def __init__(self, inner_client: InnerClient):
         self.inner_client = inner_client
 
-    async def list(self, params: Optional[VaultListParams] = None) -> List[VaultOverview]:
+    async def list(
+        self, params: Optional[VaultListParams] = None
+    ) -> List[VaultOverview]:
         """
         List information about vaults that's configurable based on some input parameters.
         """
@@ -31,7 +33,12 @@ class Vaults:
                     "clientId": self.inner_client.client_id,
                     "parameters": {
                         "name": "VaultsList",
-                        "parameters": {"params": params.model_dump(by_alias=True) if params else None},
+                        "parameters": {
+                            "params": (
+                                params.model_dump(
+                                    by_alias=True) if params else None
+                            )
+                        },
                     },
                 }
             }
