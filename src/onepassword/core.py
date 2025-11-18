@@ -31,7 +31,7 @@ class InnerClient:
     async def invoke(self, invoke_config: dict):
         try:
             return await self.core.invoke(invoke_config)
-        except DesktopSessionExpiredException as e:
+        except DesktopSessionExpiredException:
             new_client_id = await self.core.init_client(self.config)
             self.client_id = new_client_id
             invoke_config["invocation"]["clientId"] = self.client_id
