@@ -99,7 +99,7 @@ class DesktopCore:
 
         success = parsed.get("success", False)
         if not success:
-            e = Exception()
+            e = Exception(payload)
             e.msg = payload
             raise_typed_exception(e)
 
