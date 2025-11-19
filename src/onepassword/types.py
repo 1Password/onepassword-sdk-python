@@ -242,10 +242,45 @@ class Group(BaseModel):
     vault_access: Optional[List[VaultAccess]] = Field(alias="vaultAccess", default=None)
 
 
+class GroupAccess(BaseModel):
+    """
+    Represents a group's access to a 1Password vault.
+    This is used for granting permissions
+    """
+
+    group_id: str
+    """
+    The group's ID
+    """
+    permissions: int
+    """
+    The group's set of permissions for the vault
+    """
+
+
 class GroupGetParams(BaseModel):
     model_config = ConfigDict(populate_by_name=True)
 
     vault_permissions: Optional[bool] = Field(alias="vaultPermissions", default=None)
+
+
+class GroupVaultAccess(BaseModel):
+    """
+    Represents a group's access to a 1Password vault.
+    """
+
+    vault_id: str
+    """
+    The vault's ID
+    """
+    group_id: str
+    """
+    The group's ID
+    """
+    permissions: int
+    """
+    The group's set of permissions for the vault
+    """
 
 
 class ItemCategory(str, Enum):
@@ -385,7 +420,7 @@ class AutofillBehavior(str, Enum):
     Controls the auto-fill behavior of a website.
 
 
-    For more information, visit https://support.1password.com/autofill-behavior/
+    For more information, visit <https://support.1password.com/autofill-behavior/>
     """
 
     ANYWHEREONWEBSITE = "AnywhereOnWebsite"
@@ -417,7 +452,7 @@ class Website(BaseModel):
     """
     The auto-fill behavior of the website
     
-    For more information, visit https://support.1password.com/autofill-behavior/
+    For more information, visit <https://support.1password.com/autofill-behavior/>
     """
 
 
@@ -1493,3 +1528,19 @@ class WordListType(str, Enum):
     """
     Three (random) letter "words"
     """
+
+
+ARCHIVE_ITEMS: int = 256
+CREATE_ITEMS: int = 128
+DELETE_ITEMS: int = 512
+EXPORT_ITEMS: int = 4194304
+IMPORT_ITEMS: int = 2097152
+MANAGE_VAULT: int = 2
+NO_ACCESS: int = 0
+PRINT_ITEMS: int = 8388608
+READ_ITEMS: int = 32
+RECOVER_VAULT: int = 1
+REVEAL_ITEM_PASSWORD: int = 16
+SEND_ITEMS: int = 1048576
+UPDATE_ITEMS: int = 64
+UPDATE_ITEM_HISTORY: int = 1024
