@@ -13,7 +13,7 @@ async def main():
     # Connects to the 1Password desktop app.
     client = await Client.authenticate(
         auth=DesktopAuth(
-            account_name="YourAccountNameAsShownInTheDesktopApp"  # Set to your 1Password account name.
+            account_name="YourAccountNameAsShownInTheDesktopApp"  # Set to your 1Password account name as shown at the top left sidebar of the app.
         ),
         # Set the following to your own integration name and version.
         integration_name="My 1Password Integration",
