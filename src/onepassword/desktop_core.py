@@ -8,7 +8,7 @@ from ctypes import c_uint8, c_size_t, c_int32, POINTER, byref, c_void_p
 from onepassword.errors import raise_typed_exception
 
 
-def find_1password_lib_path():
+def find_1password_lib_path(custom_location: str = ""):
     os_name = platform.system()
 
     # Define paths based on OS
@@ -32,6 +32,9 @@ def find_1password_lib_path():
         ]
     else:
         raise OSError(f"Unsupported operating system: {os_name}")
+    
+    if isinstance(custom_location, str) and len(custom_location) > 0:
+        locations.insert(0, custom_location)
 
     for lib_path in locations:
         if os.path.exists(lib_path):
@@ -40,9 +43,9 @@ def find_1password_lib_path():
     raise FileNotFoundError("1Password desktop application not found")
 
 class DesktopCore:
-    def __init__(self, account_name: str):
+    def __init__(self, account_name: str, library_path: str = ""):
         # Determine the path to the desktop app.
-        path = find_1password_lib_path()
+        path = find_1password_lib_path(library_path)
 
         self.lib = ctypes.CDLL(path)
         self.account_name = account_name

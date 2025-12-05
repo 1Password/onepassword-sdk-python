@@ -19,7 +19,9 @@ class Client:
 
     @classmethod
     async def authenticate(
-        cls, auth: str | DesktopAuth, integration_name: str, integration_version: str
+        cls, auth: str | DesktopAuth,
+        integration_name: str, integration_version: str,
+        shared_library_path: str = ""
     ) -> Client:
         config = new_default_config(
             auth=auth,
@@ -28,7 +30,7 @@ class Client:
         )
 
         if isinstance(auth, DesktopAuth):
-            core = DesktopCore(auth.account_name)
+            core = DesktopCore(auth.account_name, shared_library_path)
         else:
             core = UniffiCore()
 
