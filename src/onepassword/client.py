@@ -42,7 +42,6 @@ class Client:
         authenticated_client.items = Items(inner_client)
         authenticated_client.vaults = Vaults(inner_client)
         authenticated_client.groups = Groups(inner_client)
-
         authenticated_client._finalizer = weakref.finalize(
             cls, core.release_client, client_id
         )

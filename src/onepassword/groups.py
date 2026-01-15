@@ -14,6 +14,9 @@ class Groups:
         self.inner_client = inner_client
 
     async def get(self, group_id: str, group_params: GroupGetParams) -> Group:
+        """
+        Get a group by its ID and parameters.
+        """
         response = await self.inner_client.invoke(
             {
                 "invocation": {

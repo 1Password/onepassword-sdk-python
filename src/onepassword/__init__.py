@@ -20,9 +20,9 @@ __all__ = [
     "Items",
     "Vaults",
     "Groups",
+    "DesktopAuth",
     "DEFAULT_INTEGRATION_NAME",
     "DEFAULT_INTEGRATION_VERSION",
-    "DesktopAuth",
 ]
 
 for name, obj in inspect.getmembers(sys.modules["onepassword.types"]):

@@ -73,6 +73,9 @@ class Secrets:
 
     @staticmethod
     def generate_password(recipe: PasswordRecipe) -> GeneratePasswordResponse:
+        """
+        Generate a password using the provided recipe.
+        """
         response = UniffiCore().invoke_sync(
             {
                 "invocation": {
