@@ -4,7 +4,8 @@ import os
 import platform
 import base64
 from pathlib import Path
-from ctypes import c_uint8, c_size_t, c_int32, POINTER, byref, c_void_p
+import sys
+from ctypes import c_uint8, c_size_t, c_int32, POINTER, byref
 from onepassword.errors import raise_typed_exception
 
 
@@ -85,8 +86,9 @@ class DesktopCore:
             byref(out_cap),
         )
 
-        if ret != 0:
-            raise RuntimeError(f"send_message failed with code {ret}. In the 1Password desktop app, make sure Settings > Developer > Integrate with other apps is enabled, or contact 1Password support.")
+        err = error_from_return_code(ret)
+        if err is not None:
+            raise err
 
         # Copy bytes into Python
         data = ctypes.string_at(out_buf, out_len.value)
@@ -120,3 +122,46 @@ class DesktopCore:
             self.call_shared_library(payload, "release_client")
         except Exception as e:
             print(f"failed to release client: {e}")
+
+def error_from_return_code(ret_code: int) -> Exception | None:
+    if ret_code == 0:
+        return None
+
+    is_darwin = sys.platform == "darwin"
+
+    if is_darwin:
+        if ret_code == -3:
+            return RuntimeError(
+                "desktop app connection channel is closed. "
+                "Make sure Settings > Developer > Integrate with other apps is enabled, "
+                "or contact 1Password support"
+            )
+        elif ret_code == -7:
+            return RuntimeError(
+                "connection was unexpectedly dropped by the desktop app. "
+                "Make sure the desktop app is running and Settings > Developer > "
+                "Integrate with other apps is enabled, or contact 1Password support"
+            )
+        else:
+            return RuntimeError(
+                f"an internal error occurred. Please contact 1Password support "
+                f"and mention the return code: {ret_code}"
+            )
+    else:
+        if ret_code == -2:
+            return RuntimeError(
+                "desktop app connection channel is closed. "
+                "Make sure Settings > Developer > Integrate with other apps is enabled, "
+                "or contact 1Password support"
+            )
+        elif ret_code == -5:
+            return RuntimeError(
+                "connection was unexpectedly dropped by the desktop app. "
+                "Make sure the desktop app is running and Settings > Developer > "
+                "Integrate with other apps is enabled, or contact 1Password support"
+            )
+        else:
+            return RuntimeError(
+                f"an internal error occurred. Please contact 1Password support "
+                f"and mention the return code: {ret_code}"
+            )
