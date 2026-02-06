@@ -3,6 +3,12 @@
 import json
 
 
+class DesktopSessionExpiredException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 class RateLimitExceededException(Exception):
     def __init__(self, message):
         self.message = message
@@ -18,7 +24,9 @@ def raise_typed_exception(e: Exception):
     error_name = typed_error.get("name")
     message = typed_error.get("message")
 
-    if error_name == "RateLimitExceeded":
+    if error_name == "DesktopSessionExpired":
+        raise DesktopSessionExpiredException(message)
+    elif error_name == "RateLimitExceeded":
         raise RateLimitExceededException(message)
     elif message is not None:
         raise Exception(message)
