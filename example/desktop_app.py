@@ -114,7 +114,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
             GroupVaultAccess(
                 vault_id=vault_id,
                 group_id=group_id,
-                permissions=MANAGE_VAULT,
+                permissions= READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
             )
         ],
     )
@@ -134,9 +134,6 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
     group = await client.groups.get(group_id, GroupGetParams(vaultPermissions=False))
     print(group)
     # [developer-docs.sdk.python.get-group]-end
-
-    # Delete temporary vault
-    await client.vaults.delete(vault_id)
 
 async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-create-items]-start
