@@ -2,37 +2,48 @@
 
 from __future__ import annotations
 import weakref
-from .core import _init_client, _release_client
-from .defaults import new_default_config
+from .core import UniffiCore, InnerClient
+from .desktop_core import DesktopCore
+from .defaults import new_default_config, DesktopAuth
 from .secrets import Secrets
 from .items import Items
 from .vaults import Vaults
+from .groups import Groups
 
 
 class Client:
     secrets: Secrets
     items: Items
     vaults: Vaults
+    groups: Groups
 
     @classmethod
     async def authenticate(
-        cls, auth: str, integration_name: str, integration_version: str
+        cls, auth: str | DesktopAuth, integration_name: str, integration_version: str
     ) -> Client:
         config = new_default_config(
-            auth=auth or "",
+            auth=auth,
             integration_name=integration_name,
             integration_version=integration_version,
         )
 
-        client_id = int(await _init_client(config))
+        if isinstance(auth, DesktopAuth):
+            core = DesktopCore(auth.account_name)
+        else:
+            core = UniffiCore()
+
+        client_id = int(await core.init_client(config))
+
+        inner_client = InnerClient(client_id, core, config)
 
         authenticated_client = cls()
 
-        authenticated_client.secrets = Secrets(client_id)
-        authenticated_client.items = Items(client_id)
-        authenticated_client.vaults = Vaults(client_id)
+        authenticated_client.secrets = Secrets(inner_client)
+        authenticated_client.items = Items(inner_client)
+        authenticated_client.vaults = Vaults(inner_client)
+        authenticated_client.groups = Groups(inner_client)
         authenticated_client._finalizer = weakref.finalize(
-            cls, _release_client, client_id
+            cls, core.release_client, client_id
         )
 
         return authenticated_client
