@@ -201,6 +201,15 @@ async def main():
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
 
+    environment_id = os.environ.get("OP_ENVIRONMENT_ID")
+    if environment_id is not None:
+        # [developer-docs.sdk.python.get-environment-variables]-start
+        # Fetch variables from a 1Password Environment
+        environment = await client.environments.get_variables(environment_id)
+        for variable in environment.variables:
+            print(f"{variable.name}: {variable.value} (masked: {variable.masked})")
+        # [developer-docs.sdk.python.get-environment-variables]-end
+
 
 async def archive_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.archive-item]-start
