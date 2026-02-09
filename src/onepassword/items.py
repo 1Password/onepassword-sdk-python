@@ -71,7 +71,7 @@ class Items:
 
     async def get(self, vault_id: str, item_id: str) -> Item:
         """
-        Get an item by vault and item ID
+        Get an item by vault and item ID.
         """
         response = await self.inner_client.invoke(
             {

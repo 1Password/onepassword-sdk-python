@@ -248,7 +248,9 @@ class GroupAccess(BaseModel):
     This is used for granting permissions
     """
 
-    group_id: str
+    model_config = ConfigDict(populate_by_name=True)
+
+    group_id: str = Field(alias="groupId")
     """
     The group's ID
     """
@@ -269,11 +271,13 @@ class GroupVaultAccess(BaseModel):
     Represents a group's access to a 1Password vault.
     """
 
-    vault_id: str
+    model_config = ConfigDict(populate_by_name=True)
+
+    vault_id: str = Field(alias="vaultId")
     """
     The vault's ID
     """
-    group_id: str
+    group_id: str = Field(alias="groupId")
     """
     The group's ID
     """
@@ -1303,6 +1307,14 @@ class Vault(BaseModel):
     """
 
 
+class VaultCreateParams(BaseModel):
+    model_config = ConfigDict(populate_by_name=True)
+
+    title: str
+    description: Optional[str] = Field(default=None)
+    allow_admins_access: Optional[bool] = Field(alias="allowAdminsAccess", default=None)
+
+
 class VaultGetParams(BaseModel):
     """
     Represents the possible query parameters used for retrieving extra information about a vault.
@@ -1371,6 +1383,11 @@ class VaultOverview(BaseModel):
     """
     The time the vault was updated at
     """
+
+
+class VaultUpdateParams(BaseModel):
+    title: Optional[str] = Field(default=None)
+    description: Optional[str] = Field(default=None)
 
 
 class ItemListFilterByStateInner(BaseModel):
