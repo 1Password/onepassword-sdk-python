@@ -1,5 +1,12 @@
-# 1Password Python SDK v0.3.2
+# 1Password Python SDK v0.4.0b2
+
+## NEW
+
+- **Vault group permission management operations:** You can now grant, update and revoke group access to vaults using `grant_group_permissions`, `update_group_permissions`, and `revoke_group_permissions` functions.
+- **Desktop App integration on Windows:** The SDK can now authenticate via an authorization prompt from the 1Password app on Windows as well. Now all major desktop OSs support this feature.
 
 ## FIXED
 
-- The `client.secrets.resolve_all()` SDK function now only sources secrets from active items.
+- **Vault listing with additional parameters:** `vaults.list` no longer errors when additional parameters are provided.
+- **Handling locked 1Password app state:** When the 1Password app gets locked after the SDK client is authenticated, it will now automatically re-authenticate.
+

@@ -32,14 +32,14 @@ enforce_latest_code() {
     fi
 }
 
-# Function to validate the version number format x.y.z(-beta.w)
+# Function to validate the version number format x.y.z(bw)
 update_and_validate_version() {
     while true; do
         # Prompt the user to input the version number
-        read -p "Enter the version number (format: x.y.z(-beta.w)): " version
+        read -p "Enter the version number (format: x.y.z(bw)): " version
 
         # Validate the version number format
-        if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(-beta\.[0-9]+)?$ ]]; then        
+        if [[ "${version}" =~ ^[0-9]+\.[0-9]+\.[0-9]+(b[0-9]+)?$ ]]; then        
             if [[ "${current_version}" != "${version}" ]]; then
                 # TODO: Check the less than case as well.
                 echo "New version number is: ${version}"
@@ -49,7 +49,7 @@ update_and_validate_version() {
             fi        
         else
             echo "Invalid version number format: ${version}"
-            echo "Please enter a version number in the 'x.y.z(-beta.w)' format."
+            echo "Please enter a version number in the 'x.y.z(bw)' format."
         fi
     done
 }
