@@ -133,7 +133,7 @@ async def main():
     environment_id = os.environ.get("OP_ENVIRONMENT_ID")
     if environment_id is not None:
         # [developer-docs.sdk.python.get-environment-variables]-start
-        # Fetch variables from a 1Password Environment
+        # Read variables from a 1Password Environment
         environment = await client.environments.get_variables(environment_id)
         for variable in environment.variables:
             print(f"{variable.name}: {variable.value} (masked: {variable.masked})")

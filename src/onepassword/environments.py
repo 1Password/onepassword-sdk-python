@@ -7,7 +7,7 @@ from .types import GetVariablesResponse
 
 class Environments:
     """
-    The Environments API holds all the operations the SDK client can perform on 1Password Environments (Vault Type = 'D').
+    The Environments API holds all the operations the SDK client can perform on 1Password Environments.
     """
 
     def __init__(self, inner_client: InnerClient):
