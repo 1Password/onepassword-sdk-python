@@ -12,7 +12,7 @@ class ItemsFiles:
 
     async def attach(self, item: Item, file_params: FileCreateParams) -> Item:
         """
-        Attach files to Items
+        Attach files to Items.
         """
         response = await self.inner_client.invoke(
             {
@@ -34,7 +34,7 @@ class ItemsFiles:
 
     async def read(self, vault_id: str, item_id: str, attr: FileAttributes) -> bytes:
         """
-        Read file content from the Item
+        Read file content from the Item.
         """
         response = await self.inner_client.invoke(
             {
@@ -57,7 +57,7 @@ class ItemsFiles:
 
     async def delete(self, item: Item, section_id: str, field_id: str) -> Item:
         """
-        Delete a field file from Item using the section and field IDs
+        Delete a field file from Item using the section and field IDs.
         """
         response = await self.inner_client.invoke(
             {
@@ -82,7 +82,7 @@ class ItemsFiles:
         self, item: Item, doc_params: DocumentCreateParams
     ) -> Item:
         """
-        Replace the document file within a document item
+        Replace the document file within a document item.
         """
         response = await self.inner_client.invoke(
             {
