@@ -24,38 +24,35 @@ async def main():
     )
     # [developer-docs.sdk.python.client-initialization]-end
 
-    # [developer-docs.sdk.python.list-vaults]-start
-    vaults = await client.vaults.list()
-    for vault in vaults:
-        print(vault)
-    # [developer-docs.sdk.python.list-vaults]-end
+    vault_id = os.getenv("OP_VAULT_ID")
+    if vault_id is None:
+        raise Exception("OP_VAULT_ID environment variable is not set")
 
     # [developer-docs.sdk.python.list-items]-start
-    overviews = await client.items.list(vault.id)
+    overviews = await client.items.list(vault_id)
     for overview in overviews:
         print(overview.title)
     # [developer-docs.sdk.python.list-items]-end
+
     # [developer-docs.sdk.python.use-item-filters]-start
     archived_overviews = await client.items.list(
-        vault.id,
+        vault_id,
         ItemListFilterByState(
             content=ItemListFilterByStateInner(active=False, archived=True)
         ),
     )
     for overview in archived_overviews:
         print(overview.title)
-        # [developer-docs.sdk.python.use-item-filters]-end
+    # [developer-docs.sdk.python.use-item-filters]-end
+
     # [developer-docs.sdk.python.validate-secret-reference]-start
+
     # Validate secret reference to ensure no syntax errors
     try:
         Secrets.validate_secret_reference("op://vault/item/field")
     except Exception as error:
         print(error)
     # [developer-docs.sdk.python.validate-secret-reference]-end
-
-    vault_id = os.getenv("OP_VAULT_ID")
-    if vault_id is None:
-        raise Exception("OP_VAULT_ID environment variable is not set")
 
     # [developer-docs.sdk.python.create-item]-start
     # Create an Item and add it to your vault.
@@ -200,6 +197,136 @@ async def main():
     # Delete a item from your vault.
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
+
+    await showcase_vault_operations(client)
+
+    await showcase_batch_item_operations(client, vault_id)
+
+async def showcase_vault_operations(client: Client):
+    # [developer-docs.sdk.python.create-vault]-start
+    # Create Vault
+    vault_create_params = VaultCreateParams(
+    title="Python SDK Vault",
+    description="A description",
+    allow_admins_access=False,
+    )
+    created_vault = await client.vaults.create(vault_create_params)
+    print(f"Created vault: {created_vault.id} - {created_vault.title}")
+    # [developer-docs.sdk.python.create-vault]-end
+
+    # [developer-docs.sdk.python.vault-overview]-start
+    vault_overview = await client.vaults.get_overview(created_vault.id)
+    print(vault_overview)
+    # [developer-docs.sdk.python.vault-overview]-end
+
+    # [developer-docs.sdk.python.update-vault]-start
+    # Update Vault
+    update_params = VaultUpdateParams(
+        title="Python SDK Updated Name",
+        description="Updated description",
+    )
+    
+    await client.vaults.update(created_vault.id, update_params)
+    # [developer-docs.sdk.python.update-vault]-end
+
+    # [developer-docs.sdk.python.get-vault-details]-start
+    # Get Vault
+    get_params = VaultGetParams(
+        accessors=True,
+    )
+
+    updated_vault = await client.vaults.get(created_vault.id, get_params)
+    print(f"Updated vault: {updated_vault.id} - {updated_vault.title}")
+    # [developer-docs.sdk.python.get-vault-details]-end
+
+    # [developer-docs.sdk.python.delete-vault]-start
+    # Delete Vault
+    await client.vaults.delete(created_vault.id)
+    # [developer-docs.sdk.python.delete-vault]-end
+
+    # [developer-docs.sdk.python.list-vault]-start
+    # List Vaults
+    vaults = await client.vaults.list()
+    for vault in vaults:
+        print(vault.title)
+    # [developer-docs.sdk.python.list-vault]-end
+
+async def showcase_batch_item_operations(client: Client, vault_id: str):
+    # [developer-docs.sdk.python.batch-create-items]-start
+    items_to_create = []
+    for i in range(1, 4):
+        items_to_create.append(
+            ItemCreateParams(
+                title="My Login Item {}".format(i),
+                category=ItemCategory.LOGIN,
+                vault_id=vault_id,
+                fields=[
+                    ItemField(
+                        id="username",
+                        title="username",
+                        field_type=ItemFieldType.TEXT,
+                        value="mynameisjeff",
+                    ),
+                    ItemField(
+                        id="password",
+                        title="password",
+                        field_type=ItemFieldType.CONCEALED,
+                        value="jeff",
+                    ),
+                    ItemField(
+                        id="onetimepassword",
+                        title="one-time-password",
+                        field_type=ItemFieldType.TOTP,
+                        section_id="totpsection",
+                        value="otpauth://totp/my-example-otp?secret=jncrjgbdjnrncbjsr&issuer=1Password",
+                    ),
+                ],
+                sections=[
+                    ItemSection(id="", title=""),
+                    ItemSection(id="totpsection", title=""),
+                ],
+                tags=["test tag 1", "test tag 2"],
+                websites=[
+                    Website(
+                        label="my custom website",
+                        url="https://example.com",
+                        autofill_behavior=AutofillBehavior.NEVER,
+                    )
+                ],
+            )
+        )
+
+    # Create all items in the same vault in a single batch
+    batchCreateResponse = await client.items.create_all(vault_id, items_to_create)
+
+    item_ids = []
+    for res in batchCreateResponse.individual_responses:
+        if res.content is not None:
+            print('Created item "{}" ({})'.format(res.content.title, res.content.id))
+            item_ids.append(res.content.id)
+        elif res.error is not None:
+            print("[Batch create] Something went wrong: {}".format(res.error))
+    # [developer-docs.sdk.python.batch-create-items]-end
+
+    # [developer-docs.sdk.python.batch-get-items]-start
+    # Get multiple items form the same vault in a single batch
+    batchGetReponse = await client.items.get_all(vault_id, item_ids)
+    for res in batchGetReponse.individual_responses:
+        if res.content is not None:
+            print('Obtained item "{}" ({})'.format(res.content.title, res.content.id))
+        elif res.error is not None:
+            print("[Batch get] Something went wrong: {}".format(res.error))
+    # [developer-docs.sdk.python.batch-get-items]-end
+
+    # [developer-docs.sdk.python.batch-delete-items]-start
+    # Delete multiple items from the same vault in a single batch
+    batchDeleteResponse = await client.items.delete_all(vault_id, item_ids)
+    for id, res in batchDeleteResponse.individual_responses.items():
+        if res.error is not None:
+            print("[Batch delete] Something went wrong: {}".format(res.error))
+        else:
+            print("Deleted item {}".format(id))
+    # [developer-docs.sdk.python.batch-delete-items]-end
 
 
 async def archive_item(client: Client, vault_id: str, item_id: str):
