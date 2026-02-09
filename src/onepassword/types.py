@@ -90,7 +90,7 @@ class DocumentCreateParams(BaseModel):
 
 class EnvironmentVariable(BaseModel):
     """
-    Represents an environment variable (name:value pair) and it's masked state
+    Represents an environment variable (name:value pair) and its masked state
     """
 
     name: str
