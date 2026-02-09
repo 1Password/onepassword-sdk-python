@@ -88,6 +88,25 @@ class DocumentCreateParams(BaseModel):
     """
 
 
+class EnvironmentVariable(BaseModel):
+    """
+    Represents an environment variable (name:value pair) and its masked state
+    """
+
+    name: str
+    """
+    An environment variable's name
+    """
+    value: str
+    """
+    An environment variable's value
+    """
+    masked: bool
+    """
+    An environment variable's masked state
+    """
+
+
 class FileAttributes(BaseModel):
     name: str
     """
@@ -137,6 +156,17 @@ class GeneratePasswordResponse(BaseModel):
     password: str
     """
     The generated password.
+    """
+
+
+class GetVariablesResponse(BaseModel):
+    """
+    Response containing the full set of environment variables from an Environment.
+    """
+
+    variables: List[EnvironmentVariable]
+    """
+    List of environment variables.
     """
 
 

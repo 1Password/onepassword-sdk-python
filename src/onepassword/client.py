@@ -8,6 +8,7 @@ from .defaults import new_default_config, DesktopAuth
 from .secrets import Secrets
 from .items import Items
 from .vaults import Vaults
+from .environments import Environments
 from .groups import Groups
 
 
@@ -15,6 +16,7 @@ class Client:
     secrets: Secrets
     items: Items
     vaults: Vaults
+    environments: Environments
     groups: Groups
 
     @classmethod
@@ -41,6 +43,7 @@ class Client:
         authenticated_client.secrets = Secrets(inner_client)
         authenticated_client.items = Items(inner_client)
         authenticated_client.vaults = Vaults(inner_client)
+        authenticated_client.environments = Environments(inner_client)
         authenticated_client.groups = Groups(inner_client)
         authenticated_client._finalizer = weakref.finalize(
             cls, core.release_client, client_id

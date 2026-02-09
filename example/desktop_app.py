@@ -133,6 +133,15 @@ async def main():
     print(group)
     # [developer-docs.sdk.python.get-group]-end
 
+    environment_id = os.environ.get("OP_ENVIRONMENT_ID")
+    if environment_id is not None:
+        # [developer-docs.sdk.python.get-environment-variables]-start
+        # Read variables from a 1Password Environment
+        environment = await client.environments.get_variables(environment_id)
+        for variable in environment.variables:
+            print(f"{variable.name}: {variable.value} (masked: {variable.masked})")
+        # [developer-docs.sdk.python.get-environment-variables]-end
+
 
 if __name__ == "__main__":
     asyncio.run(main())
