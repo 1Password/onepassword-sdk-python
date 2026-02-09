@@ -202,12 +202,6 @@ async def main():
 
     await showcase_batch_item_operations(client, vault_id)
 
-    group_id = os.environ.get("OP_GROUP_ID")
-    if group_id is None:
-        raise Exception("OP_GROUP_ID is required")
-    
-    await showcase_group_permission_operations(client, vault_id, group_id)
-
 async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.create-vault]-start
     # Create Vault
