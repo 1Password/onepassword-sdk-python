@@ -23,9 +23,7 @@ class InnerClient:
     core: DesktopCore | UniffiCore
     config: dict[str, Any]
 
-    def __init__(
-        self, client_id: int, core: "DesktopCore | UniffiCore", config: dict[str, any]
-    ):
+    def __init__(self, client_id: int, core: "DesktopCore | UniffiCore", config: dict[str, any]):
         self.client_id = client_id
         self.core = core
         self.config = config
