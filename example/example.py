@@ -603,6 +603,50 @@ def generate_special_item_fields():
         ],
     )
 
+async def showcase_group_permission_operations(client: Client, vault_id: str, group_id: str):
+    # [developer-docs.sdk.python.grant-group-permissions]-start
+    # Grant Group Permissions
+    await client.vaults.grant_group_permissions(
+        vault_id=vault_id,
+        group_permissions_list=[
+            GroupAccess(
+                group_id=group_id,
+                permissions=READ_ITEMS,
+            )
+        ],
+    )
+    print(f"Granted group {group_id} permissions to vault {vault_id}")
+    # [developer-docs.sdk.python.grant-group-permissions]-end
+
+    # [developer-docs.sdk.python.update-group-permissions]-start
+    # Update Group Permissions
+    await client.vaults.update_group_permissions(
+        group_permissions_list=[
+            GroupVaultAccess(
+                vault_id=vault_id,
+                group_id=group_id,
+                permissions= READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
+            )
+        ],
+    )
+    print(f"Updated group {group_id} permissions to vault {vault_id}")
+    # [developer-docs.sdk.python.update-group-permissions]-end
+
+    # [developer-docs.sdk.python.revoke-group-permissions]-start
+    # Revoke Group Permissions
+    await client.vaults.revoke_group_permissions(
+        vault_id=vault_id,
+        group_id=group_id,
+    )
+    # [developer-docs.sdk.python.update-group-permissions]-end
+    
+    # [developer-docs.sdk.python.get-group]-start
+    # Get a group
+    group = await client.groups.get(group_id, GroupGetParams(vaultPermissions=False))
+    print(group)
+    # [developer-docs.sdk.python.get-group]-end
+
+
 
 if __name__ == "__main__":
     asyncio.run(main())

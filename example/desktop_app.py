@@ -1,5 +1,6 @@
 # [developer-docs.sdk.python.sdk-import]-start
 from onepassword import *
+# [developer-docs.sdk.python.sdk-import]-end
 import asyncio
 import os
 
@@ -92,7 +93,6 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.list-vault]-end
 
 async def showcase_group_permission_operations(client: Client, vault_id: str, group_id: str):
-
     # [developer-docs.sdk.python.grant-group-permissions]-start
     # Grant Group Permissions
     await client.vaults.grant_group_permissions(
