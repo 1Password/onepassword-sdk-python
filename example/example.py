@@ -12,13 +12,13 @@ from cryptography.hazmat.primitives import serialization
 
 async def main():
     # [developer-docs.sdk.python.client-initialization]-start
-    # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
+    # Get your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
 
-    # Connects to 1Password.
+    # Create an authenticated client
     client = await Client.authenticate(
         auth=token,
-        # Set the following to your own integration name and version.
+        # Set to your own integration name and version
         integration_name="My 1Password Integration",
         integration_version="v1.0.0",
     )
@@ -29,12 +29,14 @@ async def main():
         raise Exception("OP_VAULT_ID environment variable is not set")
 
     # [developer-docs.sdk.python.list-items]-start
+    # List items
     overviews = await client.items.list(vault_id)
     for overview in overviews:
         print(overview.title)
     # [developer-docs.sdk.python.list-items]-end
 
     # [developer-docs.sdk.python.use-item-filters]-start
+    # List items using item filters
     archived_overviews = await client.items.list(
         vault_id,
         ItemListFilterByState(
@@ -46,8 +48,7 @@ async def main():
     # [developer-docs.sdk.python.use-item-filters]-end
 
     # [developer-docs.sdk.python.validate-secret-reference]-start
-
-    # Validate secret reference to ensure no syntax errors
+    # Validate a secret reference
     try:
         Secrets.validate_secret_reference("op://vault/item/field")
     except Exception as error:
@@ -55,7 +56,7 @@ async def main():
     # [developer-docs.sdk.python.validate-secret-reference]-end
 
     # [developer-docs.sdk.python.create-item]-start
-    # Create an Item and add it to your vault.
+    # Create an item
     to_create = ItemCreateParams(
         title="MyName",
         category=ItemCategory.LOGIN,
@@ -100,7 +101,7 @@ async def main():
     print(dict(created_item))
 
     # [developer-docs.sdk.python.resolve-secret]-start
-    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
+    # Fetch a secret using a secret reference
     value = await client.secrets.resolve(
         f"op://{created_item.vault_id}/{created_item.id}/username"
     )
@@ -108,7 +109,7 @@ async def main():
     # [developer-docs.sdk.python.resolve-secret]-end
 
     # [developer-docs.sdk.python.resolve-totp-code]-start
-    # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
+    # Fetch a one-time password code using a secret reference
     code = await client.secrets.resolve(
         f"op://{created_item.vault_id}/{created_item.id}/TOTP_onetimepassword?attribute=totp"
     )
@@ -118,7 +119,7 @@ async def main():
         client, created_item.vault_id, created_item.id, "username", "password"
     )
     # [developer-docs.sdk.python.get-totp-item-crud]-start
-    # Fetch a totp code from the item
+    # Get a one-time password code from an item
     for f in created_item.fields:
         if f.field_type == "Totp":
             if f.details.content.error_message is not None:
@@ -128,14 +129,14 @@ async def main():
     # [developer-docs.sdk.python.get-totp-item-crud]-end
 
     # [developer-docs.sdk.python.get-item]-start
-    # Retrieve an item from your vault.
+    # Get an item
     item = await client.items.get(created_item.vault_id, created_item.id)
     # [developer-docs.sdk.python.get-item]-end
 
     print(dict(item))
 
     # [developer-docs.sdk.python.update-item]-start
-    # Update a field in your item
+    # Update an item
     item.fields[0].value = "new_value"
     item.websites.append(
         Website(
@@ -150,6 +151,7 @@ async def main():
     print(dict(updated_item))
 
     # [developer-docs.sdk.python.generate-pin-password]-start
+    # Generate a PIN password
     pin_password = Secrets.generate_password(
         PasswordRecipePin(parameters=PasswordRecipePinInner(length=8))
     )
@@ -157,6 +159,7 @@ async def main():
     # [developer-docs.sdk.python.generate-pin-password]-end
 
     # [developer-docs.sdk.python.generate-memorable-password]-start
+    # Generate a memorable password
     memorable_password = Secrets.generate_password(
         PasswordRecipeMemorable(
             parameters=PasswordRecipeMemorableInner(
@@ -171,6 +174,7 @@ async def main():
     # [developer-docs.sdk.python.generate-memorable-password]-end
 
     # [developer-docs.sdk.python.generate-random-password]-start
+    # Generate a random password
     random_password = Secrets.generate_password(
         PasswordRecipeRandom(
             parameters=PasswordRecipeRandomInner(
@@ -194,7 +198,7 @@ async def main():
     await archive_item(client, updated_item.vault_id, updated_item.id)
 
     # [developer-docs.sdk.python.delete-item]-start
-    # Delete a item from your vault.
+    # Delete an item
     await client.items.delete(created_item.vault_id, updated_item.id)
     # [developer-docs.sdk.python.delete-item]-end
 
@@ -204,7 +208,7 @@ async def main():
 
 async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.create-vault]-start
-    # Create Vault
+    # Create a vault
     vault_create_params = VaultCreateParams(
     title="Python SDK Vault",
     description="A description",
@@ -215,12 +219,13 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.create-vault]-end
 
     # [developer-docs.sdk.python.python.get-vault-overview]-start
+    # Get a vault overview
     vault_overview = await client.vaults.get_overview(created_vault.id)
     print(vault_overview)
     # [developer-docs.sdk.python.python.get-vault-overview]-end
 
     # [developer-docs.sdk.python.update-vault]-start
-    # Update Vault
+    # Update a vault
     update_params = VaultUpdateParams(
         title="Python SDK Updated Name",
         description="Updated description",
@@ -230,7 +235,7 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.update-vault]-end
 
     # [developer-docs.sdk.python.get-vault-details]-start
-    # Get Vault
+    # Get a vault
     get_params = VaultGetParams(
         accessors=True,
     )
@@ -240,12 +245,12 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.get-vault-details]-end
 
     # [developer-docs.sdk.python.delete-vault]-start
-    # Delete Vault
+    # Delete a vault
     await client.vaults.delete(created_vault.id)
     # [developer-docs.sdk.python.delete-vault]-end
 
     # [developer-docs.sdk.python.list-vault]-start
-    # List Vaults
+    # List vaults
     vaults = await client.vaults.list()
     for vault in vaults:
         print(vault.title)
@@ -296,7 +301,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
             )
         )
 
-    # Create all items in the same vault in a single batch
+    # Batch create all items in the same vault
     batchCreateResponse = await client.items.create_all(vault_id, items_to_create)
 
     item_ids = []
@@ -309,7 +314,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-create-items]-end
 
     # [developer-docs.sdk.python.batch-get-items]-start
-    # Get multiple items form the same vault in a single batch
+    # Get multiple items from the same vault
     batchGetReponse = await client.items.get_all(vault_id, item_ids)
     for res in batchGetReponse.individual_responses:
         if res.content is not None:
@@ -319,7 +324,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-get-items]-end
 
     # [developer-docs.sdk.python.batch-delete-items]-start
-    # Delete multiple items from the same vault in a single batch
+    # Delete multiple items from the same vault
     batchDeleteResponse = await client.items.delete_all(vault_id, item_ids)
     for id, res in batchDeleteResponse.individual_responses.items():
         if res.error is not None:
@@ -331,23 +336,26 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
 
 async def archive_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.archive-item]-start
-    # Archive a item from your vault.
+    # Archive an item
     await client.items.archive(vault_id, item_id)
     # [developer-docs.sdk.python.archive-item]-end
 
 
 async def share_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.item-share-get-item]-start
+    # Get an item to share
     item = await client.items.get(vault_id, item_id)
     print(item)
     # [developer-docs.sdk.python.item-share-get-item]-end
 
     # [developer-docs.sdk.python.item-share-get-account-policy]-start
+    # Get your item sharing account policy
     policy = await client.items.shares.get_account_policy(item.vault_id, item.id)
     print(policy)
     # [developer-docs.sdk.python.item-share-get-account-policy]-end
 
     # [developer-docs.sdk.python.item-share-validate-recipients]-start
+    # Validate item share recipients
     valid_recipients = await client.items.shares.validate_recipients(
         policy, ["agilebits.com"]
     )
@@ -356,6 +364,7 @@ async def share_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.item-share-validate-recipients]-end
 
     # [developer-docs.sdk.python.item-share-create-share]-start
+    # Create a unique link to share the item
     share_link = await client.items.shares.create(
         item,
         policy,
@@ -385,7 +394,7 @@ async def create_ssh_key_item(client: Client, vault_id: str):
         encryption_algorithm=serialization.NoEncryption(),
     )
 
-    # Create an Item containing SSH Key and add it to your vault.
+    # Create an SSH Key item and add it to a vault
     to_create = ItemCreateParams(
         title="SSH Key Item Created With Python SDK",
         category=ItemCategory.SSHKEY,
@@ -415,7 +424,7 @@ async def create_ssh_key_item(client: Client, vault_id: str):
 
 async def create_and_replace_document_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.create-document-item]-start
-    # Create a Document Item
+    # Create a Document item
     to_create = ItemCreateParams(
         title="Document Item Created with Python SDK",
         category=ItemCategory.DOCUMENT,
@@ -431,7 +440,7 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.create-document-item]-end
 
     # [developer-docs.sdk.python.replace-document-item]-start
-    # Replace the document in the item
+    # Replace the document in the Document item
     replaced_item = await client.items.files.replace_document(
         created_item,
         DocumentCreateParams(
@@ -441,7 +450,7 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.replace-document-item]-end
 
     # [developer-docs.sdk.python.read-document-item]-start
-    # Read the document in the item
+    # Read the content of the Document item
     content = await client.items.files.read(
         replaced_item.vault_id, replaced_item.id, replaced_item.document
     )
@@ -454,7 +463,7 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
 
 async def create_attach_and_delete_file_field_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.create-item-with-file-field]-start
-    # Create a File Field Item
+    # Create an item with a file attached in a file field
     to_create = ItemCreateParams(
         title="FileField Item created with Python SDK",
         category=ItemCategory.LOGIN,
@@ -490,7 +499,7 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
     # [developer-docs.sdk.python.create-item-with-file-field]-end
 
     # [developer-docs.sdk.python.read-file-field]-start
-    # Read the file field from an item
+    # Read the content of the file field from an item
     content = await client.items.files.read(
         created_item.vault_id, created_item.id, created_item.files[0].attributes
     )
@@ -528,7 +537,7 @@ async def resolve_all_secrets(
     client: Client, vault_id: str, item_id: str, field_id: str, field_id2: str
 ):
     # [developer-docs.sdk.python.resolve-bulk-secret]-start
-    # Retrieves multiple secrets from 1Password.
+    # Fetch multiple secrets using secret references
     secrets = await client.secrets.resolve_all(
         [
             f"op://{vault_id}/{item_id}/{field_id}",
@@ -605,7 +614,7 @@ def generate_special_item_fields():
 
 async def showcase_group_permission_operations(client: Client, vault_id: str, group_id: str):
     # [developer-docs.sdk.python.grant-group-permissions]-start
-    # Grant Group Permissions
+    # Grant group permissions in a vault
     await client.vaults.grant_group_permissions(
         vault_id=vault_id,
         group_permissions_list=[
@@ -619,7 +628,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
     # [developer-docs.sdk.python.grant-group-permissions]-end
 
     # [developer-docs.sdk.python.update-group-permissions]-start
-    # Update Group Permissions
+    # Update group permissions in a vault
     await client.vaults.update_group_permissions(
         group_permissions_list=[
             GroupVaultAccess(
@@ -633,7 +642,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
     # [developer-docs.sdk.python.update-group-permissions]-end
 
     # [developer-docs.sdk.python.revoke-group-permissions]-start
-    # Revoke Group Permissions
+    # Revoke a group's permissions in a vault
     await client.vaults.revoke_group_permissions(
         vault_id=vault_id,
         group_id=group_id,
