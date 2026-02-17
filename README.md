@@ -33,9 +33,9 @@ You can choose between two [authentication methods](https://developer.1password.
 [1Password desktop app authentication](https://developer.1password.com/docs/sdks/concepts#1password-desktop-app) is best for local integrations that require minimal setup from end users and sensitive workflows that require human-in-the-loop approval. To set up the SDK to authenticate with the 1Password app:
 
 1. Install the [1Password desktop app](https://1password.com/downloads/) and sign in to your account in the app.
-2. Select your account or collection at the top of the sidebar, then navigate to **Settings** > **[Developer](onepassword://settings/developers)**.
+2. Select your account or collection at the top of the sidebar, then navigate to **Settings** > **Developer**.
 3. Under Integrate with the 1Password SDKs, select **Integrate with other apps**.
-4. If you want to authenticate with biometrics, navigate to **Settings** > **[Security](onepassword://settings/security)**, then turn on the option to unlock using [Touch ID](https://support.1password.com/touch-id-mac/),  [Windows Hello](https://support.1password.com/windows-hello/), or [system authentication](https://support.1password.com/system-authentication-linux/).
+4. If you want to authenticate with biometrics, navigate to **Settings** > **Security**, then turn on the option to unlock using [Touch ID](https://support.1password.com/touch-id-mac/),  [Windows Hello](https://support.1password.com/windows-hello/), or [system authentication](https://support.1password.com/system-authentication-linux/).
 5. Install the 1Password Python SDK in your project:
 
    ```bash
@@ -74,7 +74,7 @@ Make sure to use [secret reference URIs](https://developer.1password.com/docs/cl
 
 ### Option 2: 1Password Service Account
 
-[Service account authentication](https://developer.1password.com/docs/sdks/concepts#service-account) is best for automated access and limiting your integration to least privilege access. To set up the SDK to authenticate with a service account token:
+[Service account authentication](https://developer.1password.com/docs/sdks/concepts/#1password-service-account) is best for automated access and limiting your integration to least privilege access. To set up the SDK to authenticate with a service account token:
 
 1. [Create a service account](https://my.1password.com/developer-tools/infrastructure-secrets/serviceaccount/?source=github-sdk) and give it the appropriate permissions in the vaults where the items you want to use with the SDK are saved.
 2. Provision your service account token. We recommend provisioning your token from the environment. For example, to export your token to the `OP_SERVICE_ACCOUNT_TOKEN` environment variable:
@@ -187,18 +187,17 @@ Make sure to use [secret reference URIs](https://developer.1password.com/docs/cl
 ### Compliance & reporting
 - [ ] Watchtower insights
 - [ ] Travel mode
-- [ ] Events ([#76](https://github.com/1Password/onepassword-sdk-go/issues/76)). For now, use [1Password Events Reporting API](https://developer.1password.com/docs/events-api/) directly.
+- [ ] Events. For now, use [1Password Events Reporting API](https://developer.1password.com/docs/events-api/) directly.
 
 ### Authentication
 
 - [x] [1Password Service Accounts](https://developer.1password.com/docs/sdks/concepts#1password-service-account)
 - [x] [User authentication](https://developer.1password.com/docs/sdks/concepts#1password-desktop-app)
-- [ ] 1Password Connect. For now, use [1Password/connect-sdk-go](https://github.com/1Password/connect-sdk-go).
+- [ ] 1Password Connect. For now, use [1Password/connect-sdk-python](https://github.com/1Password/connect-sdk-python).
 
 ## 📖 Learn more
 
 - [Load secrets](https://developer.1password.com/docs/sdks/load-secrets)
-- [Read 1Password Environments (beta)](https://developer.1password.com/docs/sdks/environments)
 - [Manage items](https://developer.1password.com/docs/sdks/manage-items)
 - [Manage files](https://developer.1password.com/docs/sdks/files)
 - [Share items](https://developer.1password.com/docs/sdks/share-items)
