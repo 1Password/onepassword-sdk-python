@@ -184,10 +184,6 @@ Make sure to use [secret reference URIs](https://developer.1password.com/docs/cl
 - [ ] Create groups
 - [ ] Update group membership
 
-## Environments management
-
-- [x] [Read 1Password Environments](/docs/sdks/environments) (beta)
-
 ### Compliance & reporting
 - [ ] Watchtower insights
 - [ ] Travel mode
