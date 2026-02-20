@@ -1,5 +1,6 @@
 # [developer-docs.sdk.python.sdk-import]-start
 from onepassword import *
+# [developer-docs.sdk.python.sdk-import]-end
 import asyncio
 import os
 
@@ -10,23 +11,25 @@ async def main():
         raise Exception("OP_VAULT_ID is required")
 
     # [developer-docs.sdk.python.client-initialization]-start
-    # Connects to the 1Password desktop app.
+    # Connect to the 1Password desktop app
     client = await Client.authenticate(
         auth=DesktopAuth(
             account_name="YourAccountNameAsShownInTheDesktopApp"  # Set to your 1Password account name as shown at the top left sidebar of the app, or your account UUID.
         ),
-        # Set the following to your own integration name and version.
+        # Set to your own integration name and version
         integration_name="My 1Password Integration",
         integration_version="v1.0.0",
     )
 
     # [developer-docs.sdk.python.list-vaults]-start
+    # List vaults
     vaults = await client.vaults.list()
     for vault in vaults:
         print(vault)
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
+    # List items
     overviews = await client.items.list(vault_id)
     for overview in overviews:
         print(overview.title)
@@ -44,7 +47,7 @@ async def main():
 
 async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.create-vault]-start
-    # Create Vault
+    # Create a vault
     vault_create_params = VaultCreateParams(
     title="Python SDK Vault",
     description="A description",
@@ -55,12 +58,13 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.create-vault]-end
 
     # [developer-docs.sdk.python.vault-overview]-start
+    # Get a vault overview
     vault_overview = await client.vaults.get_overview(created_vault.id)
     print(vault_overview)
     # [developer-docs.sdk.python.vault-overview]-end
 
     # [developer-docs.sdk.python.update-vault]-start
-    # Update Vault
+    # Update a vault
     update_params = VaultUpdateParams(
         title="Python SDK Updated Name",
         description="Updated description",
@@ -70,7 +74,7 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.update-vault]-end
 
     # [developer-docs.sdk.python.get-vault-details]-start
-    # Get Vault
+    # Get a vault
     get_params = VaultGetParams(
         accessors=True,
     )
@@ -80,21 +84,20 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.get-vault-details]-end
 
     # [developer-docs.sdk.python.delete-vault]-start
-    # Delete Vault
+    # Delete a vault
     await client.vaults.delete(created_vault.id)
     # [developer-docs.sdk.python.delete-vault]-end
 
     # [developer-docs.sdk.python.list-vault]-start
-    # List Vaults
+    # List vaults
     vaults = await client.vaults.list()
     for vault in vaults:
         print(vault.title)
     # [developer-docs.sdk.python.list-vault]-end
 
 async def showcase_group_permission_operations(client: Client, vault_id: str, group_id: str):
-
     # [developer-docs.sdk.python.grant-group-permissions]-start
-    # Grant Group Permissions
+    # Grant group permissions in a vault
     await client.vaults.grant_group_permissions(
         vault_id=vault_id,
         group_permissions_list=[
@@ -108,7 +111,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
     # [developer-docs.sdk.python.grant-group-permissions]-end
 
     # [developer-docs.sdk.python.update-group-permissions]-start
-    # Update Group Permissions
+    # Update group permissions in a vault
     await client.vaults.update_group_permissions(
         group_permissions_list=[
             GroupVaultAccess(
@@ -122,7 +125,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
     # [developer-docs.sdk.python.update-group-permissions]-start
 
     # [developer-docs.sdk.python.revoke-group-permissions]-start
-    # Revoke Group Permissions
+    # Revoke a group's permissions in a vault
     await client.vaults.revoke_group_permissions(
         vault_id=vault_id,
         group_id=group_id,
@@ -180,7 +183,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
             )
         )
 
-    # Create all items in the same vault in a single batch
+    # Batch create all items in the same vault
     batchCreateResponse = await client.items.create_all(vault_id, items_to_create)
 
     item_ids = []
@@ -193,7 +196,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-create-items]-end
 
     # [developer-docs.sdk.python.batch-get-items]-start
-    # Get multiple items form the same vault in a single batch
+    # Get multiple items from the same vault
     batchGetReponse = await client.items.get_all(vault_id, item_ids)
     for res in batchGetReponse.individual_responses:
         if res.content is not None:
@@ -203,7 +206,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-get-items]-end
 
     # [developer-docs.sdk.python.batch-delete-items]-start
-    # Delete multiple items from the same vault in a single batch
+    # Delete multiple items from the same vault
     batchDeleteResponse = await client.items.delete_all(vault_id, item_ids)
     for id, res in batchDeleteResponse.individual_responses.items():
         if res.error is not None:
