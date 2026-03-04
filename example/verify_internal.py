@@ -3,14 +3,19 @@
 
 Requires:
   - OP_SERVICE_ACCOUNT_TOKEN set
-  - SDK built from sdk-core on this machine:
-      macOS: make local/python-internal
-      Linux: make local/python-internal   (builds .so with internal feature)
 
-You should see a line like:
+The Rust [INFO] line only appears when the native library was built with the
+'internal' Cargo feature. That build is done from the sdk-core repo:
+  - macOS/Linux (with sdk-core): make local/python-internal
+
+If you only have the onepassword-sdk-python repo (e.g. on Linux without sdk-core),
+the shipped .so is built without 'internal', so you will see the Python messages
+below but not the [INFO] line—that is expected. You can also add an internal-built
+libop_uniffi_core.so (from sdk-core elsewhere) into src/onepassword/lib/<arch>/
+and push it on your branch so pulls on Linux use that build.
+
+Expected when internal build is active:
   [INFO] op_uniffi_core - Calling unencrypted cc client test: ...
-If you see nothing from Rust, the native lib was built without the 'internal' feature,
-or you are running a copy of the SDK that was built on another OS (e.g. .dylib on Linux).
 """
 import asyncio
 import os
@@ -34,7 +39,11 @@ async def main():
         integration_name="Verify Internal",
         integration_version="v1.0.0",
     )
-    print("Done. If you saw [INFO] op_uniffi_core above, the internal build is active.", file=sys.stderr)
+    print(
+        "Done. If you saw [INFO] op_uniffi_core above, the internal build is active. "
+        "If not, the native lib was built without the internal feature (normal when you only have this repo).",
+        file=sys.stderr,
+    )
 
 if __name__ == "__main__":
     asyncio.run(main())
