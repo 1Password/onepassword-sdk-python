@@ -18,17 +18,47 @@ Expected when internal build is active:
   [INFO] op_uniffi_core - Calling unencrypted cc client test: ...
 """
 import asyncio
+import importlib.util
 import os
+import platform
 import sys
 
 # Ensure stderr is visible and unbuffered (helps on Linux and macOS)
 sys.stderr.reconfigure(line_buffering=True)
+
+
+def _which_lib_path():
+    """Report which arch dir is used and the exact native library path (same logic as core.UniffiCore)."""
+    machine = platform.machine().lower()
+    if machine in ["x86_64", "amd64"]:
+        arch = "x86_64"
+    elif machine in ["aarch64", "arm64"]:
+        arch = "aarch64"
+    else:
+        return None, None, f"unsupported: {machine}"
+    ext = "dylib" if sys.platform == "darwin" else "so"
+    spec = importlib.util.find_spec(f"onepassword.lib.{arch}.op_uniffi_core")
+    if not spec or not spec.origin:
+        return arch, None, "module not found"
+    lib_dir = os.path.dirname(spec.origin)
+    lib_path = os.path.join(lib_dir, f"libop_uniffi_core.{ext}")
+    return arch, lib_path, None
+
 
 async def main():
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
     if not token:
         print("Set OP_SERVICE_ACCOUNT_TOKEN and re-run.", file=sys.stderr)
         sys.exit(1)
+
+    # Show which arch and path are used so you can confirm the right .so is loaded
+    arch, lib_path, err = _which_lib_path()
+    print(f"platform.machine() = {platform.machine()!r}  ->  using lib from: /{arch}/", file=sys.stderr)
+    if lib_path:
+        print(f"Native library path: {lib_path}", file=sys.stderr)
+        print(f"File exists: {os.path.exists(lib_path)}", file=sys.stderr)
+    if err:
+        print(f"Note: {err}", file=sys.stderr)
 
     from onepassword import Client
 
