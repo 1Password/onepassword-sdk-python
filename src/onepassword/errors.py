@@ -15,6 +15,12 @@ class RateLimitExceededException(Exception):
         super().__init__(self.message)
 
 
+class AuthExpiredException(Exception):
+    def __init__(self, message):
+        self.message = message
+        super().__init__(self.message)
+
+
 def raise_typed_exception(e: Exception):
     try:
         typed_error = json.loads(e.msg)
@@ -28,6 +34,8 @@ def raise_typed_exception(e: Exception):
         raise DesktopSessionExpiredException(message)
     elif error_name == "RateLimitExceeded":
         raise RateLimitExceededException(message)
+    elif error_name == "AuthExpired":
+        raise AuthExpiredException(message)
     elif message is not None:
         raise Exception(message)
     else:

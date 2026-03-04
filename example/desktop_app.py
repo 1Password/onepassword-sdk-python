@@ -39,16 +39,17 @@ async def main():
     group_id = os.environ.get("OP_GROUP_ID")
     if group_id is None:
         raise Exception("OP_GROUP_ID is required")
-    
+
     await showcase_group_permission_operations(client, vault_id, group_id)
+
 
 async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.create-vault]-start
     # Create Vault
     vault_create_params = VaultCreateParams(
-    title="Python SDK Vault",
-    description="A description",
-    allow_admins_access=False,
+        title="Python SDK Vault",
+        description="A description",
+        allow_admins_access=False,
     )
     created_vault = await client.vaults.create(vault_create_params)
     print(f"Created vault: {created_vault.id} - {created_vault.title}")
@@ -65,7 +66,7 @@ async def showcase_vault_operations(client: Client):
         title="Python SDK Updated Name",
         description="Updated description",
     )
-    
+
     await client.vaults.update(created_vault.id, update_params)
     # [developer-docs.sdk.python.update-vault]-end
 
@@ -91,8 +92,10 @@ async def showcase_vault_operations(client: Client):
         print(vault.title)
     # [developer-docs.sdk.python.list-vault]-end
 
-async def showcase_group_permission_operations(client: Client, vault_id: str, group_id: str):
 
+async def showcase_group_permission_operations(
+    client: Client, vault_id: str, group_id: str
+):
     # [developer-docs.sdk.python.grant-group-permissions]-start
     # Grant Group Permissions
     await client.vaults.grant_group_permissions(
@@ -114,7 +117,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
             GroupVaultAccess(
                 vault_id=vault_id,
                 group_id=group_id,
-                permissions= READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
+                permissions=READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
             )
         ],
     )
@@ -128,12 +131,13 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
         group_id=group_id,
     )
     # [developer-docs.sdk.python.update-group-permissions]-end
-    
+
     # [developer-docs.sdk.python.get-group]-start
     # Get a group
     group = await client.groups.get(group_id, GroupGetParams(vaultPermissions=False))
     print(group)
     # [developer-docs.sdk.python.get-group]-end
+
 
 async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-create-items]-start

@@ -7,6 +7,7 @@ from .errors import *  # noqa F403
 from .secrets import Secrets
 from .items import Items
 from .vaults import Vaults
+from .environments import Environments
 from .groups import Groups
 
 
@@ -19,6 +20,7 @@ __all__ = [
     "Secrets",
     "Items",
     "Vaults",
+    "Environments",
     "Groups",
     "DesktopAuth",
     "DEFAULT_INTEGRATION_NAME",
