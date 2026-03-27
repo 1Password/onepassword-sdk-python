@@ -430,7 +430,7 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
             ItemSection(id="", title=""),
         ],
         document=DocumentCreateParams(
-            name="file.txt", content=Path("./example/file.txt").read_bytes()
+            name="file.txt", content=Path("/path/to/your/file.txt").read_bytes()
         ),
     )
     created_item = await client.items.create(to_create)
@@ -484,7 +484,7 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
         files=[
             FileCreateParams(
                 name="file.txt",
-                content=Path("./example/file.txt").read_bytes(),
+                content=Path("/path/to/your/file.txt").read_bytes(),
                 sectionId="",
                 fieldId="file_field",
             )
