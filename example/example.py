@@ -49,7 +49,7 @@ async def main():
 
     # Validate secret reference to ensure no syntax errors
     try:
-        Secrets.validate_secret_reference("op://vault/item/field")
+        Secrets.validate_secret_reference("op://vault-id/item-id/field-id")
     except Exception as error:
         print(error)
     # [developer-docs.sdk.python.validate-secret-reference]-end
