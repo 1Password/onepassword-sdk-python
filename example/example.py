@@ -142,9 +142,8 @@ async def main():
         ),
     )
     updated_item = await client.items.put(item)
+    print(f"Updated item: {updated_item.title}")
     # [developer-docs.sdk.python.update-item]-end
-
-    print(dict(updated_item))
 
     # [developer-docs.sdk.python.generate-pin-password]-start
     # Generate a PIN password
