@@ -500,8 +500,8 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
     content = await client.items.files.read(
         created_item.vault_id, created_item.id, created_item.files[0].attributes
     )
-    # [developer-docs.sdk.python.read-file-field]-end
     print(content.decode())
+    # [developer-docs.sdk.python.read-file-field]-end
 
     # [developer-docs.sdk.python.attach-file-field-item]-start
     # Attach a file field to the item
