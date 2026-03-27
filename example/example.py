@@ -234,7 +234,7 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.update-vault]-end
 
     # [developer-docs.sdk.python.get-vault-details]-start
-    # Get Vault
+    # Get a vault
     get_params = VaultGetParams(
         accessors=True,
     )
