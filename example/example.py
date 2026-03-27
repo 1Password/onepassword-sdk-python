@@ -218,11 +218,11 @@ async def showcase_vault_operations(client: Client):
     print(f"Created vault: {created_vault.id} - {created_vault.title}")
     # [developer-docs.sdk.python.create-vault]-end
 
-    # [developer-docs.sdk.python.python.get-vault-overview]-start
+    # [developer-docs.sdk.python.get-vault-overview]-start
     # Get a vault overview
     vault_overview = await client.vaults.get_overview(created_vault.id)
     print(vault_overview)
-    # [developer-docs.sdk.python.python.get-vault-overview]-end
+    # [developer-docs.sdk.python.get-vault-overview]-end
 
     # [developer-docs.sdk.python.update-vault]-start
     # Update a vault
