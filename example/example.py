@@ -66,13 +66,13 @@ async def main():
                 id="username",
                 title="username",
                 field_type=ItemFieldType.TEXT,
-                value="mynameisjeff",
+                value="my-username",
             ),
             ItemField(
                 id="password",
                 title="password",
                 field_type=ItemFieldType.CONCEALED,
-                value="jeff",
+                value="my-password",
             ),
             ItemField(
                 id="onetimepassword",
@@ -266,13 +266,13 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
                         id="username",
                         title="username",
                         field_type=ItemFieldType.TEXT,
-                        value="mynameisjeff",
+                        value="my-username",
                     ),
                     ItemField(
                         id="password",
                         title="password",
                         field_type=ItemFieldType.CONCEALED,
-                        value="jeff",
+                        value="my-password",
                     ),
                     ItemField(
                         id="onetimepassword",
@@ -469,13 +469,13 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
                 id="username",
                 title="username",
                 field_type=ItemFieldType.TEXT,
-                value="mynameisjeff",
+                value="my-username",
             ),
             ItemField(
                 id="password",
                 title="password",
                 field_type=ItemFieldType.CONCEALED,
-                value="jeff",
+                value="my-password",
             ),
         ],
         sections=[
