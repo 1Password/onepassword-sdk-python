@@ -523,9 +523,8 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
         attached_item.files[1].section_id,
         attached_item.files[1].field_id,
     )
-    # [developer-docs.sdk.python.delete-file-field-item]-end
-
     print(len(deleted_file_item.files))
+    # [developer-docs.sdk.python.delete-file-field-item]-end
 
     await client.items.delete(deleted_file_item.vault_id, deleted_file_item.id)
 
