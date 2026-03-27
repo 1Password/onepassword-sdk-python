@@ -96,9 +96,8 @@ async def main():
         ],
     )
     created_item = await client.items.create(to_create)
+    print(f'Created item "{created_item.title}" ({created_item.id})')
     # [developer-docs.sdk.python.create-item]-end
-
-    print(dict(created_item))
 
     # [developer-docs.sdk.python.resolve-secret]-start
     # Fetch a secret using a secret reference
