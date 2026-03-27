@@ -309,9 +309,9 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-create-items]-end
 
     # [developer-docs.sdk.python.batch-get-items]-start
-    # Get multiple items form the same vault in a single batch
-    batchGetReponse = await client.items.get_all(vault_id, item_ids)
-    for res in batchGetReponse.individual_responses:
+    # Get multiple items from the same vault in a single batch
+    batchGetResponse = await client.items.get_all(vault_id, item_ids)
+    for res in batchGetResponse.individual_responses:
         if res.content is not None:
             print('Obtained item "{}" ({})'.format(res.content.title, res.content.id))
         elif res.error is not None:
@@ -321,11 +321,11 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-delete-items]-start
     # Delete multiple items from the same vault in a single batch
     batchDeleteResponse = await client.items.delete_all(vault_id, item_ids)
-    for id, res in batchDeleteResponse.individual_responses.items():
+    for deleted_id, res in batchDeleteResponse.individual_responses.items():
         if res.error is not None:
             print("[Batch delete] Something went wrong: {}".format(res.error))
         else:
-            print("Deleted item {}".format(id))
+            print("Deleted item {}".format(deleted_id))
     # [developer-docs.sdk.python.batch-delete-items]-end
 
 
@@ -372,7 +372,7 @@ async def share_item(client: Client, vault_id: str, item_id: str):
 
 async def create_ssh_key_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.create-sshkey-item]-start
-    # Generate a 2048-bit RSA private key
+    # Generate a 4096-bit RSA private key
     private_key = rsa.generate_private_key(
         public_exponent=65537,
         key_size=4096,

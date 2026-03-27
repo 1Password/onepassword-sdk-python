@@ -23,7 +23,7 @@ async def main():
     # [developer-docs.sdk.python.list-vaults]-start
     vaults = await client.vaults.list()
     for vault in vaults:
-        print(vault)
+        print(vault.title)
     # [developer-docs.sdk.python.list-vaults]-end
 
     # [developer-docs.sdk.python.list-items]-start
@@ -104,7 +104,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
             )
         ],
     )
-    print(f"Granted group {group_id} permissions to vault {vault_id}")
+    print(f"Granted group {group_id} permissions in vault {vault_id}")
     # [developer-docs.sdk.python.grant-group-permissions]-end
 
     # [developer-docs.sdk.python.update-group-permissions]-start
@@ -114,12 +114,12 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
             GroupVaultAccess(
                 vault_id=vault_id,
                 group_id=group_id,
-                permissions= READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
+                permissions=READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
             )
         ],
     )
-    print(f"Updated group {group_id} permissions to vault {vault_id}")
-    # [developer-docs.sdk.python.update-group-permissions]-start
+    print(f"Updated group {group_id}'s permissions in vault {vault_id}")
+    # [developer-docs.sdk.python.update-group-permissions]-end
 
     # [developer-docs.sdk.python.revoke-group-permissions]-start
     # Revoke Group Permissions
@@ -127,8 +127,9 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
         vault_id=vault_id,
         group_id=group_id,
     )
-    # [developer-docs.sdk.python.update-group-permissions]-end
-    
+    print(f"Revoked group {group_id}'s permissions in vault {vault_id}")
+    # [developer-docs.sdk.python.revoke-group-permissions]-end
+
     # [developer-docs.sdk.python.get-group]-start
     # Get a group
     group = await client.groups.get(group_id, GroupGetParams(vaultPermissions=False))
@@ -193,9 +194,9 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-create-items]-end
 
     # [developer-docs.sdk.python.batch-get-items]-start
-    # Get multiple items form the same vault in a single batch
-    batchGetReponse = await client.items.get_all(vault_id, item_ids)
-    for res in batchGetReponse.individual_responses:
+    # Get multiple items from the same vault in a single batch
+    batchGetResponse = await client.items.get_all(vault_id, item_ids)
+    for res in batchGetResponse.individual_responses:
         if res.content is not None:
             print('Obtained item "{}" ({})'.format(res.content.title, res.content.id))
         elif res.error is not None:
@@ -205,11 +206,11 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-delete-items]-start
     # Delete multiple items from the same vault in a single batch
     batchDeleteResponse = await client.items.delete_all(vault_id, item_ids)
-    for id, res in batchDeleteResponse.individual_responses.items():
+    for deleted_id, res in batchDeleteResponse.individual_responses.items():
         if res.error is not None:
             print("[Batch delete] Something went wrong: {}".format(res.error))
         else:
-            print("Deleted item {}".format(id))
+            print("Deleted item {}".format(deleted_id))
     # [developer-docs.sdk.python.batch-delete-items]-end
 
 
