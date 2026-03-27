@@ -451,9 +451,8 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
     content = await client.items.files.read(
         replaced_item.vault_id, replaced_item.id, replaced_item.document
     )
-    # [developer-docs.sdk.python.read-document-item]-end
-
     print(content.decode())
+    # [developer-docs.sdk.python.read-document-item]-end
 
     await client.items.delete(replaced_item.vault_id, replaced_item.id)
 
