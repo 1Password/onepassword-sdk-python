@@ -333,6 +333,7 @@ async def archive_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.archive-item]-start
     # Archive an item
     await client.items.archive(vault_id, item_id)
+    print(f"Item {item_id} successfully archived from vault {vault_id}.")
     # [developer-docs.sdk.python.archive-item]-end
 
 
