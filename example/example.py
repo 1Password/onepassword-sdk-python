@@ -202,6 +202,10 @@ async def main():
 
     await showcase_batch_item_operations(client, vault_id)
 
+    group_id = os.getenv("OP_GROUP_ID")
+    if group_id is not None:
+        await showcase_group_permission_operations(client, vault_id, group_id)
+
 async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.create-vault]-start
     # Create Vault
@@ -327,6 +331,53 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
         else:
             print("Deleted item {}".format(deleted_id))
     # [developer-docs.sdk.python.batch-delete-items]-end
+
+
+async def showcase_group_permission_operations(
+    client: Client, vault_id: str, group_id: str
+):
+    # [developer-docs.sdk.python.grant-group-permissions]-start
+    # Grant Group Permissions
+    await client.vaults.grant_group_permissions(
+        vault_id=vault_id,
+        group_permissions_list=[
+            GroupAccess(
+                group_id=group_id,
+                permissions=READ_ITEMS,
+            )
+        ],
+    )
+    print(f"Granted group {group_id} permissions in vault {vault_id}")
+    # [developer-docs.sdk.python.grant-group-permissions]-end
+
+    # [developer-docs.sdk.python.update-group-permissions]-start
+    # Update Group Permissions
+    await client.vaults.update_group_permissions(
+        group_permissions_list=[
+            GroupVaultAccess(
+                vault_id=vault_id,
+                group_id=group_id,
+                permissions=READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
+            )
+        ],
+    )
+    print(f"Updated group {group_id}'s permissions in vault {vault_id}")
+    # [developer-docs.sdk.python.update-group-permissions]-end
+
+    # [developer-docs.sdk.python.revoke-group-permissions]-start
+    # Revoke Group Permissions
+    await client.vaults.revoke_group_permissions(
+        vault_id=vault_id,
+        group_id=group_id,
+    )
+    print(f"Revoked group {group_id}'s permissions in vault {vault_id}")
+    # [developer-docs.sdk.python.revoke-group-permissions]-end
+
+    # [developer-docs.sdk.python.get-group]-start
+    # Get a group
+    group = await client.groups.get(group_id, GroupGetParams(vaultPermissions=False))
+    print(group)
+    # [developer-docs.sdk.python.get-group]-end
 
 
 async def archive_item(client: Client, vault_id: str, item_id: str):

@@ -12,6 +12,7 @@ This folder contains a code snippet demonstrating how to use the 1Password Pytho
 - Create and manage SSH key items.
 - Create and manage document items, including replacing and reading documents.
 - Create and manage file field items by attaching and deleting files.
+- Optionally exercise vault group permission APIs when `OP_GROUP_ID` is set.
 
 ## Prerequisites
 
@@ -23,6 +24,10 @@ This folder contains a code snippet demonstrating how to use the 1Password Pytho
 3. Export the vault UUID you wish to interact with as an environment variable:
     ```bash
     export OP_VAULT_ID="<your vault uuid>"
+    ```
+4. (Optional) To run the group permission section at the end of the example, export a group UUID your service account can manage:
+    ```bash
+    export OP_GROUP_ID="<your group uuid>"
     ```
 
 ## How to Run
