@@ -195,6 +195,7 @@ async def main():
     # [developer-docs.sdk.python.delete-item]-start
     # Delete an item
     await client.items.delete(created_item.vault_id, updated_item.id)
+    print(f"Item {item_id} successfully deleted from vault {vault_id}.")
     # [developer-docs.sdk.python.delete-item]-end
 
     await showcase_vault_operations(client)
