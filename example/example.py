@@ -32,7 +32,7 @@ async def main():
     # List items
     overviews = await client.items.list(vault_id)
     for overview in overviews:
-        print(overview.title)
+        print(f"{overview.title} ({overview.id})")
     # [developer-docs.sdk.python.list-items]-end
 
     # [developer-docs.sdk.python.use-item-filters]-start
@@ -44,7 +44,7 @@ async def main():
         ),
     )
     for overview in archived_overviews:
-        print(overview.title)
+        print(f"{overview.title} ({overview.id})")
     # [developer-docs.sdk.python.use-item-filters]-end
 
     # [developer-docs.sdk.python.validate-secret-reference]-start
