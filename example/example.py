@@ -114,7 +114,9 @@ async def main():
     )
     print(code)
     # [developer-docs.sdk.python.resolve-totp-code]-end
-
+    await resolve_all_secrets(
+        client, created_item.vault_id, created_item.id, "username", "password"
+    )
     # [developer-docs.sdk.python.get-totp-item-crud]-start
     # Get a one-time password code from an item
     for f in created_item.fields:
