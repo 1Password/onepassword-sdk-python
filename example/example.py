@@ -648,6 +648,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
         vault_id=vault_id,
         group_id=group_id,
     )
+    print(f"Revoked group {group_id}'s permissions in vault {vault_id}")
     # [developer-docs.sdk.python.revoke-group-permissions]-end
     
     # [developer-docs.sdk.python.get-group]-start
