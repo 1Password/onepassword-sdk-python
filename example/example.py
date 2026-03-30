@@ -245,6 +245,7 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.delete-vault]-start
     # Delete a vault
     await client.vaults.delete(created_vault.id)
+    print(f"Vault {vault_id} successfully deleted.")
     # [developer-docs.sdk.python.delete-vault]-end
 
     # [developer-docs.sdk.python.list-vault]-start
