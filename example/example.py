@@ -378,7 +378,7 @@ async def share_item(client: Client, vault_id: str, item_id: str):
 
 async def create_ssh_key_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.create-sshkey-item]-start
-    # Generate a 2048-bit RSA private key
+    # Generate a 4096-bit RSA private key
     private_key = rsa.generate_private_key(
         public_exponent=65537,
         key_size=4096,
