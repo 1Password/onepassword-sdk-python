@@ -516,6 +516,7 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
             fieldId="new_file_field",
         ),
     )
+    print(f'Attached "{file_path.name}" to item "{attached_item.title}".')
     # [developer-docs.sdk.python.attach-file-field-item]-end
 
     # [developer-docs.sdk.python.delete-file-field-item]-start
