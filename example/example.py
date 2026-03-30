@@ -436,6 +436,7 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
         ),
     )
     created_item = await client.items.create(to_create)
+    print(f'Created Document item "{created_item.title}" ({created_item.id})')
     # [developer-docs.sdk.python.create-document-item]-end
 
     # [developer-docs.sdk.python.replace-document-item]-start
