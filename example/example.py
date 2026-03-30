@@ -251,7 +251,7 @@ async def showcase_vault_operations(client: Client):
     # List vaults
     vaults = await client.vaults.list()
     for vault in vaults:
-        print(vault.title)
+        print(f"{vault.title} ({vault.id})")
     # [developer-docs.sdk.python.list-vault]-end
 
 async def showcase_batch_item_operations(client: Client, vault_id: str):
