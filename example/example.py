@@ -197,7 +197,7 @@ async def main():
     # [developer-docs.sdk.python.delete-item]-start
     # Delete an item
     await client.items.delete(created_item.vault_id, updated_item.id)
-    print(f"Item {item_id} successfully deleted from vault {vault_id}.")
+    print(f"Item {updated_item.id} successfully deleted from vault {created_item.vault_id}.")
     # [developer-docs.sdk.python.delete-item]-end
 
     await showcase_vault_operations(client)
@@ -518,7 +518,7 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
             fieldId="new_file_field",
         ),
     )
-    print(f'Attached "{file_path.name}" to item "{attached_item.title}".')
+    print(f'Attached "file2.txt" to item "{attached_item.title}".')
     # [developer-docs.sdk.python.attach-file-field-item]-end
 
     # [developer-docs.sdk.python.delete-file-field-item]-start
