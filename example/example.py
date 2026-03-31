@@ -448,6 +448,7 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
             name="file2.txt", content=Path("./example/file2.txt").read_bytes()
         ),
     )
+    print(f'Replaced document in item "{replaced_item.title}".')
     # [developer-docs.sdk.python.replace-document-item]-end
 
     # [developer-docs.sdk.python.read-document-item]-start
