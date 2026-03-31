@@ -228,8 +228,12 @@ async def showcase_vault_operations(client: Client):
         title="Python SDK Updated Name",
         description="Updated description",
     )
-    
-    await client.vaults.update(created_vault.id, update_params)
+
+    updated_vault = await client.vaults.update(created_vault.id, update_params)
+    print(
+        f'Updated vault "{updated_vault.title}" ({updated_vault.id}): '
+        f'{updated_vault.description!r}'
+    )
     # [developer-docs.sdk.python.update-vault]-end
 
     # [developer-docs.sdk.python.get-vault-details]-start
