@@ -32,7 +32,7 @@ async def main():
     # List items
     overviews = await client.items.list(vault_id)
     for overview in overviews:
-        print(overview.title)
+        print(f"{overview.title} ({overview.id})")
     # [developer-docs.sdk.python.list-items]-end
 
     # [developer-docs.sdk.python.use-item-filters]-start
@@ -44,13 +44,13 @@ async def main():
         ),
     )
     for overview in archived_overviews:
-        print(overview.title)
+        print(f"{overview.title} ({overview.id})")
     # [developer-docs.sdk.python.use-item-filters]-end
 
     # [developer-docs.sdk.python.validate-secret-reference]-start
     # Validate a secret reference
     try:
-        Secrets.validate_secret_reference("op://vault/item/field")
+        Secrets.validate_secret_reference("op://vault-id/item-id/field-id")
     except Exception as error:
         print(error)
     # [developer-docs.sdk.python.validate-secret-reference]-end
@@ -66,13 +66,13 @@ async def main():
                 id="username",
                 title="username",
                 field_type=ItemFieldType.TEXT,
-                value="mynameisjeff",
+                value="my-username",
             ),
             ItemField(
                 id="password",
                 title="password",
                 field_type=ItemFieldType.CONCEALED,
-                value="jeff",
+                value="my-password",
             ),
             ItemField(
                 id="onetimepassword",
@@ -96,9 +96,8 @@ async def main():
         ],
     )
     created_item = await client.items.create(to_create)
+    print(f'Created item "{created_item.title}" ({created_item.id})')
     # [developer-docs.sdk.python.create-item]-end
-
-    print(dict(created_item))
 
     # [developer-docs.sdk.python.resolve-secret]-start
     # Fetch a secret using a secret reference
@@ -131,9 +130,8 @@ async def main():
     # [developer-docs.sdk.python.get-item]-start
     # Get an item
     item = await client.items.get(created_item.vault_id, created_item.id)
+    print(f'Retrieved item "{item.title}" ({item.id})')
     # [developer-docs.sdk.python.get-item]-end
-
-    print(dict(item))
 
     # [developer-docs.sdk.python.update-item]-start
     # Update an item
@@ -146,9 +144,8 @@ async def main():
         ),
     )
     updated_item = await client.items.put(item)
+    print(f"Updated item: {updated_item.title} ({updated_item.id})")
     # [developer-docs.sdk.python.update-item]-end
-
-    print(dict(updated_item))
 
     # [developer-docs.sdk.python.generate-pin-password]-start
     # Generate a PIN password
@@ -200,6 +197,7 @@ async def main():
     # [developer-docs.sdk.python.delete-item]-start
     # Delete an item
     await client.items.delete(created_item.vault_id, updated_item.id)
+    print(f"Item {updated_item.id} successfully deleted from vault {created_item.vault_id}.")
     # [developer-docs.sdk.python.delete-item]-end
 
     await showcase_vault_operations(client)
@@ -230,8 +228,12 @@ async def showcase_vault_operations(client: Client):
         title="Python SDK Updated Name",
         description="Updated description",
     )
-    
-    await client.vaults.update(created_vault.id, update_params)
+
+    updated_vault = await client.vaults.update(created_vault.id, update_params)
+    print(
+        f'Updated vault "{updated_vault.title}" ({updated_vault.id}): '
+        f'{updated_vault.description!r}'
+    )
     # [developer-docs.sdk.python.update-vault]-end
 
     # [developer-docs.sdk.python.get-vault-details]-start
@@ -247,13 +249,14 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.delete-vault]-start
     # Delete a vault
     await client.vaults.delete(created_vault.id)
+    print(f"Vault {created_vault.id} successfully deleted.")
     # [developer-docs.sdk.python.delete-vault]-end
 
     # [developer-docs.sdk.python.list-vault]-start
     # List vaults
     vaults = await client.vaults.list()
     for vault in vaults:
-        print(vault.title)
+        print(f"{vault.title} ({vault.id})")
     # [developer-docs.sdk.python.list-vault]-end
 
 async def showcase_batch_item_operations(client: Client, vault_id: str):
@@ -270,13 +273,13 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
                         id="username",
                         title="username",
                         field_type=ItemFieldType.TEXT,
-                        value="mynameisjeff",
+                        value="my-username",
                     ),
                     ItemField(
                         id="password",
                         title="password",
                         field_type=ItemFieldType.CONCEALED,
-                        value="jeff",
+                        value="my-password",
                     ),
                     ItemField(
                         id="onetimepassword",
@@ -338,6 +341,7 @@ async def archive_item(client: Client, vault_id: str, item_id: str):
     # [developer-docs.sdk.python.archive-item]-start
     # Archive an item
     await client.items.archive(vault_id, item_id)
+    print(f"Item {item_id} successfully archived from vault {vault_id}.")
     # [developer-docs.sdk.python.archive-item]-end
 
 
@@ -381,7 +385,7 @@ async def share_item(client: Client, vault_id: str, item_id: str):
 
 async def create_ssh_key_item(client: Client, vault_id: str):
     # [developer-docs.sdk.python.create-sshkey-item]-start
-    # Generate a 2048-bit RSA private key
+    # Generate a 4096-bit RSA private key
     private_key = rsa.generate_private_key(
         public_exponent=65537,
         key_size=4096,
@@ -433,10 +437,11 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
             ItemSection(id="", title=""),
         ],
         document=DocumentCreateParams(
-            name="file.txt", content=Path("./example/file.txt").read_bytes()
+            name="file.txt", content=Path("./example/file2.txt").read_bytes()
         ),
     )
     created_item = await client.items.create(to_create)
+    print(f'Created Document item "{created_item.title}" ({created_item.id})')
     # [developer-docs.sdk.python.create-document-item]-end
 
     # [developer-docs.sdk.python.replace-document-item]-start
@@ -447,6 +452,7 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
             name="file2.txt", content=Path("./example/file2.txt").read_bytes()
         ),
     )
+    print(f'Replaced document in item "{replaced_item.title}".')
     # [developer-docs.sdk.python.replace-document-item]-end
 
     # [developer-docs.sdk.python.read-document-item]-start
@@ -454,9 +460,8 @@ async def create_and_replace_document_item(client: Client, vault_id: str):
     content = await client.items.files.read(
         replaced_item.vault_id, replaced_item.id, replaced_item.document
     )
-    # [developer-docs.sdk.python.read-document-item]-end
-
     print(content.decode())
+    # [developer-docs.sdk.python.read-document-item]-end
 
     await client.items.delete(replaced_item.vault_id, replaced_item.id)
 
@@ -473,13 +478,13 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
                 id="username",
                 title="username",
                 field_type=ItemFieldType.TEXT,
-                value="mynameisjeff",
+                value="my-username",
             ),
             ItemField(
                 id="password",
                 title="password",
                 field_type=ItemFieldType.CONCEALED,
-                value="jeff",
+                value="my-password",
             ),
         ],
         sections=[
@@ -488,7 +493,7 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
         files=[
             FileCreateParams(
                 name="file.txt",
-                content=Path("./example/file.txt").read_bytes(),
+                content=Path("./example/file2.txt").read_bytes(),
                 sectionId="",
                 fieldId="file_field",
             )
@@ -496,6 +501,7 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
     )
 
     created_item = await client.items.create(to_create)
+    print(f'Created item with file attached "{created_item.title}" ({created_item.id})')
     # [developer-docs.sdk.python.create-item-with-file-field]-end
 
     # [developer-docs.sdk.python.read-file-field]-start
@@ -503,8 +509,8 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
     content = await client.items.files.read(
         created_item.vault_id, created_item.id, created_item.files[0].attributes
     )
-    # [developer-docs.sdk.python.read-file-field]-end
     print(content.decode())
+    # [developer-docs.sdk.python.read-file-field]-end
 
     # [developer-docs.sdk.python.attach-file-field-item]-start
     # Attach a file field to the item
@@ -517,18 +523,20 @@ async def create_attach_and_delete_file_field_item(client: Client, vault_id: str
             fieldId="new_file_field",
         ),
     )
+    print(f'Attached "file2.txt" to item "{attached_item.title}".')
     # [developer-docs.sdk.python.attach-file-field-item]-end
 
     # [developer-docs.sdk.python.delete-file-field-item]-start
     # Delete a file field from an item
     deleted_file_item = await client.items.files.delete(
         attached_item,
-        attached_item.files[1].section_id,
-        attached_item.files[1].field_id,
+        attached_item.files[0].section_id,
+        attached_item.files[0].field_id,
+    )
+    print(
+        f"Deleted file '{attached_item.files[0].attributes.name}' from item '{deleted_file_item.title}'."
     )
     # [developer-docs.sdk.python.delete-file-field-item]-end
-
-    print(len(deleted_file_item.files))
 
     await client.items.delete(deleted_file_item.vault_id, deleted_file_item.id)
 
@@ -647,6 +655,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
         vault_id=vault_id,
         group_id=group_id,
     )
+    print(f"Revoked group {group_id}'s permissions in vault {vault_id}")
     # [developer-docs.sdk.python.revoke-group-permissions]-end
     
     # [developer-docs.sdk.python.get-group]-start
