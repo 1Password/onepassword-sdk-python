@@ -1329,7 +1329,7 @@ class Vault(BaseModel):
     """
     attribute_version: int = Field(alias="attributeVersion")
     """
-    The attribute version number of the vault. It gets incremented whenever vault presentation information changes, such as its title or icon.
+    The attribute version number of the vault. It gets incremented whenever vault presentation information changes, such as its name or icon.
     """
     access: Optional[List[VaultAccess]] = Field(default=None)
     """
@@ -1395,7 +1395,7 @@ class VaultOverview(BaseModel):
     """
     attribute_version: int = Field(alias="attributeVersion")
     """
-    The attribute version number of the vault. It gets incremented whenever vault presentation information changes, such as its title or icon.
+    The attribute version number of the vault. It gets incremented whenever vault presentation information changes, such as its name or icon.
     """
     created_at: Annotated[
         datetime,
