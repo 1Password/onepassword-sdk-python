@@ -1,1 +1,2 @@
 include version.py
+include src/onepassword/py.typed
