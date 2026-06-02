@@ -212,3 +212,5 @@ Make sure to use [secret reference URIs](https://developer.1password.com/docs/cl
 - [Manage vault permissions](https://developer.1password.com/docs/sdks/vault-permissions)
 - [Manage groups](https://developer.1password.com/docs/sdks/groups)
 - [1Password SDK concepts](https://developer.1password.com/docs/sdks/concepts)
+
+*By accessing or using 1Password Developer Tools, you agree to the [API and SDK Terms of Service](https://1password.com/legal/api-sdk-terms-of-service).*
