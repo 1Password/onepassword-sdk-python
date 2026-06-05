@@ -28,6 +28,8 @@ If you're running a Linux distribution that still uses `libssl` version 1.1.1, s
 
 You can choose between two [authentication methods](https://developer.1password.com/docs/sdks/concepts#authentication) for the 1Password Python SDK: local authorization prompts from the [1Password desktop app](#option-1-1password-desktop-app) or automated authentication with a [1Password Service Account](#option-2-1password-service-account).
 
+*This project is licensed under [MIT](./LICENSE). Use of the 1Password APIs and services accessed through these tools is governed by the [1Password API Terms of Service](https://1password.com/legal/api-sdk-terms-of-service).*
+
 ### Option 1: 1Password desktop app
 
 [1Password desktop app authentication](https://developer.1password.com/docs/sdks/concepts#1password-desktop-app) is best for local integrations that require minimal setup from end users and sensitive workflows that require human-in-the-loop approval. To set up the SDK to authenticate with the 1Password app:
