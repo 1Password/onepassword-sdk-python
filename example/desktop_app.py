@@ -14,7 +14,8 @@ async def main():
     # Connect to the 1Password desktop app
     client = await Client.authenticate(
         auth=DesktopAuth(
-            account_name="YourAccountNameAsShownInTheDesktopApp"  # Set to your 1Password account name as shown at the top left sidebar of the app, or your account UUID.
+            # Set to your 1Password account name as shown at the top left sidebar of the app, or your account UUID.
+            account_name="YourAccountNameAsShownInTheDesktopApp"
         ),
         # Set to your own integration name and version
         integration_name="My 1Password Integration",
@@ -42,16 +43,26 @@ async def main():
     group_id = os.environ.get("OP_GROUP_ID")
     if group_id is None:
         raise Exception("OP_GROUP_ID is required")
-    
+
     await showcase_group_permission_operations(client, vault_id, group_id)
+
+    environment_id = os.environ.get("OP_ENVIRONMENT_ID")
+    if environment_id is not None:
+        # [developer-docs.sdk.python.get-environment-variables]-start
+        # Read variables from a 1Password Environment
+        environment = await client.environments.get_variables(environment_id)
+        for variable in environment.variables:
+            print(f"{variable.name}: {variable.value} (masked: {variable.masked})")
+        # [developer-docs.sdk.python.get-environment-variables]-end
+
 
 async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.create-vault]-start
     # Create a vault
     vault_create_params = VaultCreateParams(
-    title="Python SDK Vault",
-    description="A description",
-    allow_admins_access=False,
+        title="Python SDK Vault",
+        description="A description",
+        allow_admins_access=False,
     )
     created_vault = await client.vaults.create(vault_create_params)
     print(f"Created vault: {created_vault.id} - {created_vault.title}")
@@ -69,7 +80,7 @@ async def showcase_vault_operations(client: Client):
         title="Python SDK Updated Name",
         description="Updated description",
     )
-    
+
     await client.vaults.update(created_vault.id, update_params)
     # [developer-docs.sdk.python.update-vault]-end
 
@@ -95,6 +106,7 @@ async def showcase_vault_operations(client: Client):
         print(vault.title)
     # [developer-docs.sdk.python.list-vault]-end
 
+
 async def showcase_group_permission_operations(client: Client, vault_id: str, group_id: str):
     # [developer-docs.sdk.python.grant-group-permissions]-start
     # Grant group permissions in a vault
@@ -117,7 +129,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
             GroupVaultAccess(
                 vault_id=vault_id,
                 group_id=group_id,
-                permissions= READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
+                permissions=READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
             )
         ],
     )
@@ -131,12 +143,13 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
         group_id=group_id,
     )
     # [developer-docs.sdk.python.update-group-permissions]-end
-    
+
     # [developer-docs.sdk.python.get-group]-start
     # Get a group
     group = await client.groups.get(group_id, GroupGetParams(vaultPermissions=False))
     print(group)
     # [developer-docs.sdk.python.get-group]-end
+
 
 async def showcase_batch_item_operations(client: Client, vault_id: str):
     # [developer-docs.sdk.python.batch-create-items]-start
@@ -189,7 +202,8 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     item_ids = []
     for res in batchCreateResponse.individual_responses:
         if res.content is not None:
-            print('Created item "{}" ({})'.format(res.content.title, res.content.id))
+            print('Created item "{}" ({})'.format(
+                res.content.title, res.content.id))
             item_ids.append(res.content.id)
         elif res.error is not None:
             print("[Batch create] Something went wrong: {}".format(res.error))
@@ -200,7 +214,8 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     batchGetReponse = await client.items.get_all(vault_id, item_ids)
     for res in batchGetReponse.individual_responses:
         if res.content is not None:
-            print('Obtained item "{}" ({})'.format(res.content.title, res.content.id))
+            print('Obtained item "{}" ({})'.format(
+                res.content.title, res.content.id))
         elif res.error is not None:
             print("[Batch get] Something went wrong: {}".format(res.error))
     # [developer-docs.sdk.python.batch-get-items]-end
@@ -214,7 +229,6 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
         else:
             print("Deleted item {}".format(id))
     # [developer-docs.sdk.python.batch-delete-items]-end
-
 
 if __name__ == "__main__":
     asyncio.run(main())

@@ -1,9 +1,6 @@
-# 1Password Python SDK v0.4.0
+# 1Password Python SDK v0.4.1b1
 
 ## NEW
 
-- **Desktop App integration:** The SDK can now authenticate via an authorization prompt from the 1Password app. 
-- **Vault CRUDL:** You can now fully manage 1Password vaults with the SDK, including creating, reading, updating, deleting and listing.
-- **Vault group permission management operations:** You can now grant, update and revoke group access to vaults using `grantGroupPermissions`, `updateGroupPermissions`, and `revokeGroupPermissions` functions.
-- **Item batch management:** You can now retrieve, create, update and delete items in batch, enabling more scalable item management.
 
+- **1Password Environment access:** The SDK can now read variables from a 1Password Environment.
