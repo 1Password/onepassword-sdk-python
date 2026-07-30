@@ -1,6 +1,11 @@
-# 1Password Python SDK v0.4.1b1
+# 1Password Python SDK v0.4.1
 
 ## NEW
 
 
 - **1Password Environment access:** The SDK can now read variables from a 1Password Environment.
+
+## IMPROVED
+
+- **Documentation:** The README now covers desktop app authentication and an updated list of supported functionality. Examples print their output, cover vault and group permission operations, and are consistent with the other 1Password SDKs.
+- **Terms of Service:** The README now links the terms of service that apply to the 1Password APIs/SDKs.
