@@ -123,8 +123,8 @@ jobs:
     - name: Example Test
       if: matrix.os == 'ubuntu-latest'
       env:
-        OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.TEST_SERVICE_ACCOUNT_TOKEN }}
-        OP_VAULT_ID: ${{ secrets.TEST_SERVICE_ACCOUNT_VAULT_ID }}
+        OP_SERVICE_ACCOUNT_TOKEN: ${{ secrets.EXAMPLE_TESTS_OP_SERVICE_ACCOUNT_TOKEN }}
+        OP_VAULT_ID: ${{ secrets.EXAMPLE_TESTS_OP_VAULT_ID }}
       run: |
         pip install . &&
         python example/example.py
