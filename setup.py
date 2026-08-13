@@ -21,7 +21,8 @@ except ImportError:
 
 
 def get_shared_library_data_to_include():
-    # Return the correct uniffi C shared library extension for the given platform
+    # Return the correct uniffi C shared library extension for the given platform.
+    # Paths are relative to the onepassword package directory (src/onepassword/)
     include_path = "lib"
     machine_type = os.getenv("PYTHON_MACHINE_PLATFORM") or platform.machine().lower()
     if machine_type in ["x86_64", "amd64"]:
@@ -42,7 +43,8 @@ def get_shared_library_data_to_include():
     uniffi_bindings_file_name = "op_uniffi_core.py"
     uniffi_bindings_file_name = os.path.join(include_path, uniffi_bindings_file_name)
 
-    return [c_shared_library_file_name, uniffi_bindings_file_name]
+    # Return paths relative to the onepassword package (package_dir 'onepassword')
+    return [os.path.join("onepassword", f) for f in [c_shared_library_file_name, uniffi_bindings_file_name]]
 
 
 setup(
