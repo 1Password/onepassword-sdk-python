@@ -51,7 +51,7 @@ build_wheels() {
             python_version=$(pyenv exec python3 --version 2>&1)
 
             if [[ "$machine_platform" == "x86_64" ]]; then
-                if [[ "$python_version" == "Python 3.13"* ]]; then
+                if [[ "$python_version" =~ ^Python\ 3\.(1[3-9]|[2-9][0-9]) ]]; then
                 macos_version="10.13"
             else
                 macos_version=$macOS_version_x86_64
