@@ -2,4 +2,4 @@
 
 ## FIXED
 
-- **Security patch:** On Linux, the SDK now rejects certificate chains that include the eight compromised eMudhra intermediate CA certificates, and no longer trusts the emSign ECC Root CA - G3. Linux users should upgrade, since updating the system CA store alone doesn't remove this trust. On macOS and Windows, certificate checks are handled by the operating system; install the latest OS updates to receive Apple's and Microsoft's distrust of these certificates.
+- **Security patch:** On Linux, the SDK now rejects certificate chains that include the eight compromised eMudhra intermediate CA certificates, and no longer bundles the emSign ECC Root CA - G3. Linux users should upgrade, since updating the system CA store alone doesn't remove this trust. On macOS and Windows, certificate checks are handled by the operating system; install the latest OS updates to receive Apple's and Microsoft's distrust of these certificates.
