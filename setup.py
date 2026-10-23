@@ -71,9 +71,10 @@ setup(
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
         "License :: OSI Approved :: MIT License",
+        "Typing :: Typed",
     ],
     cmdclass={"bdist_wheel": bdist_wheel},
-    package_data={"": get_shared_library_data_to_include()},
+    package_data={"": get_shared_library_data_to_include(), "onepassword": ["py.typed"]},
     install_requires=[
         "pydantic>=2.5",  # Minimum Pydantic version to run the Python SDK
     ],
