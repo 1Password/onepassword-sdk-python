@@ -60,6 +60,11 @@ setup(
     license_files="LICENSE",
     package_dir={"": "src"},
     python_requires=">=3.9",
+    entry_points={
+        "pyinstaller40": [
+            "hook-dirs = onepassword.pyinstaller_hooks:get_hook_dirs",
+        ],
+    },
     classifiers=[
         "Development Status :: 5 - Production/Stable",
         "Operating System :: MacOS",
@@ -76,5 +81,6 @@ setup(
     package_data={"": get_shared_library_data_to_include()},
     install_requires=[
         "pydantic>=2.5",  # Minimum Pydantic version to run the Python SDK
+        "pyinstaller>=6.18.0"
     ],
 )
