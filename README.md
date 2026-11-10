@@ -51,25 +51,26 @@ import asyncio
 import os
 from onepassword.client import Client, DesktopAuth
 
+
 async def main():
     # Connects to 1Password. Fill in your own integration name and version.
     client = await Client.authenticate(
-    auth=DesktopAuth(
-        # TODO: Set to your 1Password account name.
-        account_name="your-account-name"
-    ),
-    # TODO: Set to your own integration name and version.
-    integration_name="My 1Password Integration",
-    integration_version="v1.0.0",
-)
+        auth=DesktopAuth(
+            # TODO: Set to your 1Password account name.
+            account_name="your-account-name"
+        ),
+        # TODO: Set to your own integration name and version.
+        integration_name="My 1Password Integration",
+        integration_version="v1.0.0",
+    )
 
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     value = await client.secrets.resolve("op://vault/item/field")
     # use value here
 
-if __name__ == '__main__':
-    asyncio.run(main())
 
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secret-reference-syntax/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.
@@ -106,20 +107,25 @@ import asyncio
 import os
 from onepassword.client import Client
 
+
 async def main():
     # Gets your service account token from the OP_SERVICE_ACCOUNT_TOKEN environment variable.
     token = os.getenv("OP_SERVICE_ACCOUNT_TOKEN")
 
     # Connects to 1Password. Fill in your own integration name and version.
-    client = await Client.authenticate(auth=token, integration_name="My 1Password Integration", integration_version="v1.0.0")
+    client = await Client.authenticate(
+        auth=token,
+        integration_name="My 1Password Integration",
+        integration_version="v1.0.0",
+    )
 
     # Retrieves a secret from 1Password. Takes a secret reference as input and returns the secret to which it points.
     value = await client.secrets.resolve("op://vault/item/field")
     # use value here
 
-if __name__ == '__main__':
-    asyncio.run(main())
 
+if __name__ == "__main__":
+    asyncio.run(main())
 ```
 
 Make sure to use [secret reference URIs](https://developer.1password.com/docs/cli/secret-reference-syntax/) with the syntax `op://vault/item/field` to securely load secrets from 1Password into your code.

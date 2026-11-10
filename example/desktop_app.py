@@ -1,5 +1,6 @@
 # [developer-docs.sdk.python.sdk-import]-start
 from onepassword import *
+
 # [developer-docs.sdk.python.sdk-import]-end
 import asyncio
 import os
@@ -107,7 +108,9 @@ async def showcase_vault_operations(client: Client):
     # [developer-docs.sdk.python.list-vault]-end
 
 
-async def showcase_group_permission_operations(client: Client, vault_id: str, group_id: str):
+async def showcase_group_permission_operations(
+    client: Client, vault_id: str, group_id: str
+):
     # [developer-docs.sdk.python.grant-group-permissions]-start
     # Grant group permissions in a vault
     await client.vaults.grant_group_permissions(
@@ -202,8 +205,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     item_ids = []
     for res in batchCreateResponse.individual_responses:
         if res.content is not None:
-            print('Created item "{}" ({})'.format(
-                res.content.title, res.content.id))
+            print('Created item "{}" ({})'.format(res.content.title, res.content.id))
             item_ids.append(res.content.id)
         elif res.error is not None:
             print("[Batch create] Something went wrong: {}".format(res.error))
@@ -214,8 +216,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     batchGetReponse = await client.items.get_all(vault_id, item_ids)
     for res in batchGetReponse.individual_responses:
         if res.content is not None:
-            print('Obtained item "{}" ({})'.format(
-                res.content.title, res.content.id))
+            print('Obtained item "{}" ({})'.format(res.content.title, res.content.id))
         elif res.error is not None:
             print("[Batch get] Something went wrong: {}".format(res.error))
     # [developer-docs.sdk.python.batch-get-items]-end
@@ -229,6 +230,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
         else:
             print("Deleted item {}".format(id))
     # [developer-docs.sdk.python.batch-delete-items]-end
+
 
 if __name__ == "__main__":
     asyncio.run(main())

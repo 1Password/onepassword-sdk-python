@@ -197,7 +197,9 @@ async def main():
     # [developer-docs.sdk.python.delete-item]-start
     # Delete an item
     await client.items.delete(created_item.vault_id, updated_item.id)
-    print(f"Item {updated_item.id} successfully deleted from vault {created_item.vault_id}.")
+    print(
+        f"Item {updated_item.id} successfully deleted from vault {created_item.vault_id}."
+    )
     # [developer-docs.sdk.python.delete-item]-end
 
     await showcase_vault_operations(client)
@@ -242,7 +244,7 @@ async def showcase_vault_operations(client: Client):
     updated_vault = await client.vaults.update(created_vault.id, update_params)
     print(
         f'Updated vault "{updated_vault.title}" ({updated_vault.id}): '
-        f'{updated_vault.description!r}'
+        f"{updated_vault.description!r}"
     )
     # [developer-docs.sdk.python.update-vault]-end
 
@@ -321,8 +323,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     item_ids = []
     for res in batchCreateResponse.individual_responses:
         if res.content is not None:
-            print('Created item "{}" ({})'.format(
-                res.content.title, res.content.id))
+            print('Created item "{}" ({})'.format(res.content.title, res.content.id))
             item_ids.append(res.content.id)
         elif res.error is not None:
             print("[Batch create] Something went wrong: {}".format(res.error))
@@ -333,8 +334,7 @@ async def showcase_batch_item_operations(client: Client, vault_id: str):
     batchGetReponse = await client.items.get_all(vault_id, item_ids)
     for res in batchGetReponse.individual_responses:
         if res.content is not None:
-            print('Obtained item "{}" ({})'.format(
-                res.content.title, res.content.id))
+            print('Obtained item "{}" ({})'.format(res.content.title, res.content.id))
         elif res.error is not None:
             print("[Batch get] Something went wrong: {}".format(res.error))
     # [developer-docs.sdk.python.batch-get-items]-end
@@ -633,7 +633,10 @@ def generate_special_item_fields():
         ],
     )
 
-async def showcase_group_permission_operations(client: Client, vault_id: str, group_id: str):
+
+async def showcase_group_permission_operations(
+    client: Client, vault_id: str, group_id: str
+):
     # [developer-docs.sdk.python.grant-group-permissions]-start
     # Grant group permissions in a vault
     await client.vaults.grant_group_permissions(
@@ -655,7 +658,7 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
             GroupVaultAccess(
                 vault_id=vault_id,
                 group_id=group_id,
-                permissions= READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
+                permissions=READ_ITEMS | CREATE_ITEMS | UPDATE_ITEMS,
             )
         ],
     )
@@ -676,7 +679,6 @@ async def showcase_group_permission_operations(client: Client, vault_id: str, gr
     group = await client.groups.get(group_id, GroupGetParams(vaultPermissions=False))
     print(group)
     # [developer-docs.sdk.python.get-group]-end
-
 
 
 if __name__ == "__main__":

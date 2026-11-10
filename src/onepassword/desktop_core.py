@@ -16,19 +16,22 @@ def find_1password_lib_path():
     if os_name == "Darwin":  # macOS
         locations = [
             "/Applications/1Password.app/Contents/Frameworks/libop_sdk_ipc_client.dylib",
-            str(Path.home() / "Applications/1Password.app/Contents/Frameworks/libop_sdk_ipc_client.dylib"),
+            str(
+                Path.home()
+                / "Applications/1Password.app/Contents/Frameworks/libop_sdk_ipc_client.dylib"
+            ),
         ]
     elif os_name == "Linux":
         locations = [
             "/usr/bin/1password/libop_sdk_ipc_client.so",
-			"/opt/1Password/libop_sdk_ipc_client.so",
-			"/snap/bin/1password/libop_sdk_ipc_client.so",
+            "/opt/1Password/libop_sdk_ipc_client.so",
+            "/snap/bin/1password/libop_sdk_ipc_client.so",
         ]
     elif os_name == "Windows":
         locations = [
             str(Path.home() / r"AppData\Local\1Password\op_sdk_ipc_client.dll"),
             r"C:\Program Files\1Password\app\8\op_sdk_ipc_client.dll",
-			r"C:\Program Files (x86)\1Password\app\8\op_sdk_ipc_client.dll",
+            r"C:\Program Files (x86)\1Password\app\8\op_sdk_ipc_client.dll",
             str(Path.home() / r"AppData\Local\1Password\app\8\op_sdk_ipc_client.dll"),
         ]
     else:
@@ -39,6 +42,7 @@ def find_1password_lib_path():
             return lib_path
 
     raise FileNotFoundError("1Password desktop application not found")
+
 
 class DesktopCore:
     def __init__(self, account_name: str):
@@ -51,11 +55,11 @@ class DesktopCore:
         # Bind the Rust-exported functions
         self.send_message = self.lib.op_sdk_ipc_send_message
         self.send_message.argtypes = [
-            POINTER(c_uint8),             # msg_ptr
-            c_size_t,                     # msg_len
-            POINTER(POINTER(c_uint8)),    # out_buf
-            POINTER(c_size_t),            # out_len
-            POINTER(c_size_t),            # out_cap
+            POINTER(c_uint8),  # msg_ptr
+            c_size_t,  # msg_len
+            POINTER(POINTER(c_uint8)),  # out_buf
+            POINTER(c_size_t),  # out_len
+            POINTER(c_size_t),  # out_cap
         ]
         self.send_message.restype = c_int32
 
@@ -122,6 +126,7 @@ class DesktopCore:
             self.call_shared_library(payload, "release_client")
         except Exception as e:
             print(f"failed to release client: {e}")
+
 
 ERR_CHANNEL_CLOSED = (
     "desktop app connection channel is closed. "
