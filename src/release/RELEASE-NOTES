@@ -1,5 +1,9 @@
-# 1Password Python SDK v0.4.2
+# 1Password Python SDK v0.4.3b1
 
 ## FIXED
 
-- **Security patch:** On Linux, the SDK now rejects certificate chains that include the eight compromised eMudhra intermediate CA certificates, and no longer bundles the emSign ECC Root CA - G3. Linux users should upgrade, since updating the system CA store alone doesn't remove this trust. On macOS and Windows, certificate checks are handled by the operating system; install the latest OS updates to receive Apple's and Microsoft's distrust of these certificates.
+- **Secret references with a vault's account-type name:** Secret references that name a Personal vault by its account-type name now resolve. For example, `op://Employee/...` on a Team or Business account, as copied with "Copy Secret Reference" in the 1Password app. Before, they failed with "no vault matched the secret reference query".
+
+## IMPROVED
+
+- **Support link in error messages:** Internal error messages now link to https://www.1password.dev/joinslack.
