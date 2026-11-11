@@ -1,9 +1,11 @@
-from pathlib import Path
-from setuptools import setup, find_packages
-from sysconfig import get_platform
-from version import SDK_VERSION
-import platform
 import os
+import platform
+from pathlib import Path
+from sysconfig import get_platform
+
+from setuptools import find_packages, setup
+
+from version import SDK_VERSION
 
 try:
     from wheel.bdist_wheel import bdist_wheel as _bdist_wheel
@@ -70,6 +72,7 @@ setup(
         "Programming Language :: Python :: 3.11",
         "Programming Language :: Python :: 3.12",
         "Programming Language :: Python :: 3.13",
+        "Programming Language :: Python :: 3.14",
         "License :: OSI Approved :: MIT License",
     ],
     cmdclass={"bdist_wheel": bdist_wheel},

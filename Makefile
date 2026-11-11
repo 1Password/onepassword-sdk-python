@@ -1,4 +1,4 @@
-PYTHON_VERSIONS := 3.9 3.10 3.11 3.12 3.13
+PYTHON_VERSIONS := 3.9 3.10 3.11 3.12 3.13 3.14
 
 release:
 	src/release/scripts/release.sh
@@ -21,4 +21,3 @@ release/install-dependencies:
 		pyenv local $$version; \
 		pyenv exec pip3 install wheel setuptools build --break-system-packages; \
 	done
-
